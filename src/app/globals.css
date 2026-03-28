@@ -1,0 +1,74 @@
+@import "tailwindcss";
+
+:root {
+  --font-playfair: var(--font-playfair), Georgia, serif;
+  --font-inter: var(--font-inter), system-ui, sans-serif;
+}
+
+@theme inline {
+  --color-background: #fafafa;
+  --color-foreground: #1a1a1a;
+  --font-sans: var(--font-inter);
+  --font-serif: var(--font-playfair);
+}
+
+* {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: #fafafa;
+  color: #1a1a1a;
+  font-family: var(--font-inter), system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.font-serif {
+  font-family: var(--font-playfair), Georgia, serif;
+}
+
+::selection {
+  background: #c9a96e;
+  color: white;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #c9a96e;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #b8956a;
+}
+
+:focus-visible {
+  outline: 2px solid #c9a96e;
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+@media (prefers-contrast: high) {
+  :root {
+    --background: #ffffff;
+    --foreground: #000000;
+  }
+}
