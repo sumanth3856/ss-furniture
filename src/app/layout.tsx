@@ -15,6 +15,7 @@ import {
   generateOrganizationStructuredData,
   generateWebSiteStructuredData,
 } from "@/lib/structuredData";
+import { siteConfig } from "@/lib/config";
 
 const playfair = Playfair_Display({
   variable: "--font-playfair",
@@ -39,8 +40,8 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: "https://ssfurniture.com",
-    siteName: "SS Furniture",
+    url: siteConfig.url,
+    siteName: siteConfig.name,
     title: "SS Furniture | Premium Furniture for Modern Living",
     description: "Discover meticulously crafted furniture that transforms your home into a sanctuary of style and comfort.",
     images: [

@@ -3,13 +3,12 @@
 import { useState, useEffect } from "react";
 import { useParams, notFound } from "next/navigation";
 import Image from "next/image";
-import Link from "next/link";
 import { motion } from "framer-motion";
 import { 
-  ChevronLeft, ChevronRight, Heart, ShoppingCart, Check, 
-  Truck, Shield, RefreshCw, ZoomIn, Star, Minus, Plus
+  Heart, ShoppingCart, Check, Loader2,
+  Truck, Shield, RefreshCw, ZoomIn, Star, Minus, Plus, XCircle, CheckCircle2
 } from "lucide-react";
-import { products } from "@/lib/data";
+import { products as staticProducts, type Product } from "@/lib/data";
 import { useCart } from "@/components/CartContext";
 import { useWishlist } from "@/components/WishlistContext";
 import { useToast } from "@/components/Toast";
@@ -19,39 +18,97 @@ import ProductCard from "@/components/ProductCard";
 export default function ProductDetailPage() {
   const params = useParams();
   const productId = Number(params.id);
-  const product = products.find((p) => p.id === productId);
+  
+  const [product, setProduct] = useState<Product | null>(null);
+  const [relatedProducts, setRelatedProducts] = useState<Product[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
   
   const [selectedImage, setSelectedImage] = useState(0);
   const [quantity, setQuantity] = useState(1);
   const [isZoomed, setIsZoomed] = useState(false);
   const [zoomPosition, setZoomPosition] = useState({ x: 50, y: 50 });
   const [imageLoaded, setImageLoaded] = useState(false);
+  const [isAdding, setIsAdding] = useState(false);
   
-  const { addItem: addToCart } = useCart();
+  const { addItem: addToCart, items } = useCart();
   const { isInWishlist, toggleItem } = useWishlist();
   const { showToast } = useToast();
+
+  useEffect(() => {
+    async function fetchProduct() {
+      setIsLoading(true);
+      try {
+        const res = await fetch(`/api/products/${productId}`);
+        if (!res.ok) {
+          setProduct(null);
+          return;
+        }
+        const data = await res.json();
+        setProduct(data);
+        
+        const allRes = await fetch("/api/products");
+        const allProducts = await allRes.json();
+        const related = allProducts
+          .filter((p: Product) => p.category === data.category && p.id !== data.id)
+          .slice(0, 4);
+        setRelatedProducts(related);
+      } catch {
+        const fallback = staticProducts.find((p) => p.id === productId);
+        setProduct(fallback || null);
+        if (fallback) {
+          const related = staticProducts
+            .filter((p) => p.category === fallback.category && p.id !== fallback.id)
+            .slice(0, 4);
+          setRelatedProducts(related);
+        }
+      } finally {
+        setIsLoading(false);
+      }
+    }
+    
+    if (productId) {
+      fetchProduct();
+    }
+  }, [productId]);
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <Loader2 className="w-8 h-8 animate-spin text-[#C9A96E]" />
+      </div>
+    );
+  }
 
   if (!product) {
     notFound();
   }
 
-  const relatedProducts = products
-    .filter((p) => p.category === product.category && p.id !== product.id)
-    .slice(0, 4);
-
   const isWishlisted = isInWishlist(product.id);
+  const cartItem = items.find((item) => item.product_id === product.id);
+  const isInCart = !!cartItem;
+  const isOutOfStock = product.in_stock === false;
 
-  const handleAddToCart = () => {
-    for (let i = 0; i < quantity; i++) {
-      addToCart(product);
+  const handleAddToCart = async () => {
+    if (isAdding || isOutOfStock) return;
+    
+    setIsAdding(true);
+    
+    try {
+      for (let i = 0; i < quantity; i++) {
+        addToCart(product);
+      }
+      showToast(`${quantity > 1 ? `${quantity} x ` : ""}${product.name} added to cart`, "success");
+    } catch {
+      showToast("Failed to add to cart", "error");
+    } finally {
+      setIsAdding(false);
     }
-    showToast(`${product.name} added to cart`, "success");
   };
 
   const handleToggleWishlist = () => {
     toggleItem(product);
     showToast(
-      isWishlisted ? "Removed from favorites" : "Added to favorites",
+      isWishlisted ? "Removed from wishlist" : "Added to wishlist",
       "info"
     );
   };
@@ -78,7 +135,7 @@ export default function ProductDetailPage() {
           <div className="grid lg:grid-cols-2 gap-8 lg:gap-16">
             <div className="space-y-4">
               <div 
-                className="relative aspect-square rounded-2xl overflow-hidden bg-gray-100 cursor-zoom-in"
+                className={`relative aspect-square rounded-2xl overflow-hidden bg-gray-100 cursor-zoom-in ${isOutOfStock ? "grayscale opacity-75" : ""}`}
                 onClick={() => setIsZoomed(!isZoomed)}
                 onMouseMove={handleMouseMove}
                 onMouseLeave={() => setZoomPosition({ x: 50, y: 50 })}
@@ -112,6 +169,15 @@ export default function ProductDetailPage() {
                 >
                   <ZoomIn className="w-5 h-5 text-[#6B6B6B]" />
                 </button>
+                
+                {isOutOfStock && (
+                  <div className="absolute inset-0 flex items-center justify-center bg-black/50">
+                    <div className="bg-white px-6 py-3 rounded-xl flex items-center gap-2">
+                      <XCircle className="w-5 h-5 text-red-500" />
+                      <span className="font-medium text-gray-900">Out of Stock</span>
+                    </div>
+                  </div>
+                )}
               </div>
 
               <div className="flex gap-3 overflow-x-auto pb-2">
@@ -143,9 +209,28 @@ export default function ProductDetailPage() {
               transition={{ duration: 0.5 }}
               className="flex flex-col"
             >
-              <span className="text-sm font-medium text-[#C9A96E] uppercase tracking-wider mb-2">
-                {product.category}
-              </span>
+              <div className="flex items-center gap-2 mb-2">
+                <span className="text-sm font-medium text-[#C9A96E] uppercase tracking-wider">
+                  {product.category}
+                </span>
+                <span className={`px-2 py-0.5 text-xs font-medium rounded-full flex items-center gap-1 ${
+                  isOutOfStock 
+                    ? "bg-red-100 text-red-600" 
+                    : "bg-green-100 text-green-600"
+                }`}>
+                  {isOutOfStock ? (
+                    <>
+                      <XCircle className="w-3 h-3" />
+                      Out of Stock
+                    </>
+                  ) : (
+                    <>
+                      <CheckCircle2 className="w-3 h-3" />
+                      In Stock
+                    </>
+                  )}
+                </span>
+              </div>
               
               <h1 className="font-serif text-3xl md:text-4xl font-bold text-[#1A1A1A] mb-4">
                 {product.name}
@@ -163,9 +248,12 @@ export default function ProductDetailPage() {
                 <span className="text-sm text-[#6B6B6B]">(128 reviews)</span>
               </div>
 
-              <p className="text-3xl font-bold text-[#1A1A1A] mb-6">
-                ${product.price.toLocaleString()}
+              <p className="text-3xl font-bold text-[#1A1A1A] mb-2">
+                ₹{product.price.toLocaleString("en-IN")}
               </p>
+              {isOutOfStock && (
+                <p className="text-sm text-red-500 mb-4">This item is currently unavailable</p>
+              )}
 
               <p className="text-[#6B6B6B] leading-relaxed mb-8">
                 {product.description}
@@ -193,41 +281,72 @@ export default function ProductDetailPage() {
                 </ul>
               </div>
 
-              <div className="flex items-center gap-4 mb-8">
-                <span className="text-sm font-medium text-[#1A1A1A]">Quantity:</span>
-                <div className="flex items-center border border-black/10 rounded-full">
-                  <button
-                    onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                    className="p-3 hover:bg-gray-100 rounded-l-full transition-colors"
-                    aria-label="Decrease quantity"
-                  >
-                    <Minus className="w-4 h-4" />
-                  </button>
-                  <span className="w-12 text-center font-medium">{quantity}</span>
-                  <button
-                    onClick={() => setQuantity(quantity + 1)}
-                    className="p-3 hover:bg-gray-100 rounded-r-full transition-colors"
-                    aria-label="Increase quantity"
-                  >
-                    <Plus className="w-4 h-4" />
-                  </button>
+              {!isOutOfStock && (
+                <div className="flex items-center gap-4 mb-8">
+                  <span className="text-sm font-medium text-[#1A1A1A]">Quantity:</span>
+                  <div className="flex items-center border border-black/10 rounded-full">
+                    <button
+                      onClick={() => setQuantity(Math.max(1, quantity - 1))}
+                      className="p-3 hover:bg-gray-100 rounded-l-full transition-colors"
+                      aria-label="Decrease quantity"
+                    >
+                      <Minus className="w-4 h-4" />
+                    </button>
+                    <span className="w-12 text-center font-medium">{quantity}</span>
+                    <button
+                      onClick={() => setQuantity(quantity + 1)}
+                      className="p-3 hover:bg-gray-100 rounded-r-full transition-colors"
+                      aria-label="Increase quantity"
+                    >
+                      <Plus className="w-4 h-4" />
+                    </button>
+                  </div>
                 </div>
-              </div>
+              )}
 
               <div className="flex flex-col sm:flex-row gap-4 mb-8">
-                <button
-                  onClick={handleAddToCart}
-                  className="flex-1 flex items-center justify-center gap-2 px-6 py-4 bg-[#1A1A1A] text-white font-medium rounded-full hover:bg-[#2C2C2C] transition-colors focus:outline-none focus:ring-2 focus:ring-[#C9A96E] focus:ring-offset-2"
-                >
-                  <ShoppingCart className="w-5 h-5" />
-                  Add to Cart
-                </button>
+                {isOutOfStock ? (
+                  <button
+                    disabled
+                    className="flex-1 flex items-center justify-center gap-2 px-6 py-4 font-medium rounded-full bg-gray-200 text-gray-500 cursor-not-allowed"
+                  >
+                    <XCircle className="w-5 h-5" />
+                    Out of Stock
+                  </button>
+                ) : (
+                  <button
+                    onClick={handleAddToCart}
+                    disabled={isAdding}
+                    className={`flex-1 flex items-center justify-center gap-2 px-6 py-4 font-medium rounded-full transition-all focus:outline-none focus:ring-2 focus:ring-[#C9A96E] focus:ring-offset-2 disabled:cursor-not-allowed ${
+                      isInCart
+                        ? "bg-green-500 text-white hover:bg-green-600"
+                        : "bg-[#1A1A1A] text-white hover:bg-[#2C2C2C]"
+                    }`}
+                  >
+                    {isAdding ? (
+                      <>
+                        <Loader2 className="w-5 h-5 animate-spin" />
+                        Adding...
+                      </>
+                    ) : isInCart ? (
+                      <>
+                        <Check className="w-5 h-5" />
+                        Added to Cart {cartItem && cartItem.quantity > 1 && `(${cartItem.quantity})`}
+                      </>
+                    ) : (
+                      <>
+                        <ShoppingCart className="w-5 h-5" />
+                        Add to Cart
+                      </>
+                    )}
+                  </button>
+                )}
                 <button
                   onClick={handleToggleWishlist}
                   className={`p-4 rounded-full border-2 transition-colors focus:outline-none focus:ring-2 focus:ring-[#C9A96E] focus:ring-offset-2 ${
                     isWishlisted
-                      ? "border-[#C9A96E] text-[#C9A96E] bg-[#C9A96E]/10"
-                      : "border-black/10 hover:border-[#1A1A1A]"
+                      ? "border-red-500 text-red-500 bg-red-50"
+                      : "border-black/10 hover:border-red-500 hover:text-red-500"
                   }`}
                   aria-label={isWishlisted ? "Remove from wishlist" : "Add to wishlist"}
                 >
@@ -240,7 +359,7 @@ export default function ProductDetailPage() {
                   <Truck className="w-5 h-5 text-[#C9A96E]" />
                   <div>
                     <p className="text-sm font-medium text-[#1A1A1A]">Free Delivery</p>
-                    <p className="text-xs text-[#6B6B6B]">Orders over $999</p>
+                    <p className="text-xs text-[#6B6B6B]">Orders over ₹15,000</p>
                   </div>
                 </div>
                 <div className="flex items-center gap-3">

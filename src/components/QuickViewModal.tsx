@@ -1,10 +1,10 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, ShoppingCart, Heart, Star } from "lucide-react";
+import { X, ShoppingCart, Heart, Star, Check, Loader2 } from "lucide-react";
 import type { Product } from "@/lib/data";
 import { useCart } from "./CartContext";
 import { useWishlist } from "./WishlistContext";
@@ -16,7 +16,8 @@ interface QuickViewModalProps {
 }
 
 export default function QuickViewModal({ product, onClose }: QuickViewModalProps) {
-  const { addItem: addToCart } = useCart();
+  const [isAdding, setIsAdding] = useState(false);
+  const { addItem: addToCart, items } = useCart();
   const { isInWishlist, toggleItem } = useWishlist();
   const { showToast } = useToast();
 
@@ -44,17 +45,28 @@ export default function QuickViewModal({ product, onClose }: QuickViewModalProps
   if (!product) return null;
 
   const isWishlisted = isInWishlist(product.id);
+  const isInCart = items.some((item) => item.product_id === product.id);
 
-  const handleAddToCart = () => {
-    addToCart(product);
-    showToast(`${product.name} added to cart`, "success");
-    onClose();
+  const handleAddToCart = async () => {
+    if (isAdding) return;
+    
+    setIsAdding(true);
+    
+    try {
+      addToCart(product);
+      showToast(`${product.name} added to cart`, "success");
+      onClose();
+    } catch {
+      showToast("Failed to add to cart", "error");
+    } finally {
+      setIsAdding(false);
+    }
   };
 
   const handleToggleWishlist = () => {
     toggleItem(product);
     showToast(
-      isWishlisted ? "Removed from favorites" : "Added to favorites",
+      isWishlisted ? "Removed from wishlist" : "Added to wishlist",
       "info"
     );
   };
@@ -124,7 +136,7 @@ export default function QuickViewModal({ product, onClose }: QuickViewModalProps
                 </div>
 
                 <p className="text-2xl font-bold text-[#1A1A1A] mb-4">
-                  ${product.price.toLocaleString()}
+                  ₹{product.price.toLocaleString("en-IN")}
                 </p>
 
                 <p className="text-[#6B6B6B] leading-relaxed mb-6 flex-1">
@@ -134,17 +146,36 @@ export default function QuickViewModal({ product, onClose }: QuickViewModalProps
                 <div className="flex flex-col sm:flex-row gap-3">
                   <button
                     onClick={handleAddToCart}
-                    className="flex-1 flex items-center justify-center gap-2 px-6 py-3 bg-[#1A1A1A] text-white font-medium rounded-full hover:bg-[#2C2C2C] transition-colors focus:outline-none focus:ring-2 focus:ring-[#C9A96E] focus:ring-offset-2"
+                    disabled={isAdding}
+                    className={`flex-1 flex items-center justify-center gap-2 px-6 py-3 font-medium rounded-full transition-all focus:outline-none focus:ring-2 focus:ring-[#C9A96E] focus:ring-offset-2 disabled:cursor-not-allowed ${
+                      isInCart
+                        ? "bg-green-500 text-white hover:bg-green-600"
+                        : "bg-[#1A1A1A] text-white hover:bg-[#2C2C2C]"
+                    }`}
                   >
-                    <ShoppingCart className="w-5 h-5" />
-                    Add to Cart
+                    {isAdding ? (
+                      <>
+                        <Loader2 className="w-5 h-5 animate-spin" />
+                        Adding...
+                      </>
+                    ) : isInCart ? (
+                      <>
+                        <Check className="w-5 h-5" />
+                        Added
+                      </>
+                    ) : (
+                      <>
+                        <ShoppingCart className="w-5 h-5" />
+                        Add to Cart
+                      </>
+                    )}
                   </button>
                   <button
                     onClick={handleToggleWishlist}
                     className={`p-3 rounded-full border-2 transition-colors focus:outline-none focus:ring-2 focus:ring-[#C9A96E] focus:ring-offset-2 ${
                       isWishlisted
-                        ? "border-[#C9A96E] text-[#C9A96E] bg-[#C9A96E]/10"
-                        : "border-black/10 hover:border-[#1A1A1A]"
+                        ? "border-red-500 text-red-500 bg-red-50"
+                        : "border-black/10 hover:border-red-500 hover:text-red-500"
                     }`}
                     aria-label={isWishlisted ? "Remove from wishlist" : "Add to wishlist"}
                   >

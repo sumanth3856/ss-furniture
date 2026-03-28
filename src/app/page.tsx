@@ -9,6 +9,7 @@ import ProductCard from "@/components/ProductCard";
 import Testimonials from "@/components/Testimonials";
 import FAQ from "@/components/FAQ";
 import { products } from "@/lib/data";
+import { siteConfig } from "@/lib/config";
 
 const categories = [
   { name: "Sofas", icon: Sofa, image: "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=800&q=80", count: 12 },
@@ -229,9 +230,9 @@ export default function HomePage() {
 
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {[
-              { icon: MapPin, title: "Address", lines: ["MG Road, Near Benz Circle", "Vijayawada, AP 520010"] },
-              { icon: Phone, title: "Phone", lines: ["+91 98765 43210", "Mon-Sat: 10AM - 8PM"] },
-              { icon: Mail, title: "Email", lines: ["hello@ssfurniture.in", "Reply within 24h"] },
+              { icon: MapPin, title: "Address", lines: [siteConfig.address.street, `${siteConfig.address.city}, ${siteConfig.address.region} ${siteConfig.address.postalCode}`] },
+              { icon: Phone, title: "Phone", lines: [siteConfig.contact.phone, "Mon-Sat: 10AM - 8PM"] },
+              { icon: Mail, title: "Email", lines: [siteConfig.contact.email, "Reply within 24h"] },
               { icon: Clock, title: "Hours", lines: ["Mon-Sat: 10AM - 8PM", "Sunday: 11AM - 6PM"] },
             ].map((item, i) => (
               <motion.div key={item.title} initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.05 }} className="bg-white rounded-xl p-4 shadow-sm border border-black/5">
@@ -317,9 +318,9 @@ export default function HomePage() {
             <div>
               <h4 className="font-semibold text-white mb-3">Contact</h4>
               <ul className="space-y-2 text-sm text-white/50">
-                <li className="flex items-start gap-2"><MapPin className="w-4 h-4 mt-0.5 shrink-0" /><span>MG Road, Near Benz Circle, Vijayawada, AP 520010</span></li>
-                <li className="flex items-center gap-2"><Phone className="w-4 h-4 shrink-0" /><span>+91 98765 43210</span></li>
-                <li className="flex items-center gap-2"><Mail className="w-4 h-4 shrink-0" /><span>hello@ssfurniture.in</span></li>
+                <li className="flex items-start gap-2"><MapPin className="w-4 h-4 mt-0.5 shrink-0" /><span>{siteConfig.address.street}, {siteConfig.address.city}, {siteConfig.address.region} {siteConfig.address.postalCode}</span></li>
+                <li className="flex items-center gap-2"><Phone className="w-4 h-4 shrink-0" /><span>{siteConfig.contact.phone}</span></li>
+                <li className="flex items-center gap-2"><Mail className="w-4 h-4 shrink-0" /><span>{siteConfig.contact.email}</span></li>
               </ul>
             </div>
           </div>

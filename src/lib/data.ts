@@ -5,6 +5,7 @@ export interface Product {
   price: number;
   image: string;
   description: string;
+  in_stock?: boolean;
 }
 
 export const products: Product[] = [

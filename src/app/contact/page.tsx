@@ -3,9 +3,9 @@
 import { useState, useRef } from "react";
 import { motion } from "framer-motion";
 import { MapPin, Phone, Mail, Clock, Send, CheckCircle, AlertCircle } from "lucide-react";
-import SectionHeading from "@/components/SectionHeading";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import { useToast } from "@/components/Toast";
+import { siteConfig } from "@/lib/config";
 
 interface FormErrors {
   name?: string;
@@ -113,7 +113,7 @@ export default function ContactPage() {
               Get in Touch
             </span>
             <h1 className="font-serif text-3xl md:text-5xl font-bold text-[#1A1A1A] mb-4">
-              We'd Love to Hear From You
+              We&apos;d Love to Hear From You
             </h1>
             <p className="text-base text-[#6B6B6B] leading-relaxed">
               Have a question about our products? Need design advice? 
@@ -394,10 +394,10 @@ export default function ContactPage() {
                   <div>
                     <h3 className="font-semibold text-[#1A1A1A] mb-1 text-sm">Email Us</h3>
                     <a 
-                      href="mailto:hello@ssfurniture.in" 
+                      href={`mailto:${siteConfig.contact.email}`}
                       className="text-[#6B6B6B] hover:text-[#C9A96E] transition-colors text-sm"
                     >
-                      hello@ssfurniture.in
+                      {siteConfig.contact.email}
                     </a>
                     <p className="text-xs text-[#6B6B6B]">We reply within 24 hours</p>
                   </div>

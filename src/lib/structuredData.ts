@@ -1,4 +1,5 @@
 import { products } from "@/lib/data";
+import { siteConfig } from "@/lib/config";
 
 export function generateProductStructuredData() {
   return products.slice(0, 6).map((product) => ({
@@ -25,28 +26,28 @@ export function generateOrganizationStructuredData() {
   return {
     "@context": "https://schema.org",
     "@type": "Organization",
-    name: "SS Furniture",
-    url: "https://ssfurniture.in",
-    logo: "https://ssfurniture.in/logo.svg",
-    description: "Premium furniture crafted with passion for modern living. Showroom located in Vijayawada, Andhra Pradesh.",
+    name: siteConfig.name,
+    url: siteConfig.url,
+    logo: `${siteConfig.url}/logo.svg`,
+    description: siteConfig.description,
     address: {
       "@type": "PostalAddress",
-      streetAddress: "MG Road, Near Benz Circle",
-      addressLocality: "Vijayawada",
-      addressRegion: "Andhra Pradesh",
-      postalCode: "520010",
-      addressCountry: "IN",
+      streetAddress: siteConfig.address.street,
+      addressLocality: siteConfig.address.city,
+      addressRegion: siteConfig.address.region,
+      postalCode: siteConfig.address.postalCode,
+      addressCountry: siteConfig.address.country,
     },
     contactPoint: {
       "@type": "ContactPoint",
-      telephone: "+91-98765-43210",
+      telephone: siteConfig.contact.phone,
       contactType: "customer service",
       availableLanguage: ["English", "Telugu", "Hindi"],
     },
     sameAs: [
-      "https://facebook.com/ssfurniture",
-      "https://instagram.com/ssfurniture",
-      "https://pinterest.com/ssfurniture",
+      siteConfig.social.facebook,
+      siteConfig.social.instagram,
+      siteConfig.social.pinterest,
     ],
   };
 }
@@ -55,14 +56,14 @@ export function generateWebSiteStructuredData() {
   return {
     "@context": "https://schema.org",
     "@type": "WebSite",
-    name: "SS Furniture",
-    url: "https://ssfurniture.in",
-    description: "Premium furniture crafted with passion for modern living.",
+    name: siteConfig.name,
+    url: siteConfig.url,
+    description: siteConfig.description,
     potentialAction: {
       "@type": "SearchAction",
       target: {
         "@type": "EntryPoint",
-        urlTemplate: "https://ssfurniture.in/products?search={search_term_string}",
+        urlTemplate: `${siteConfig.url}/products?search={search_term_string}`,
       },
       "query-input": "required name=search_term_string",
     },

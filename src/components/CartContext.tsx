@@ -1,20 +1,34 @@
 "use client";
 
-import { createContext, useContext, useState, useEffect, useCallback, ReactNode } from "react";
+import {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  useCallback,
+  ReactNode,
+} from "react";
 import type { Product } from "@/lib/data";
+import { api } from "@/lib/api";
 
-interface CartItem extends Product {
+interface CartItem {
+  id: string;
+  product_id: number;
   quantity: number;
+  products: Product;
 }
 
 interface CartContextType {
   items: CartItem[];
-  addItem: (product: Product) => void;
-  removeItem: (id: number) => void;
-  updateQuantity: (id: number, quantity: number) => void;
-  clearCart: () => void;
+  addItem: (product: Product, quantity?: number) => Promise<void>;
+  removeItem: (id: string) => Promise<void>;
+  updateQuantity: (id: string, quantity: number) => Promise<void>;
+  clearCart: () => Promise<void>;
   itemCount: number;
   subtotal: number;
+  isLoading: boolean;
+  isHydrated: boolean;
+  refreshCart: () => Promise<void>;
 }
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
@@ -27,65 +41,96 @@ export function useCart() {
   return context;
 }
 
-const STORAGE_KEY = "ss-furniture-cart";
-
 export function CartProvider({ children }: { children: ReactNode }) {
   const [items, setItems] = useState<CartItem[]>([]);
   const [isHydrated, setIsHydrated] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+
+  const refreshCart = useCallback(async () => {
+    try {
+      const { items: cartItems } = await api.cart.get();
+      setItems(cartItems || []);
+    } catch (error) {
+      console.error("Failed to fetch cart:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  }, []);
 
   useEffect(() => {
-    const stored = localStorage.getItem(STORAGE_KEY);
-    if (stored) {
+    const initCart = async () => {
+      await refreshCart();
+      setIsHydrated(true);
+    };
+    initCart();
+  }, [refreshCart]);
+
+  const addItem = useCallback(
+    async (product: Product, quantity = 1) => {
       try {
-        setItems(JSON.parse(stored));
-      } catch {
-        setItems([]);
+        await api.cart.add(product.id, quantity);
+        await refreshCart();
+      } catch (error) {
+        console.error("Failed to add to cart:", error);
+        throw error;
       }
+    },
+    [refreshCart]
+  );
+
+  const removeItem = useCallback(async (id: string) => {
+    try {
+      await api.cart.remove(id);
+      setItems((prev) => prev.filter((item) => item.id !== id));
+    } catch (error) {
+      console.error("Failed to remove from cart:", error);
+      throw error;
     }
-    setIsHydrated(true);
   }, []);
 
-  useEffect(() => {
-    if (isHydrated) {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
-    }
-  }, [items, isHydrated]);
-
-  const addItem = useCallback((product: Product) => {
-    setItems((prev) => {
-      const existing = prev.find((item) => item.id === product.id);
-      if (existing) {
-        return prev.map((item) =>
-          item.id === product.id
-            ? { ...item, quantity: item.quantity + 1 }
-            : item
-        );
-      }
-      return [...prev, { ...product, quantity: 1 }];
-    });
-  }, []);
-
-  const removeItem = useCallback((id: number) => {
-    setItems((prev) => prev.filter((item) => item.id !== id));
-  }, []);
-
-  const updateQuantity = useCallback((id: number, quantity: number) => {
+  const updateQuantity = useCallback(async (id: string, quantity: number) => {
     if (quantity < 1) return;
-    setItems((prev) =>
-      prev.map((item) => (item.id === id ? { ...item, quantity } : item))
-    );
+    try {
+      await api.cart.update(id, quantity);
+      setItems((prev) =>
+        prev.map((item) => (item.id === id ? { ...item, quantity } : item))
+      );
+    } catch (error) {
+      console.error("Failed to update quantity:", error);
+      throw error;
+    }
   }, []);
 
-  const clearCart = useCallback(() => {
-    setItems([]);
+  const clearCart = useCallback(async () => {
+    try {
+      await api.cart.clear();
+      setItems([]);
+    } catch (error) {
+      console.error("Failed to clear cart:", error);
+      throw error;
+    }
   }, []);
 
   const itemCount = items.reduce((sum, item) => sum + item.quantity, 0);
-  const subtotal = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
+  const subtotal = items.reduce(
+    (sum, item) => sum + item.products.price * item.quantity,
+    0
+  );
 
   return (
     <CartContext.Provider
-      value={{ items, addItem, removeItem, updateQuantity, clearCart, itemCount, subtotal }}
+      value={{
+        items,
+        addItem,
+        removeItem,
+        updateQuantity,
+        clearCart,
+        itemCount,
+        subtotal,
+        isLoading,
+        isHydrated,
+        refreshCart,
+      }}
     >
       {children}
     </CartContext.Provider>

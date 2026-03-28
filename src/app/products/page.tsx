@@ -1,25 +1,55 @@
 "use client";
 
-import { useState, useMemo, useCallback } from "react";
+import { useState, useMemo, useCallback, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Search, SlidersHorizontal, X, ChevronDown, ChevronUp } from "lucide-react";
+import { Search, SlidersHorizontal, X, Package, AlertCircle, CheckCircle, XCircle } from "lucide-react";
 import ProductCard from "@/components/ProductCard";
 import { ProductCardSkeleton } from "@/components/Skeleton";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import QuickViewModal from "@/components/QuickViewModal";
-import { products, categories } from "@/lib/data";
-import type { Product } from "@/lib/data";
+import { api } from "@/lib/api";
+import { products as staticProducts, type Product } from "@/lib/data";
 
 type SortOption = "featured" | "price-low" | "price-high" | "name";
+type StockFilter = "all" | "in-stock" | "out-of-stock";
+
+const categories = ["All", "Sofas", "Tables", "Chairs", "Bedroom", "Lighting"];
 
 export default function ProductsPage() {
+  const [products, setProducts] = useState<Product[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [searchQuery, setSearchQuery] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
   const [sortBy, setSortBy] = useState<SortOption>("featured");
-  const [priceRange, setPriceRange] = useState<[number, number]>([0, 250000]);
+  const [priceRange, setPriceRange] = useState<[number, number]>([0, 300000]);
   const [showFilters, setShowFilters] = useState(false);
   const [quickViewProduct, setQuickViewProduct] = useState<Product | null>(null);
+  const [stockFilter, setStockFilter] = useState<StockFilter>("all");
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      setIsLoading(true);
+      try {
+        const data = await api.products.getAll();
+        if (data && data.length > 0) {
+          setProducts(data);
+        } else {
+          setProducts(staticProducts);
+        }
+      } catch {
+        setProducts(staticProducts);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    fetchProducts();
+  }, []);
+
+  const stockStats = useMemo(() => {
+    const inStock = products.filter(p => p.in_stock !== false).length;
+    const outOfStock = products.filter(p => p.in_stock === false).length;
+    return { inStock, outOfStock, total: products.length };
+  }, [products]);
 
   const filteredProducts = useMemo(() => {
     let filtered = products.filter((product) => {
@@ -29,7 +59,11 @@ export default function ProductsPage() {
         product.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
         product.category.toLowerCase().includes(searchQuery.toLowerCase());
       const matchesPrice = product.price >= priceRange[0] && product.price <= priceRange[1];
-      return matchesCategory && matchesSearch && matchesPrice;
+      const matchesStock = 
+        stockFilter === "all" ||
+        (stockFilter === "in-stock" && product.in_stock !== false) ||
+        (stockFilter === "out-of-stock" && product.in_stock === false);
+      return matchesCategory && matchesSearch && matchesPrice && matchesStock;
     });
 
     switch (sortBy) {
@@ -45,36 +79,25 @@ export default function ProductsPage() {
     }
 
     return filtered;
-  }, [selectedCategory, searchQuery, sortBy, priceRange]);
+  }, [products, selectedCategory, searchQuery, sortBy, priceRange, stockFilter]);
 
   const handleCategoryChange = useCallback((category: string) => {
-    setIsLoading(true);
-    setTimeout(() => {
-      setSelectedCategory(category);
-      setIsLoading(false);
-    }, 300);
+    setSelectedCategory(category);
   }, []);
 
   const handleSearch = useCallback((value: string) => {
-    setIsLoading(true);
-    setTimeout(() => {
-      setSearchQuery(value);
-      setIsLoading(false);
-    }, 300);
+    setSearchQuery(value);
   }, []);
 
   const clearFilters = useCallback(() => {
-    setIsLoading(true);
-    setTimeout(() => {
-      setSelectedCategory("All");
-      setSearchQuery("");
-      setSortBy("featured");
-      setPriceRange([0, 250000]);
-      setIsLoading(false);
-    }, 300);
+    setSelectedCategory("All");
+    setSearchQuery("");
+    setSortBy("featured");
+    setPriceRange([0, 300000]);
+    setStockFilter("all");
   }, []);
 
-  const hasActiveFilters = selectedCategory !== "All" || searchQuery !== "" || sortBy !== "featured" || priceRange[0] > 0 || priceRange[1] < 5000;
+  const hasActiveFilters = selectedCategory !== "All" || searchQuery !== "" || sortBy !== "featured" || priceRange[0] > 0 || priceRange[1] < 300000 || stockFilter !== "all";
 
   return (
     <div className="min-h-screen">
@@ -129,13 +152,7 @@ export default function ProductsPage() {
               <div className="flex items-center gap-3">
                 <select
                   value={sortBy}
-                  onChange={(e) => {
-                    setIsLoading(true);
-                    setTimeout(() => {
-                      setSortBy(e.target.value as SortOption);
-                      setIsLoading(false);
-                    }, 300);
-                  }}
+                  onChange={(e) => setSortBy(e.target.value as SortOption)}
                   className="px-4 py-2.5 rounded-full border border-black/10 bg-white focus:outline-none focus:border-[#C9A96E] transition-colors cursor-pointer"
                   aria-label="Sort products"
                 >
@@ -177,6 +194,52 @@ export default function ProductsPage() {
               ))}
             </div>
 
+            <div className="mt-4 p-4 bg-white rounded-2xl border border-black/5">
+              <div className="flex items-center justify-between mb-3">
+                <h3 className="font-semibold text-[#1A1A1A]">Availability</h3>
+                {stockStats.outOfStock > 0 && (
+                  <span className="text-xs text-red-500 flex items-center gap-1">
+                    <AlertCircle className="w-3 h-3" />
+                    {stockStats.outOfStock} unavailable
+                  </span>
+                )}
+              </div>
+              <div className="flex flex-wrap gap-2">
+                <button
+                  onClick={() => setStockFilter("all")}
+                  className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
+                    stockFilter === "all"
+                      ? "bg-[#1A1A1A] text-white"
+                      : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+                  }`}
+                >
+                  All ({stockStats.total})
+                </button>
+                <button
+                  onClick={() => setStockFilter("in-stock")}
+                  className={`px-4 py-2 rounded-full text-sm font-medium transition-all flex items-center gap-1.5 ${
+                    stockFilter === "in-stock"
+                      ? "bg-green-600 text-white"
+                      : "bg-green-50 text-green-700 hover:bg-green-100"
+                  }`}
+                >
+                  <Package className="w-3.5 h-3.5" />
+                  In Stock ({stockStats.inStock})
+                </button>
+                <button
+                  onClick={() => setStockFilter("out-of-stock")}
+                  className={`px-4 py-2 rounded-full text-sm font-medium transition-all flex items-center gap-1.5 ${
+                    stockFilter === "out-of-stock"
+                      ? "bg-red-600 text-white"
+                      : "bg-red-50 text-red-700 hover:bg-red-100"
+                  }`}
+                >
+                  <XCircle className="w-3.5 h-3.5" />
+                  Out of Stock ({stockStats.outOfStock})
+                </button>
+              </div>
+            </div>
+
             <AnimatePresence>
               {showFilters && (
                 <motion.div
@@ -191,16 +254,16 @@ export default function ProductsPage() {
                       <input
                         type="range"
                         min="0"
-                        max="250000"
-                        step="5000"
+                        max="300000"
+                        step="10000"
                         value={priceRange[1]}
                         onChange={(e) => setPriceRange([priceRange[0], Number(e.target.value)])}
                         className="w-full accent-[#C9A96E]"
                         aria-label="Maximum price"
                       />
                       <div className="flex items-center justify-between text-sm text-[#6B6B6B]">
-                        <span>₹{priceRange[0].toLocaleString('en-IN')}</span>
-                        <span>₹{priceRange[1].toLocaleString('en-IN')}</span>
+                        <span>₹{priceRange[0].toLocaleString("en-IN")}</span>
+                        <span>₹{priceRange[1].toLocaleString("en-IN")}</span>
                       </div>
                     </div>
                   </div>
@@ -214,16 +277,16 @@ export default function ProductsPage() {
                 <input
                   type="range"
                   min="0"
-                  max="250000"
-                  step="5000"
+                  max="300000"
+                  step="10000"
                   value={priceRange[1]}
                   onChange={(e) => setPriceRange([priceRange[0], Number(e.target.value)])}
                   className="w-full accent-[#C9A96E]"
                   aria-label="Maximum price"
                 />
                 <div className="flex items-center justify-between text-sm text-[#6B6B6B]">
-                  <span>₹{priceRange[0].toLocaleString('en-IN')}</span>
-                  <span>₹{priceRange[1].toLocaleString('en-IN')}</span>
+                  <span>₹{priceRange[0].toLocaleString("en-IN")}</span>
+                  <span>₹{priceRange[1].toLocaleString("en-IN")}</span>
                 </div>
               </div>
             </div>
@@ -251,16 +314,32 @@ export default function ProductsPage() {
       <section className="py-8 px-6">
         <div className="max-w-7xl mx-auto">
           <div className="flex items-center justify-between mb-6">
-            <p className="text-sm text-[#6B6B6B]" role="status" aria-live="polite">
-              {isLoading ? (
-                "Filtering..."
-              ) : (
-                <>
-                  Showing <span className="font-medium text-[#1A1A1A]">{filteredProducts.length}</span> product{filteredProducts.length !== 1 ? "s" : ""}
-                  {selectedCategory !== "All" && ` in ${selectedCategory}`}
-                </>
+            <div>
+              <p className="text-sm text-[#6B6B6B]" role="status" aria-live="polite">
+                {isLoading ? (
+                  "Loading..."
+                ) : (
+                  <>
+                    Showing <span className="font-medium text-[#1A1A1A]">{filteredProducts.length}</span> of {products.length} products
+                    {selectedCategory !== "All" && ` in ${selectedCategory}`}
+                  </>
+                )}
+              </p>
+              {!isLoading && (
+                <div className="flex items-center gap-3 mt-1">
+                  <span className="text-xs text-green-600 flex items-center gap-1">
+                    <CheckCircle className="w-3 h-3" />
+                    {stockStats.inStock} in stock
+                  </span>
+                  {stockStats.outOfStock > 0 && (
+                    <span className="text-xs text-red-500 flex items-center gap-1">
+                      <XCircle className="w-3 h-3" />
+                      {stockStats.outOfStock} unavailable
+                    </span>
+                  )}
+                </div>
               )}
-            </p>
+            </div>
           </div>
 
           <AnimatePresence mode="wait">
