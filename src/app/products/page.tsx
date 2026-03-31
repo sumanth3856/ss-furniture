@@ -2,7 +2,7 @@
 
 import { useState, useMemo, useCallback, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Search, X, ChevronLeft, ChevronRight, Grid3X3, Grid2X2, MessageCircle, ArrowUpDown, Check, Command, SlidersHorizontal, Zap, ArrowRight, RotateCcw, LayoutGrid, TrendingUp, ArrowDown, ArrowUp, DollarSign } from "lucide-react";
+import { Search, X, ChevronLeft, ChevronRight, Grid3X3, Grid2X2, MessageCircle, ArrowUpDown, Check, Command, SlidersHorizontal, Zap, ArrowRight, RotateCcw, LayoutGrid, TrendingUp, ArrowDown, ArrowUp, DollarSign, Package, Sofa, Armchair, BedDouble, Lamp, Table2 } from "lucide-react";
 import ProductCard from "@/components/ProductCard";
 import { ProductCardSkeleton } from "@/components/Skeleton";
 import Breadcrumbs from "@/components/Breadcrumbs";
@@ -14,12 +14,12 @@ type SortOption = "featured" | "price-low" | "price-high" | "name";
 type GridSize = 2 | 3 | 4;
 
 const categories = [
-  { id: "All", label: "All", icon: "✨" },
-  { id: "Sofas", label: "Sofas", icon: "🛋️" },
-  { id: "Tables", label: "Tables", icon: "🪑" },
-  { id: "Chairs", label: "Chairs", icon: "💺" },
-  { id: "Bedroom", label: "Bedroom", icon: "🛏️" },
-  { id: "Lighting", label: "Lighting", icon: "💡" },
+  { id: "All", label: "All", icon: Package },
+  { id: "Sofas", label: "Sofas", icon: Sofa },
+  { id: "Tables", label: "Tables", icon: Table2 },
+  { id: "Chairs", label: "Chairs", icon: Armchair },
+  { id: "Bedroom", label: "Bedroom", icon: BedDouble },
+  { id: "Lighting", label: "Lighting", icon: Lamp },
 ];
 
 const PRODUCTS_PER_PAGE = 12;
@@ -261,7 +261,7 @@ export default function ProductsPage() {
                       : 'bg-white text-gray-600 border border-gray-200 hover:border-gray-900 hover:text-gray-900'
                   }`}
                 >
-                  <span className="mr-1.5">{category.icon}</span>
+                  <span className="mr-1.5"><category.icon className="w-4 h-4" /></span>
                   {category.label}
                   {selectedCategory === category.id && (
                     <motion.div
