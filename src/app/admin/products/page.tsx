@@ -582,76 +582,134 @@ export default function AdminProductsPage() {
             ))}
           </div>
         ) : (
-          <div className="overflow-x-auto">
-            <table className="w-full">
-              <thead className="bg-gradient-to-r from-slate-50 to-slate-100/50">
-                <tr>
-                  <th className="px-6 py-4 text-left text-xs font-bold text-slate-600 uppercase tracking-wider">Product</th>
-                  <th className="px-6 py-4 text-left text-xs font-bold text-slate-600 uppercase tracking-wider">Category</th>
-                  <th className="px-6 py-4 text-left text-xs font-bold text-slate-600 uppercase tracking-wider">Price</th>
-                  <th className="px-6 py-4 text-left text-xs font-bold text-slate-600 uppercase tracking-wider">Stock</th>
-                  <th className="px-6 py-4 text-right text-xs font-bold text-slate-600 uppercase tracking-wider">Actions</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-slate-100">
-                {filteredProducts.map((product) => (
-                  <tr key={product.id} className="hover:bg-gradient-to-r hover:from-purple-50/50 hover:to-indigo-50/50 transition-all">
-                    <td className="px-6 py-4">
-                      <div className="flex items-center gap-4">
-                        <div className="relative w-14 h-14 rounded-xl overflow-hidden bg-gradient-to-br from-slate-100 to-slate-200 flex-shrink-0 shadow-inner">
-                          {product.image ? (
-                            <Image src={product.image} alt={product.name} fill className="object-cover" />
-                          ) : (
-                            <div className="flex items-center justify-center w-full h-full">
-                              <ImageIcon className="w-6 h-6 text-slate-400" />
-                            </div>
-                          )}
-                        </div>
-                        <div>
-                          <p className="font-bold text-slate-900">{product.name}</p>
-                          <p className="text-sm text-slate-500 line-clamp-1 max-w-xs">{product.description || "No description"}</p>
-                        </div>
-                      </div>
-                    </td>
-                    <td className="px-6 py-4">
-                      <span className="px-3 py-1.5 bg-gradient-to-r from-amber-100 to-orange-100 text-amber-800 rounded-lg text-sm font-bold border border-amber-200/50">
-                        {product.category}
-                      </span>
-                    </td>
-                    <td className="px-6 py-4">
-                      <span className="font-black text-slate-900 text-lg">
-                        ₹{product.price.toLocaleString("en-IN")}
-                      </span>
-                    </td>
-                    <td className="px-6 py-4">
-                      <StockToggle 
-                        inStock={product.in_stock} 
-                        onChange={() => toggleStockStatus(product)}
-                      />
-                    </td>
-                    <td className="px-6 py-4">
-                      <div className="flex items-center justify-end gap-2">
-                        <button
-                          onClick={() => openModal(product)}
-                          className="p-2.5 bg-gradient-to-r from-purple-500 to-indigo-500 text-white rounded-xl hover:shadow-lg hover:shadow-purple-500/30 transition-all"
-                          title="Edit"
-                        >
-                          <Pencil className="w-4 h-4" />
-                        </button>
-                        <button
-                          onClick={() => setDeleteProduct(product)}
-                          className="p-2.5 bg-gradient-to-r from-red-500 to-rose-500 text-white rounded-xl hover:shadow-lg hover:shadow-red-500/30 transition-all"
-                          title="Delete"
-                        >
-                          <Trash2 className="w-4 h-4" />
-                        </button>
-                      </div>
-                    </td>
+          <>
+            <div className="hidden xl:block overflow-x-auto">
+              <table className="w-full min-w-[800px]">
+                <thead className="bg-gradient-to-r from-slate-50 to-slate-100/50">
+                  <tr>
+                    <th className="px-4 lg:px-6 py-3 lg:py-4 text-left text-xs font-bold text-slate-600 uppercase tracking-wider">Product</th>
+                    <th className="px-4 lg:px-6 py-3 lg:py-4 text-left text-xs font-bold text-slate-600 uppercase tracking-wider">Category</th>
+                    <th className="px-4 lg:px-6 py-3 lg:py-4 text-left text-xs font-bold text-slate-600 uppercase tracking-wider">Price</th>
+                    <th className="px-4 lg:px-6 py-3 lg:py-4 text-left text-xs font-bold text-slate-600 uppercase tracking-wider">Stock</th>
+                    <th className="px-4 lg:px-6 py-3 lg:py-4 text-right text-xs font-bold text-slate-600 uppercase tracking-wider">Actions</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+                </thead>
+                <tbody className="divide-y divide-slate-100">
+                  {filteredProducts.map((product) => (
+                    <tr key={product.id} className="hover:bg-gradient-to-r hover:from-purple-50/50 hover:to-indigo-50/50 transition-all">
+                      <td className="px-4 lg:px-6 py-3 lg:py-4">
+                        <div className="flex items-center gap-3 lg:gap-4">
+                          <div className="relative w-12 h-12 lg:w-14 lg:h-14 rounded-lg lg:rounded-xl overflow-hidden bg-gradient-to-br from-slate-100 to-slate-200 flex-shrink-0 shadow-inner">
+                            {product.image ? (
+                              <Image src={product.image} alt={product.name} fill className="object-cover" />
+                            ) : (
+                              <div className="flex items-center justify-center w-full h-full">
+                                <ImageIcon className="w-5 h-5 lg:w-6 lg:h-6 text-slate-400" />
+                              </div>
+                            )}
+                          </div>
+                          <div className="min-w-0">
+                            <p className="font-bold text-slate-900 text-sm lg:text-base truncate max-w-[150px] lg:max-w-none">{product.name}</p>
+                            <p className="text-xs lg:text-sm text-slate-500 line-clamp-1 max-w-[180px] lg:max-w-xs hidden sm:block">{product.description || "No description"}</p>
+                          </div>
+                        </div>
+                      </td>
+                      <td className="px-4 lg:px-6 py-3 lg:py-4">
+                        <span className="px-2 lg:px-3 py-1 lg:py-1.5 bg-gradient-to-r from-amber-100 to-orange-100 text-amber-800 rounded-lg text-xs lg:text-sm font-bold border border-amber-200/50">
+                          {product.category}
+                        </span>
+                      </td>
+                      <td className="px-4 lg:px-6 py-3 lg:py-4">
+                        <span className="font-black text-slate-900 text-base lg:text-lg">
+                          ₹{product.price.toLocaleString("en-IN")}
+                        </span>
+                      </td>
+                      <td className="px-4 lg:px-6 py-3 lg:py-4">
+                        <StockToggle 
+                          inStock={product.in_stock} 
+                          onChange={() => toggleStockStatus(product)}
+                        />
+                      </td>
+                      <td className="px-4 lg:px-6 py-3 lg:py-4">
+                        <div className="flex items-center justify-end gap-1.5 lg:gap-2">
+                          <button
+                            onClick={() => openModal(product)}
+                            className="p-2 lg:p-2.5 bg-gradient-to-r from-purple-500 to-indigo-500 text-white rounded-lg lg:rounded-xl hover:shadow-lg hover:shadow-purple-500/30 transition-all"
+                            title="Edit"
+                          >
+                            <Pencil className="w-3.5 h-3.5 lg:w-4 lg:h-4" />
+                          </button>
+                          <button
+                            onClick={() => setDeleteProduct(product)}
+                            className="p-2 lg:p-2.5 bg-gradient-to-r from-red-500 to-rose-500 text-white rounded-lg lg:rounded-xl hover:shadow-lg hover:shadow-red-500/30 transition-all"
+                            title="Delete"
+                          >
+                            <Trash2 className="w-3.5 h-3.5 lg:w-4 lg:h-4" />
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+
+            <div className="xl:hidden space-y-3 p-3 sm:p-4">
+              {filteredProducts.map((product) => (
+                <motion.div
+                  key={product.id}
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="bg-gradient-to-br from-white to-slate-50 rounded-xl sm:rounded-2xl p-3 sm:p-4 shadow-sm border border-slate-200/80 hover:shadow-md transition-all"
+                >
+                  <div className="flex items-start gap-3 sm:gap-4">
+                    <div className="relative w-16 h-16 sm:w-20 sm:h-20 rounded-xl overflow-hidden bg-gradient-to-br from-slate-100 to-slate-200 flex-shrink-0 shadow-inner">
+                      {product.image ? (
+                        <Image src={product.image} alt={product.name} fill className="object-cover" />
+                      ) : (
+                        <div className="flex items-center justify-center w-full h-full">
+                          <ImageIcon className="w-8 h-8 text-slate-400" />
+                        </div>
+                      )}
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <h3 className="font-bold text-slate-900 text-sm sm:text-base line-clamp-1">{product.name}</h3>
+                      <p className="text-xs sm:text-sm text-slate-500 line-clamp-1 mt-0.5">{product.description || "No description"}</p>
+                      <div className="flex flex-wrap items-center gap-2 mt-2">
+                        <span className="px-2 py-0.5 bg-gradient-to-r from-amber-100 to-orange-100 text-amber-800 rounded-md text-xs font-bold border border-amber-200/50">
+                          {product.category}
+                        </span>
+                        <span className="font-black text-slate-900 text-base sm:text-lg">
+                          ₹{product.price.toLocaleString("en-IN")}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="flex items-center justify-between mt-3 pt-3 border-t border-slate-100">
+                    <StockToggle 
+                      inStock={product.in_stock} 
+                      onChange={() => toggleStockStatus(product)}
+                    />
+                    <div className="flex items-center gap-2">
+                      <button
+                        onClick={() => openModal(product)}
+                        className="flex items-center gap-1.5 px-3 py-2 bg-gradient-to-r from-purple-500 to-indigo-500 text-white rounded-lg text-xs sm:text-sm font-semibold hover:shadow-lg hover:shadow-purple-500/30 transition-all"
+                      >
+                        <Pencil className="w-3.5 h-3.5" />
+                        <span className="hidden sm:inline">Edit</span>
+                      </button>
+                      <button
+                        onClick={() => setDeleteProduct(product)}
+                        className="p-2 bg-gradient-to-r from-red-500 to-rose-500 text-white rounded-lg hover:shadow-lg hover:shadow-red-500/30 transition-all"
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </button>
+                    </div>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </>
         )}
       </div>
 
