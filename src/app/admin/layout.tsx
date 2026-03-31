@@ -158,7 +158,13 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
                 "/admin/products": "bg-emerald-500",
                 "/admin/orders": "bg-amber-500",
               };
+              const borderColors: Record<string, string> = {
+                "/admin": "border-blue-500",
+                "/admin/products": "border-emerald-500",
+                "/admin/orders": "border-amber-500",
+              };
               const iconBg = iconColors[item.href] || "bg-slate-500";
+              const borderColor = borderColors[item.href] || "border-indigo-500";
               return (
                 <motion.div
                   key={item.href}
@@ -169,19 +175,24 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
                   <Link
                     href={item.href}
                     className={`
-                      flex items-center gap-3 px-4 py-3.5 rounded-xl transition-all duration-300
+                      relative flex items-center gap-3 px-4 py-3.5 rounded-xl transition-all duration-300 overflow-hidden
                       ${isActive 
-                        ? "bg-indigo-500 text-white" 
-                        : "text-slate-600 hover:text-slate-900 hover:bg-slate-100"
+                        ? `bg-slate-50 text-slate-900` 
+                        : "text-slate-600 hover:text-slate-900 hover:bg-slate-50"
                       }
                     `}
                   >
-                    <div className={`w-9 h-9 rounded-xl ${iconBg} flex items-center justify-center`}>
+                    {isActive && (
+                      <div className={`absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b ${borderColor} rounded-r-full`} />
+                    )}
+                    <div className={`w-9 h-9 rounded-xl ${iconBg} flex items-center justify-center ${isActive ? "" : "opacity-70"}`}>
                       <Icon className="w-5 h-5 text-white" />
                     </div>
-                    <span className="font-medium">{item.label}</span>
+                    <span className={`font-medium ${isActive ? "font-semibold" : ""}`}>{item.label}</span>
                     {isActive && (
-                      <div className="ml-auto w-2 h-2 bg-white rounded-full" />
+                      <div className="ml-auto">
+                        <div className={`w-2 h-2 rounded-full bg-current opacity-60`} />
+                      </div>
                     )}
                   </Link>
                 </motion.div>
@@ -296,24 +307,38 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
                       "/admin/products": "bg-emerald-500",
                       "/admin/orders": "bg-amber-500",
                     };
+                    const borderColors: Record<string, string> = {
+                      "/admin": "border-blue-500",
+                      "/admin/products": "border-emerald-500",
+                      "/admin/orders": "border-amber-500",
+                    };
                     const iconBg = iconColors[item.href] || "bg-slate-500";
+                    const borderColor = borderColors[item.href] || "border-indigo-500";
                     return (
                       <Link
                         key={item.href}
                         href={item.href}
                         onClick={() => setSidebarOpen(false)}
                         className={`
-                          flex items-center gap-3 px-4 py-3.5 rounded-xl transition-all duration-300
+                          relative flex items-center gap-3 px-4 py-3.5 rounded-xl transition-all duration-300 overflow-hidden
                           ${isActive 
-                            ? "bg-indigo-500 text-white" 
-                            : "text-slate-600 hover:text-slate-900 hover:bg-slate-100"
+                            ? "bg-slate-50 text-slate-900" 
+                            : "text-slate-600 hover:text-slate-900 hover:bg-slate-50"
                           }
                         `}
                       >
-                        <div className={`w-9 h-9 rounded-xl ${iconBg} flex items-center justify-center`}>
+                        {isActive && (
+                          <div className={`absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b ${borderColor} rounded-r-full`} />
+                        )}
+                        <div className={`w-9 h-9 rounded-xl ${iconBg} flex items-center justify-center ${isActive ? "" : "opacity-70"}`}>
                           <Icon className="w-5 h-5 text-white" />
                         </div>
-                        <span className="font-medium">{item.label}</span>
+                        <span className={`font-medium ${isActive ? "font-semibold" : ""}`}>{item.label}</span>
+                        {isActive && (
+                          <div className="ml-auto">
+                            <div className="w-2 h-2 rounded-full bg-current opacity-60" />
+                          </div>
+                        )}
                       </Link>
                     );
                   })}
