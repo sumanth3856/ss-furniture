@@ -14,12 +14,12 @@ type SortOption = "featured" | "price-low" | "price-high" | "name";
 type GridSize = 2 | 3 | 4;
 
 const categories = [
-  { id: "All", label: "All", icon: Package },
-  { id: "Sofas", label: "Sofas", icon: Sofa },
-  { id: "Tables", label: "Tables", icon: Table2 },
-  { id: "Chairs", label: "Chairs", icon: Armchair },
-  { id: "Bedroom", label: "Bedroom", icon: BedDouble },
-  { id: "Lighting", label: "Lighting", icon: Lamp },
+  { id: "All", label: "All", icon: Package, color: "gray", bgActive: "bg-gray-900", textActive: "text-white", iconBg: "bg-gray-100", iconColor: "text-gray-600" },
+  { id: "Sofas", label: "Sofas", icon: Sofa, color: "amber", bgActive: "bg-amber-500", textActive: "text-white", iconBg: "bg-amber-100", iconColor: "text-amber-600" },
+  { id: "Tables", label: "Tables", icon: Table2, color: "emerald", bgActive: "bg-emerald-500", textActive: "text-white", iconBg: "bg-emerald-100", iconColor: "text-emerald-600" },
+  { id: "Chairs", label: "Chairs", icon: Armchair, color: "violet", bgActive: "bg-violet-500", textActive: "text-white", iconBg: "bg-violet-100", iconColor: "text-violet-600" },
+  { id: "Bedroom", label: "Bedroom", icon: BedDouble, color: "blue", bgActive: "bg-blue-500", textActive: "text-white", iconBg: "bg-blue-100", iconColor: "text-blue-600" },
+  { id: "Lighting", label: "Lighting", icon: Lamp, color: "yellow", bgActive: "bg-yellow-500", textActive: "text-gray-900", iconBg: "bg-yellow-100", iconColor: "text-yellow-600" },
 ];
 
 const PRODUCTS_PER_PAGE = 12;
@@ -251,27 +251,39 @@ export default function ProductsPage() {
           <div className="flex flex-col lg:flex-row gap-4 items-stretch lg:items-center justify-between mb-6">
             {/* Categories */}
             <div className="flex flex-wrap gap-2">
-              {categories.map((category) => (
-                <button
-                  key={category.id}
-                  onClick={() => setSelectedCategory(category.id)}
-                  className={`group relative px-4 py-2.5 rounded-xl text-sm font-medium transition-all duration-300 ${
-                    selectedCategory === category.id
-                      ? 'bg-gray-900 text-white shadow-lg shadow-gray-900/20'
-                      : 'bg-white text-gray-600 border border-gray-200 hover:border-gray-900 hover:text-gray-900'
-                  }`}
-                >
-                  <span className="mr-1.5"><category.icon className="w-4 h-4" /></span>
-                  {category.label}
-                  {selectedCategory === category.id && (
-                    <motion.div
-                      layoutId="categoryIndicator"
-                      className="absolute inset-0 rounded-xl bg-gradient-to-r from-gray-900 to-gray-800 -z-10"
-                      transition={{ type: "spring", stiffness: 500, damping: 30 }}
-                    />
-                  )}
-                </button>
-              ))}
+              {categories.map((category) => {
+                const isActive = selectedCategory === category.id;
+                const Icon = category.icon;
+                return (
+                  <button
+                    key={category.id}
+                    onClick={() => setSelectedCategory(category.id)}
+                    className={`group relative flex items-center gap-2.5 px-4 py-2.5 rounded-xl text-sm font-medium transition-all duration-300 ${
+                      isActive
+                        ? `${category.bgActive} ${category.textActive} shadow-lg`
+                        : 'bg-white text-gray-600 border border-gray-200 hover:border-gray-300 hover:shadow-md hover:bg-gray-50'
+                    }`}
+                  >
+                    <div className={`w-7 h-7 rounded-lg flex items-center justify-center transition-all duration-300 ${
+                      isActive 
+                        ? 'bg-white/20' 
+                        : `${category.iconBg}`
+                    }`}>
+                      <Icon className={`w-4 h-4 transition-colors duration-300 ${
+                        isActive ? 'text-white' : category.iconColor
+                      }`} />
+                    </div>
+                    <span className="font-semibold">{category.label}</span>
+                    {isActive && (
+                      <motion.div
+                        layoutId="categoryIndicator"
+                        className="absolute inset-0 rounded-xl -z-10"
+                        transition={{ type: "spring", stiffness: 500, damping: 30 }}
+                      />
+                    )}
+                  </button>
+                );
+              })}
             </div>
 
             {/* Actions */}
