@@ -668,40 +668,44 @@ export default function AdminProductsPage() {
                       )}
                     </div>
 
-                    <div className="p-3 sm:p-5 bg-gray-50 rounded-xl sm:rounded-2xl">
-                      <label className="block text-sm font-semibold text-gray-700 mb-3 sm:mb-4">
-                        Stock Availability
+                    <div className="p-4 bg-gray-50 rounded-xl">
+                      <label className="block text-sm font-semibold text-gray-700 mb-4">
+                        Stock Status
                       </label>
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-2 sm:gap-4">
-                          <motion.button
-                            type="button"
-                            whileTap={{ scale: 0.95 }}
-                            onClick={() => setFormData({ ...formData, in_stock: !formData.in_stock })}
-                            className={`relative w-12 h-7 sm:w-14 sm:h-8 rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-offset-2 ${
-                              formData.in_stock ? "bg-emerald-500" : "bg-gray-300"
-                            }`}
-                          >
-                            <motion.span
-                              animate={{ x: formData.in_stock ? 24 : 4 }}
-                              transition={{ type: "spring", stiffness: 500, damping: 30 }}
-                              className="absolute top-0.5 sm:top-1 w-5 h-5 sm:w-6 sm:h-6 bg-white rounded-full shadow-lg"
-                            />
-                          </motion.button>
-                          <div>
-                            <p className={`font-semibold text-sm sm:text-base ${formData.in_stock ? "text-emerald-600" : "text-gray-500"}`}>
-                              {formData.in_stock ? "In Stock" : "Out of Stock"}
-                            </p>
-                          </div>
+                      <div className="flex items-center gap-4">
+                        <motion.button
+                          type="button"
+                          whileTap={{ scale: 0.95 }}
+                          onClick={() => setFormData({ ...formData, in_stock: !formData.in_stock })}
+                          className={`relative w-14 h-8 rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-offset-2 ${
+                            formData.in_stock ? "bg-emerald-500" : "bg-gray-300"
+                          }`}
+                        >
+                          <motion.span
+                            animate={{ x: formData.in_stock ? 28 : 4 }}
+                            transition={{ type: "spring", stiffness: 500, damping: 30 }}
+                            className="absolute top-1 w-6 h-6 bg-white rounded-full shadow-lg"
+                          />
+                        </motion.button>
+                        <div className="flex items-center gap-3">
+                          {formData.in_stock ? (
+                            <>
+                              <div className="w-2.5 h-2.5 bg-emerald-500 rounded-full animate-pulse" />
+                              <span className="font-semibold text-emerald-600">In Stock</span>
+                            </>
+                          ) : (
+                            <>
+                              <div className="w-2.5 h-2.5 bg-gray-400 rounded-full" />
+                              <span className="font-semibold text-gray-500">Out of Stock</span>
+                            </>
+                          )}
                         </div>
-                        <span className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-medium ${
-                          formData.in_stock 
-                            ? "bg-emerald-100 text-emerald-700" 
-                            : "bg-red-100 text-red-700"
-                        }`}>
-                          {formData.in_stock ? "Available" : "Unavailable"}
-                        </span>
                       </div>
+                      <p className="mt-3 text-xs text-gray-500">
+                        {formData.in_stock 
+                          ? "Product is available for purchase" 
+                          : "Product is not available for purchase"}
+                      </p>
                     </div>
                   </div>
 
