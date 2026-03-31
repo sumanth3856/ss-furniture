@@ -47,40 +47,26 @@ function StockToggle({ inStock, onChange, disabled }: { inStock: boolean; onChan
       whileTap={{ scale: disabled ? 1 : 0.95 }}
       onClick={onChange}
       disabled={disabled}
-      className={`relative w-14 h-8 rounded-full transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 ${
-        disabled ? "opacity-50 cursor-not-allowed" : "cursor-pointer"
-      } ${
-        inStock 
-          ? "bg-gradient-to-r from-emerald-500 via-emerald-600 to-teal-500 shadow-lg shadow-emerald-500/40" 
-          : "bg-gradient-to-r from-slate-400 via-slate-500 to-slate-600 shadow-lg shadow-slate-500/30"
-      } focus:ring-amber-400`}
+      className={`
+        relative w-12 h-7 rounded-full transition-colors duration-200
+        ${disabled ? "opacity-50 cursor-not-allowed" : "cursor-pointer"}
+        ${inStock ? "bg-emerald-500" : "bg-slate-200"}
+        focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2
+      `}
+      title={inStock ? "Click to mark as out of stock" : "Click to mark as in stock"}
     >
-      <motion.div
+      <motion.span
         initial={false}
-        animate={{
-          left: inStock ? 30 : 4,
-        }}
-        transition={{ 
-          type: "spring", 
-          stiffness: 500, 
-          damping: 30 
-        }}
-        className={`absolute top-1 w-6 h-6 rounded-full shadow-xl flex items-center justify-center transition-all duration-200 ${
-          inStock ? "bg-gradient-to-br from-white to-emerald-50 shadow-emerald-200" : "bg-white shadow-slate-200"
-        }`}
+        animate={{ left: inStock ? 26 : 3 }}
+        transition={{ type: "spring", stiffness: 500, damping: 30 }}
+        className="absolute top-0.5 w-6 h-6 rounded-full bg-white shadow-md flex items-center justify-center"
       >
         {inStock ? (
-          <Check className="w-3.5 h-3.5 text-emerald-600" strokeWidth={3} />
+          <Check className="w-3 h-3 text-emerald-500" strokeWidth={3} />
         ) : (
-          <X className="w-3 h-3 text-slate-400" strokeWidth={3} />
+          <span className="w-1.5 h-1.5 rounded-full bg-slate-300" />
         )}
-      </motion.div>
-      
-      {inStock && (
-        <div className="absolute inset-0 rounded-full overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent -translate-x-full animate-[shimmer_1.5s_infinite]" />
-        </div>
-      )}
+      </motion.span>
     </motion.button>
   );
 }
@@ -97,29 +83,29 @@ function ProductCard({ product, onEdit, onDelete, onToggleStock }: {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, scale: 0.95 }}
-      className="group bg-white rounded-2xl shadow-sm border border-slate-200/60 overflow-hidden hover:shadow-xl hover:border-slate-300/80 transition-all duration-300"
+      className="group bg-white rounded-2xl shadow-sm border border-slate-200/50 overflow-hidden hover:shadow-lg hover:border-slate-300/80 transition-all duration-300"
     >
-      <div className="relative aspect-square overflow-hidden">
+      <div className="relative aspect-square overflow-hidden bg-slate-100">
         {product.image ? (
           <Image 
             src={product.image} 
             alt={product.name} 
             fill 
-            className={`object-cover transition-all duration-500 group-hover:scale-110 ${!product.in_stock ? 'grayscale opacity-50' : ''}`}
+            className={`object-cover transition-transform duration-500 group-hover:scale-105 ${!product.in_stock ? 'grayscale opacity-60' : ''}`}
           />
         ) : (
-          <div className="absolute inset-0 bg-gradient-to-br from-slate-100 to-slate-200 flex items-center justify-center">
-            <Package className="w-16 h-16 text-slate-300" />
+          <div className="absolute inset-0 flex items-center justify-center">
+            <Package className="w-20 h-20 text-slate-300" />
           </div>
         )}
         
-        <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
         
         <div className="absolute top-3 left-3">
-          <span className={`px-3 py-1.5 rounded-full text-xs font-bold backdrop-blur-md shadow-lg ${
+          <span className={`px-3 py-1.5 rounded-full text-xs font-semibold backdrop-blur-sm ${
             product.in_stock 
-              ? "bg-gradient-to-r from-emerald-500 to-teal-500 text-white shadow-emerald-500/40" 
-              : "bg-gradient-to-r from-slate-600 to-slate-700 text-white shadow-slate-500/40"
+              ? "bg-emerald-500/90 text-white" 
+              : "bg-slate-600/90 text-white"
           }`}>
             {product.in_stock ? "In Stock" : "Out of Stock"}
           </span>
@@ -128,14 +114,14 @@ function ProductCard({ product, onEdit, onDelete, onToggleStock }: {
         <div className="absolute bottom-3 left-3 right-3 flex gap-2 opacity-0 group-hover:opacity-100 transition-all duration-300 translate-y-2 group-hover:translate-y-0">
           <button
             onClick={onEdit}
-            className="flex-1 flex items-center justify-center gap-2 py-2.5 bg-white/95 backdrop-blur-md rounded-xl text-slate-700 font-semibold text-sm hover:bg-white transition-all shadow-xl"
+            className="flex-1 flex items-center justify-center gap-2 py-2.5 bg-white/95 backdrop-blur-sm rounded-xl text-slate-700 font-medium text-sm hover:bg-white transition-all"
           >
-            <Edit3 className="w-4 h-4 text-emerald-600" />
+            <Edit3 className="w-4 h-4" />
             Edit
           </button>
           <button
             onClick={onDelete}
-            className="px-3 py-2.5 bg-white/95 backdrop-blur-md rounded-xl text-red-500 hover:bg-red-50 transition-all shadow-xl"
+            className="px-3 py-2.5 bg-white/95 backdrop-blur-sm rounded-xl text-red-500 hover:bg-red-50 transition-all"
           >
             <Trash className="w-4 h-4" />
           </button>
@@ -144,7 +130,7 @@ function ProductCard({ product, onEdit, onDelete, onToggleStock }: {
       
       <div className="p-4">
         <div className="flex items-start justify-between gap-2 mb-2">
-          <span className="px-2.5 py-1 bg-slate-100 text-slate-700 rounded-lg text-xs font-medium">
+          <span className="px-2.5 py-1 bg-slate-100 text-slate-600 rounded-md text-xs font-medium">
             {product.category}
           </span>
           <StockToggle 
@@ -153,27 +139,25 @@ function ProductCard({ product, onEdit, onDelete, onToggleStock }: {
           />
         </div>
         
-        <h3 className="font-bold text-slate-900 text-base mb-1 line-clamp-2 leading-tight group-hover:text-emerald-700 transition-colors">
+        <h3 className="font-semibold text-slate-900 text-sm mb-1 line-clamp-2 leading-snug">
           {product.name}
         </h3>
         
         {product.description && (
-          <p className="text-sm text-slate-500 line-clamp-2 mb-3">
+          <p className="text-xs text-slate-500 line-clamp-2 mb-3">
             {product.description}
           </p>
         )}
         
         <div className="flex items-center justify-between pt-3 border-t border-slate-100">
-          <div>
-            <span className="text-2xl font-black bg-gradient-to-r from-slate-900 to-slate-700 bg-clip-text text-transparent">
-              ₹{product.price.toLocaleString("en-IN")}
-            </span>
-          </div>
+          <span className="text-lg font-bold text-slate-900">
+            ₹{product.price.toLocaleString("en-IN")}
+          </span>
           <button
             onClick={onEdit}
-            className="p-2.5 bg-slate-900 text-white rounded-xl hover:bg-slate-800 transition-all"
+            className="p-2 bg-indigo-500 text-white rounded-lg hover:bg-indigo-600 transition-all"
           >
-            <Pencil className="w-4 h-4" />
+            <Pencil className="w-3.5 h-3.5" />
           </button>
         </div>
       </div>
@@ -430,33 +414,33 @@ export default function AdminProductsPage() {
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
         <div>
           <div className="flex items-center gap-2 mb-1">
-            <div className="w-8 h-8 rounded-lg bg-indigo-500 flex items-center justify-center">
+            <div className="w-9 h-9 rounded-xl bg-indigo-500 flex items-center justify-center">
               <Package className="w-4 h-4 text-white" />
             </div>
-            <h1 className="text-2xl lg:text-3xl font-black text-slate-900">Products</h1>
+            <h1 className="text-2xl lg:text-3xl font-bold text-slate-900">Products</h1>
           </div>
-          <p className="text-slate-500 mt-0.5 sm:mt-1 text-sm font-medium ml-10">Manage your furniture inventory</p>
+          <p className="text-slate-500 text-sm ml-11">Manage your furniture inventory</p>
         </div>
-        <div className="flex items-center gap-2 sm:gap-3">
+        <div className="flex items-center gap-2">
           <button
             onClick={() => fetchProducts()}
-            className="p-2 sm:p-3 text-slate-500 hover:text-slate-900 hover:bg-slate-100 rounded-xl transition-all border border-slate-200/60"
+            className="p-2.5 text-slate-400 hover:text-slate-600 hover:bg-slate-100 rounded-lg transition-all"
             title="Refresh"
           >
-            <RefreshCw className="w-4 h-4 sm:w-5 sm:h-5" />
+            <RefreshCw className="w-4 h-4" />
           </button>
-          <div className="flex bg-slate-100/80 rounded-xl p-1 border border-slate-200/50">
+          <div className="flex bg-slate-100 rounded-lg p-1">
             <button
               onClick={() => setViewMode("grid")}
-              className={`p-2 rounded-lg transition-all ${viewMode === "grid" ? "bg-slate-900 text-white" : "text-slate-500 hover:text-slate-700"}`}
+              className={`p-2 rounded-md transition-all ${viewMode === "grid" ? "bg-slate-900 text-white" : "text-slate-500 hover:text-slate-700"}`}
             >
-              <Grid3X3 className="w-4 h-4 sm:w-5 sm:h-5" />
+              <Grid3X3 className="w-4 h-4" />
             </button>
             <button
               onClick={() => setViewMode("list")}
-              className={`p-2 rounded-lg transition-all ${viewMode === "list" ? "bg-slate-900 text-white" : "text-slate-500 hover:text-slate-700"}`}
+              className={`p-2 rounded-md transition-all ${viewMode === "list" ? "bg-slate-900 text-white" : "text-slate-500 hover:text-slate-700"}`}
             >
-              <List className="w-4 h-4 sm:w-5 sm:h-5" />
+              <List className="w-4 h-4" />
             </button>
           </div>
           <button
@@ -473,55 +457,55 @@ export default function AdminProductsPage() {
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-white rounded-2xl p-4 sm:p-5 shadow-lg border border-slate-200/60 hover:shadow-xl transition-all"
+          className="bg-white rounded-2xl p-4 sm:p-5 border border-slate-200/50 hover:shadow-md hover:border-slate-300/60 transition-all"
         >
-          <div className="w-10 h-10 sm:w-11 sm:h-11 bg-blue-500 rounded-xl flex items-center justify-center mb-3 sm:mb-4">
-            <Package className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
+          <div className="w-11 h-11 bg-indigo-500 rounded-xl flex items-center justify-center mb-3">
+            <Package className="w-5 h-5 text-white" />
           </div>
           <p className="text-2xl sm:text-3xl font-bold text-slate-900">{stats.total}</p>
-          <p className="text-xs sm:text-sm text-slate-500 font-medium mt-1">Total Products</p>
+          <p className="text-xs text-slate-500 mt-1">Total Products</p>
         </motion.div>
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.05 }}
-          className="bg-white rounded-2xl p-4 sm:p-5 shadow-lg border border-slate-200/60 hover:shadow-xl transition-all"
+          className="bg-white rounded-2xl p-4 sm:p-5 border border-slate-200/50 hover:shadow-md hover:border-slate-300/60 transition-all"
         >
-            <div className="w-10 h-10 sm:w-11 sm:h-11 bg-emerald-500 rounded-xl flex items-center justify-center mb-3 sm:mb-4">
-              <CheckCircle className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
-            </div>
+          <div className="w-11 h-11 bg-emerald-500 rounded-xl flex items-center justify-center mb-3">
+            <CheckCircle className="w-5 h-5 text-white" />
+          </div>
           <p className="text-2xl sm:text-3xl font-bold text-slate-900">{stats.inStock}</p>
-          <p className="text-xs sm:text-sm text-slate-500 font-medium mt-1">In Stock</p>
+          <p className="text-xs text-slate-500 mt-1">In Stock</p>
         </motion.div>
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
-          className="bg-white rounded-2xl p-4 sm:p-5 shadow-lg border border-slate-200/60 hover:shadow-xl transition-all"
+          className="bg-white rounded-2xl p-4 sm:p-5 border border-slate-200/50 hover:shadow-md hover:border-slate-300/60 transition-all"
         >
-            <div className="w-10 h-10 sm:w-11 sm:h-11 bg-rose-500 rounded-xl flex items-center justify-center mb-3 sm:mb-4">
-              <XCircle className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
-            </div>
+          <div className="w-11 h-11 bg-rose-500 rounded-xl flex items-center justify-center mb-3">
+            <XCircle className="w-5 h-5 text-white" />
+          </div>
           <p className="text-2xl sm:text-3xl font-bold text-slate-900">{stats.outOfStock}</p>
-          <p className="text-xs sm:text-sm text-slate-500 font-medium mt-1">Out of Stock</p>
+          <p className="text-xs text-slate-500 mt-1">Out of Stock</p>
         </motion.div>
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.15 }}
-          className="bg-indigo-500 rounded-2xl p-4 sm:p-5 shadow-xl text-white"
+          className="bg-slate-900 rounded-2xl p-4 sm:p-5"
         >
-          <div className="w-10 h-10 sm:w-11 sm:h-11 bg-white/20 rounded-xl flex items-center justify-center mb-3 sm:mb-4">
-            <Sparkles className="w-5 h-5 sm:w-6 sm:h-6" />
+          <div className="w-11 h-11 bg-white/10 rounded-xl flex items-center justify-center mb-3">
+            <Sparkles className="w-5 h-5 text-white" />
           </div>
-          <p className="text-2xl sm:text-3xl font-bold">
+          <p className="text-2xl sm:text-3xl font-bold text-white">
             {stats.total > 0 ? Math.round((stats.inStock / stats.total) * 100) : 0}%
           </p>
-          <p className="text-xs sm:text-sm text-white/80 font-medium mt-1">Availability</p>
+          <p className="text-xs text-slate-400 mt-1">Availability</p>
         </motion.div>
       </div>
 
-      <div className="bg-white rounded-2xl shadow-lg border border-slate-200/60 overflow-hidden">
+      <div className="bg-white rounded-2xl border border-slate-200/50 overflow-hidden">
         <div className="p-4 lg:p-5 border-b border-slate-100">
           <div className="flex flex-col sm:flex-row gap-4">
             <div className="relative flex-1">
@@ -531,7 +515,7 @@ export default function AdminProductsPage() {
                 placeholder="Search by name, category, or description..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-12 pr-4 py-3.5 bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-slate-400 focus:border-slate-300 outline-none transition-all shadow-sm"
+                className="w-full pl-12 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-300 focus:bg-white outline-none transition-all"
               />
             </div>
             <div className="relative">
@@ -539,7 +523,7 @@ export default function AdminProductsPage() {
               <select
                 value={categoryFilter}
                 onChange={(e) => setCategoryFilter(e.target.value)}
-                className="w-full sm:w-48 pl-11 pr-10 py-3.5 bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-slate-400 focus:border-slate-300 outline-none transition-all appearance-none cursor-pointer shadow-sm"
+                className="w-full sm:w-48 pl-11 pr-10 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-300 focus:bg-white outline-none transition-all appearance-none cursor-pointer"
               >
                 <option value="">All Categories</option>
                 {categories.map((cat) => (
@@ -553,11 +537,11 @@ export default function AdminProductsPage() {
 
         {filteredProducts.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-20 px-4">
-            <div className="w-20 h-20 bg-gradient-to-br from-slate-100 to-slate-200 rounded-2xl flex items-center justify-center mb-4 shadow-inner">
+            <div className="w-20 h-20 bg-slate-100 rounded-2xl flex items-center justify-center mb-4">
               <Package className="w-10 h-10 text-slate-400" />
             </div>
-            <h3 className="text-lg font-bold text-slate-900 mb-2">No products found</h3>
-            <p className="text-slate-500 text-center max-w-sm font-medium">
+            <h3 className="text-lg font-semibold text-slate-900 mb-2">No products found</h3>
+            <p className="text-slate-500 text-center max-w-sm text-sm">
               {searchTerm || categoryFilter 
                 ? "Try adjusting your search or filter criteria" 
                 : "Get started by adding your first product"}
