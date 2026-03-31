@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { MapPin, Phone, Mail, ArrowRight } from "lucide-react";
 import { siteConfig } from "@/lib/config";
+import Logo from "./Logo";
 
 const footerLinks = {
   quickLinks: [
@@ -32,15 +33,9 @@ export default function Footer() {
       <div className="max-w-7xl mx-auto">
         <div className="grid grid-cols-2 lg:grid-cols-5 gap-8 lg:gap-12 pb-12 border-b border-white/10">
           <div className="col-span-2 lg:col-span-1">
-            <Link href="/" className="inline-flex items-center gap-3 mb-6">
-              <div className="w-12 h-12 bg-gradient-to-br from-amber-400 to-amber-500 rounded-xl flex items-center justify-center">
-                <span className="text-gray-900 font-serif text-2xl font-bold">S</span>
-              </div>
-              <div>
-                <span className="font-serif text-2xl font-bold text-white">SS Furniture</span>
-                <span className="block text-[10px] text-gray-400 uppercase tracking-[0.2em] -mt-1">Premium Living</span>
-              </div>
-            </Link>
+            <div className="mb-6">
+              <Logo size="lg" variant="light" />
+            </div>
             <p className="text-gray-400 text-sm leading-relaxed mb-6">
               Premium furniture crafted with passion for modern living. Transform your space with our curated collections.
             </p>

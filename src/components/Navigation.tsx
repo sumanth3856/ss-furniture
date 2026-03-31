@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 import { Search, ShoppingCart, Heart, X } from "lucide-react";
 import { useCart } from "./CartContext";
 import { useWishlist } from "./WishlistContext";
+import Logo from "./Logo";
 
 const navLinks = [
   { href: "/", label: "Home" },
@@ -13,29 +14,6 @@ const navLinks = [
   { href: "/about", label: "About" },
   { href: "/contact", label: "Contact" },
 ];
-
-const LogoIconSVG = () => (
-  <svg
-    width="48"
-    height="48"
-    viewBox="0 0 48 48"
-    fill="none"
-    xmlns="http://www.w3.org/2000/svg"
-    className="w-12 h-12"
-    suppressHydrationWarning
-  >
-    <rect x="2" y="2" width="44" height="44" rx="10" fill="#1a1a1a" />
-    <path
-      d="M14 14C14 11.7909 15.7909 10 18 10H22C24.2091 10 26 11.7909 26 14V14.5H22V14C22 12.8954 21.1046 12 20 12H18C16.8954 12 16 12.8954 16 14V32C16 33.1046 16.8954 34 18 34H22C24.2091 34 26 32.2091 26 30V30.5H22V30C22 31.1046 21.1046 32 20 32H18C16.8954 32 16 31.1046 16 30V14H14Z"
-      fill="#C9A96E"
-    />
-    <path
-      d="M34 14C34 11.7909 35.7909 10 38 10H42C44.2091 10 46 11.7909 46 14V30C46 32.2091 44.2091 34 42 34H38C35.7909 34 34 32.2091 34 30V14Z"
-      fill="#C9A96E"
-      fillOpacity="0.7"
-    />
-  </svg>
-);
 
 export default function Navigation() {
   const pathname = usePathname();
@@ -80,20 +58,7 @@ export default function Navigation() {
     >
       <div className="w-full px-4 sm:px-6 lg:px-8 xl:px-12">
         <div className="flex items-center justify-between h-20">
-          <Link 
-            href="/" 
-            className="flex items-center gap-3.5 group flex-shrink-0"
-          >
-            <LogoIconSVG />
-            <div className="flex flex-col">
-              <span className="font-serif text-xl font-bold text-gray-900 leading-tight tracking-tight">
-                SS Furniture
-              </span>
-              <span className="text-[10px] text-gray-400 uppercase tracking-[0.2em] font-medium">
-                Premium Living
-              </span>
-            </div>
-          </Link>
+          <Logo size="lg" />
 
           <nav className="flex items-center gap-1" role="menubar">
             {navLinks.map((link) => {

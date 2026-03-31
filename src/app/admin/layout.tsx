@@ -14,6 +14,7 @@ import {
   Package,
   ClipboardList
 } from "lucide-react";
+import Logo from "@/components/Logo";
 
 const navItems = [
   { href: "/admin", icon: LayoutDashboard, label: "Dashboard" },
@@ -70,13 +71,8 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
           className="w-full max-w-sm"
         >
           <div className="bg-white rounded-3xl p-8 shadow-xl border border-slate-200">
-            <div className="flex items-center justify-center w-16 h-16 bg-slate-900 rounded-2xl mb-6 mx-auto">
-              <Shield className="w-8 h-8 text-white" />
-            </div>
-            
-            <div className="text-center mb-6">
-              <h1 className="text-2xl font-bold text-slate-900 mb-1">SS Furniture</h1>
-              <p className="text-slate-500 text-sm font-medium">Admin Portal</p>
+            <div className="flex items-center justify-center mb-6 mx-auto">
+              <Logo size="lg" variant="admin" />
             </div>
 
             <form onSubmit={handleLogin} className="space-y-4">
@@ -134,16 +130,11 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
     <div className="min-h-screen bg-slate-100 flex">
       <aside className="hidden lg:flex lg:flex-col lg:w-72 lg:bg-white lg:border-r lg:border-slate-200 lg:fixed lg:inset-y-0">
         <div className="p-6 border-b border-slate-100">
-          <div className="flex items-center gap-3">
-            <div className="w-12 h-12 bg-indigo-500 rounded-2xl flex items-center justify-center">
-              <Shield className="w-6 h-6 text-white" />
-            </div>
-            <div>
-              <h2 className="font-bold text-xl text-slate-900">SS Furniture</h2>
-              <div className="flex items-center gap-1.5 mt-0.5">
-                <span className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse" />
-                <p className="text-xs text-slate-500 font-medium">Admin Dashboard</p>
-              </div>
+          <div className="flex items-center justify-between">
+            <Logo size="md" variant="admin" />
+            <div className="flex items-center gap-2 px-2.5 py-1 bg-emerald-50 rounded-full">
+              <span className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse" />
+              <p className="text-xs text-emerald-700 font-medium">Live</p>
             </div>
           </div>
         </div>
