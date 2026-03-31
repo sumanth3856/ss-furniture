@@ -9,13 +9,16 @@ import {
   Eye,
   Shield,
   LogOut,
-  Menu
+  Menu,
+  LayoutDashboard,
+  Package,
+  ClipboardList
 } from "lucide-react";
 
 const navItems = [
-  { href: "/admin", label: "Dashboard" },
-  { href: "/admin/products", label: "Products" },
-  { href: "/admin/orders", label: "Orders" },
+  { href: "/admin", icon: LayoutDashboard, label: "Dashboard" },
+  { href: "/admin/products", icon: Package, label: "Products" },
+  { href: "/admin/orders", icon: ClipboardList, label: "Orders" },
 ];
 
 interface AdminLayoutProps {
@@ -130,117 +133,178 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6">
-        <div className="flex items-center justify-between mb-4 sm:mb-6">
+    <div className="min-h-screen bg-gray-50 flex">
+      <aside className="hidden lg:flex lg:flex-col lg:w-64 lg:bg-white lg:border-r lg:border-gray-200 lg:fixed lg:inset-y-0">
+        <div className="p-6 border-b border-gray-200">
           <div className="flex items-center gap-3">
-            <button
-              onClick={() => setSidebarOpen(!sidebarOpen)}
-              className="lg:hidden p-2 hover:bg-gray-100 rounded-xl transition-colors"
-            >
-              <Menu className="w-5 h-5 text-gray-600" />
-            </button>
-            <div className="flex items-center gap-2">
-              <div className="w-8 h-8 bg-gradient-to-br from-amber-400 to-amber-600 rounded-lg flex items-center justify-center">
-                <Shield className="w-4 h-4 text-white" />
-              </div>
-              <span className="font-bold text-gray-900 hidden sm:inline">SS Furniture Admin</span>
+            <div className="w-10 h-10 bg-gradient-to-br from-amber-400 to-amber-600 rounded-xl flex items-center justify-center">
+              <Shield className="w-5 h-5 text-white" />
+            </div>
+            <div>
+              <h2 className="font-bold text-gray-900">SS Furniture</h2>
+              <p className="text-xs text-gray-500">Admin Dashboard</p>
             </div>
           </div>
-          <div className="flex items-center gap-2">
-            <Link
-              href="/"
-              target="_blank"
-              className="p-2 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-xl transition-colors hidden sm:flex items-center gap-2"
-            >
-              <Eye className="w-4 h-4" />
-              <span className="text-sm">View Store</span>
-            </Link>
+        </div>
+
+        <nav className="flex-1 p-4 space-y-1">
+          {navItems.map((item) => {
+            const Icon = item.icon;
+            const isActive = pathname === item.href;
+            return (
+              <Link
+                key={item.href}
+                href={item.href}
+                className={`
+                  flex items-center gap-3 px-4 py-3 rounded-xl transition-all
+                  ${isActive 
+                    ? "bg-amber-50 text-amber-700 font-medium" 
+                    : "text-gray-600 hover:bg-gray-100"
+                  }
+                `}
+              >
+                <Icon className="w-5 h-5" />
+                <span>{item.label}</span>
+              </Link>
+            );
+          })}
+        </nav>
+
+        <div className="p-4 space-y-1 border-t border-gray-200">
+          <Link
+            href="/"
+            target="_blank"
+            className="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-600 hover:bg-gray-100 transition-colors"
+          >
+            <Eye className="w-5 h-5" />
+            <span>View Store</span>
+          </Link>
+          <button
+            onClick={handleLogout}
+            className="flex items-center gap-3 px-4 py-3 w-full rounded-xl text-red-600 hover:bg-red-50 transition-colors"
+          >
+            <LogOut className="w-5 h-5" />
+            <span>Sign Out</span>
+          </button>
+        </div>
+      </aside>
+
+      <div className="flex-1 lg:ml-64">
+        <div className="lg:hidden fixed top-0 left-0 right-0 bg-white border-b border-gray-200 z-40">
+          <div className="flex items-center justify-between px-4 py-3">
+            <div className="flex items-center gap-3">
+              <button
+                onClick={() => setSidebarOpen(true)}
+                className="p-2 hover:bg-gray-100 rounded-xl transition-colors"
+              >
+                <Menu className="w-5 h-5 text-gray-600" />
+              </button>
+              <div className="flex items-center gap-2">
+                <div className="w-8 h-8 bg-gradient-to-br from-amber-400 to-amber-600 rounded-lg flex items-center justify-center">
+                  <Shield className="w-4 h-4 text-white" />
+                </div>
+                <span className="font-bold text-gray-900">Admin</span>
+              </div>
+            </div>
             <button
               onClick={handleLogout}
               className="p-2 text-gray-500 hover:text-red-600 hover:bg-red-50 rounded-xl transition-colors"
-              title="Sign Out"
             >
-              <LogOut className="w-4 h-4" />
+              <LogOut className="w-5 h-5" />
             </button>
           </div>
         </div>
 
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={pathname}
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            transition={{ duration: 0.2 }}
-          >
-            {children}
-          </motion.div>
-        </AnimatePresence>
+        <div className="p-4 pt-16 lg:pt-6">
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={pathname}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              transition={{ duration: 0.2 }}
+            >
+              {children}
+            </motion.div>
+          </AnimatePresence>
+        </div>
       </div>
 
-      {sidebarOpen && (
-        <>
-          <div 
-            className="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 lg:hidden"
-            onClick={() => setSidebarOpen(false)}
-          />
-          <div className="fixed top-0 left-0 bottom-0 w-64 bg-white shadow-2xl z-50 p-4">
-            <div className="flex items-center justify-between mb-6">
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 bg-gradient-to-br from-amber-400 to-amber-600 rounded-xl flex items-center justify-center">
-                  <Shield className="w-5 h-5 text-white" />
+      <AnimatePresence>
+        {sidebarOpen && (
+          <>
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 lg:hidden"
+              onClick={() => setSidebarOpen(false)}
+            />
+            <motion.div
+              initial={{ opacity: 0, x: -300 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -300 }}
+              transition={{ type: "spring", damping: 25, stiffness: 300 }}
+              className="fixed top-0 left-0 bottom-0 w-72 bg-white shadow-2xl z-50 lg:hidden"
+            >
+              <div className="flex items-center justify-between p-4 border-b border-gray-200">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 bg-gradient-to-br from-amber-400 to-amber-600 rounded-xl flex items-center justify-center">
+                    <Shield className="w-5 h-5 text-white" />
+                  </div>
+                  <span className="font-bold text-gray-900">Menu</span>
                 </div>
-                <span className="font-bold text-gray-900">Menu</span>
+                <button
+                  onClick={() => setSidebarOpen(false)}
+                  className="p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-xl transition-colors"
+                >
+                  <X className="w-5 h-5" />
+                </button>
               </div>
-              <button
-                onClick={() => setSidebarOpen(false)}
-                className="p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-xl transition-colors"
-              >
-                <X className="w-5 h-5" />
-              </button>
-            </div>
-            <nav className="space-y-1">
-              {navItems.map((item) => {
-                const isActive = pathname === item.href;
-                return (
-                  <Link
-                    key={item.href}
-                    href={item.href}
-                    onClick={() => setSidebarOpen(false)}
-                    className={`
-                      flex items-center px-4 py-3 rounded-xl transition-all
-                      ${isActive 
-                        ? "bg-amber-50 text-amber-700 font-medium" 
-                        : "text-gray-600 hover:bg-gray-100"
-                      }
-                    `}
-                  >
-                    {item.label}
-                  </Link>
-                );
-              })}
-            </nav>
-            <div className="absolute bottom-4 left-4 right-4">
-              <Link
-                href="/"
-                target="_blank"
-                className="flex items-center gap-2 px-4 py-3 text-gray-600 hover:bg-gray-100 rounded-xl transition-colors"
-              >
-                <Eye className="w-5 h-5" />
-                View Store
-              </Link>
-              <button
-                onClick={handleLogout}
-                className="flex items-center gap-2 px-4 py-3 w-full text-red-600 hover:bg-red-50 rounded-xl transition-colors"
-              >
-                <LogOut className="w-5 h-5" />
-                Sign Out
-              </button>
-            </div>
-          </div>
-        </>
-      )}
+              <nav className="p-4 space-y-1">
+                {navItems.map((item) => {
+                  const Icon = item.icon;
+                  const isActive = pathname === item.href;
+                  return (
+                    <Link
+                      key={item.href}
+                      href={item.href}
+                      onClick={() => setSidebarOpen(false)}
+                      className={`
+                        flex items-center gap-3 px-4 py-3 rounded-xl transition-all
+                        ${isActive 
+                          ? "bg-amber-50 text-amber-700 font-medium" 
+                          : "text-gray-600 hover:bg-gray-100"
+                        }
+                      `}
+                    >
+                      <Icon className="w-5 h-5" />
+                      <span>{item.label}</span>
+                    </Link>
+                  );
+                })}
+              </nav>
+              <div className="absolute bottom-4 left-4 right-4 space-y-1">
+                <Link
+                  href="/"
+                  target="_blank"
+                  className="flex items-center gap-3 px-4 py-3 text-gray-600 hover:bg-gray-100 rounded-xl transition-colors"
+                >
+                  <Eye className="w-5 h-5" />
+                  View Store
+                </Link>
+                <button
+                  onClick={handleLogout}
+                  className="flex items-center gap-3 px-4 py-3 w-full text-red-600 hover:bg-red-50 rounded-xl transition-colors"
+                >
+                  <LogOut className="w-5 h-5" />
+                  Sign Out
+                </button>
+              </div>
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
