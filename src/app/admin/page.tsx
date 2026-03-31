@@ -2,13 +2,22 @@
 
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { Package, ShoppingCart, Heart, TrendingUp, DollarSign, Loader2 } from "lucide-react";
+import Link from "next/link";
+import { Package, ShoppingCart, Heart, TrendingUp, ArrowRight, Eye, Settings, Bell, Calendar } from "lucide-react";
 
 interface Stats {
   totalProducts: number;
   totalCartItems: number;
   totalWishlistItems: number;
   categories: string[];
+}
+
+interface RecentActivity {
+  id: number;
+  action: string;
+  item: string;
+  time: string;
+  type: "create" | "update" | "delete";
 }
 
 export default function AdminDashboard() {
@@ -45,52 +54,77 @@ export default function AdminDashboard() {
       title: "Total Products",
       value: stats?.totalProducts || 0,
       icon: Package,
-      color: "bg-blue-500",
+      color: "from-blue-500 to-blue-600",
       bgColor: "bg-blue-50",
+      textColor: "text-blue-600",
+      trend: "+12%",
     },
     {
-      title: "Cart Items",
+      title: "Active Carts",
       value: stats?.totalCartItems || 0,
       icon: ShoppingCart,
-      color: "bg-green-500",
-      bgColor: "bg-green-50",
+      color: "from-emerald-500 to-emerald-600",
+      bgColor: "bg-emerald-50",
+      textColor: "text-emerald-600",
+      trend: "+8%",
     },
     {
       title: "Wishlist Items",
       value: stats?.totalWishlistItems || 0,
       icon: Heart,
-      color: "bg-red-500",
-      bgColor: "bg-red-50",
+      color: "from-rose-500 to-rose-600",
+      bgColor: "bg-rose-50",
+      textColor: "text-rose-600",
+      trend: "+15%",
     },
     {
       title: "Categories",
       value: stats?.categories.length || 0,
       icon: TrendingUp,
-      color: "bg-purple-500",
-      bgColor: "bg-purple-50",
+      color: "from-violet-500 to-violet-600",
+      bgColor: "bg-violet-50",
+      textColor: "text-violet-600",
+      trend: "+3",
     },
+  ];
+
+  const recentActivity: RecentActivity[] = [
+    { id: 1, action: "Added new product", item: "Milano Leather Sofa", time: "2 hours ago", type: "create" },
+    { id: 2, action: "Updated price", item: "Oak Dining Table", time: "4 hours ago", type: "update" },
+    { id: 3, action: "Stock updated", item: "Velvet Armchair", time: "6 hours ago", type: "update" },
+    { id: 4, action: "Removed product", item: "Vintage Lamp", time: "1 day ago", type: "delete" },
   ];
 
   if (loading) {
     return (
       <div className="flex items-center justify-center h-64">
-        <Loader2 className="w-8 h-8 animate-spin text-[#C9A96E]" />
+        <div className="w-10 h-10 border-4 border-gray-200 border-t-amber-500 rounded-full animate-spin" />
       </div>
     );
   }
 
   return (
-    <div>
+    <div className="space-y-6">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="mb-8"
+        className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4"
       >
-        <h2 className="text-2xl font-bold text-gray-900">Welcome back!</h2>
-        <p className="text-gray-500">Here&apos;s what&apos;s happening with your store.</p>
+        <div>
+          <h2 className="text-2xl font-bold text-gray-900">Welcome back, Admin</h2>
+          <p className="text-gray-500 mt-1">Here&apos;s what&apos;s happening with your store today.</p>
+        </div>
+        <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2 px-4 py-2 bg-amber-50 rounded-xl">
+            <Calendar className="w-4 h-4 text-amber-600" />
+            <span className="text-sm font-medium text-amber-700">
+              {new Date().toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}
+            </span>
+          </div>
+        </div>
       </motion.div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {statCards.map((stat, index) => {
           const Icon = stat.icon;
           return (
@@ -99,12 +133,15 @@ export default function AdminDashboard() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.1 }}
-              className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100"
+              className="bg-white rounded-2xl p-5 shadow-sm border border-gray-100 hover:shadow-lg hover:border-gray-200 transition-all duration-300"
             >
               <div className="flex items-center justify-between mb-4">
                 <div className={`p-3 rounded-xl ${stat.bgColor}`}>
-                  <Icon className={`w-6 h-6 ${stat.color.replace("bg-", "text-")}`} />
+                  <Icon className={`w-6 h-6 ${stat.textColor}`} />
                 </div>
+                <span className="text-xs font-medium text-emerald-600 bg-emerald-50 px-2 py-1 rounded-full">
+                  {stat.trend}
+                </span>
               </div>
               <p className="text-sm text-gray-500 mb-1">{stat.title}</p>
               <p className="text-3xl font-bold text-gray-900">{stat.value}</p>
@@ -113,22 +150,38 @@ export default function AdminDashboard() {
         })}
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4 }}
-          className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100"
+          className="lg:col-span-2 bg-white rounded-2xl p-6 shadow-sm border border-gray-100"
         >
-          <h3 className="text-lg font-semibold text-gray-900 mb-4">Categories</h3>
-          <div className="flex flex-wrap gap-2">
-            {stats?.categories.map((category) => (
-              <span
-                key={category}
-                className="px-3 py-1.5 bg-gray-100 text-gray-700 rounded-full text-sm font-medium"
-              >
-                {category}
-              </span>
+          <div className="flex items-center justify-between mb-6">
+            <h3 className="text-lg font-semibold text-gray-900">Recent Activity</h3>
+            <button className="text-sm text-amber-600 hover:text-amber-700 font-medium flex items-center gap-1">
+              View All
+              <ArrowRight className="w-4 h-4" />
+            </button>
+          </div>
+          <div className="space-y-4">
+            {recentActivity.map((activity) => (
+              <div key={activity.id} className="flex items-center gap-4 p-4 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors">
+                <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${
+                  activity.type === "create" ? "bg-emerald-100 text-emerald-600" :
+                  activity.type === "update" ? "bg-blue-100 text-blue-600" :
+                  "bg-red-100 text-red-600"
+                }`}>
+                  {activity.type === "create" && <Package className="w-5 h-5" />}
+                  {activity.type === "update" && <Settings className="w-5 h-5" />}
+                  {activity.type === "delete" && <Heart className="w-5 h-5" />}
+                </div>
+                <div className="flex-1">
+                  <p className="font-medium text-gray-900">{activity.action}</p>
+                  <p className="text-sm text-gray-500">{activity.item}</p>
+                </div>
+                <span className="text-xs text-gray-400">{activity.time}</span>
+              </div>
             ))}
           </div>
         </motion.div>
@@ -139,32 +192,69 @@ export default function AdminDashboard() {
           transition={{ delay: 0.5 }}
           className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100"
         >
-          <h3 className="text-lg font-semibold text-gray-900 mb-4">Quick Actions</h3>
+          <h3 className="text-lg font-semibold text-gray-900 mb-6">Quick Actions</h3>
           <div className="space-y-3">
-            <a
+            <Link
               href="/admin/products"
-              className="flex items-center justify-between p-4 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors"
+              className="flex items-center justify-between p-4 bg-gradient-to-r from-gray-900 to-gray-800 rounded-xl text-white hover:shadow-lg hover:shadow-gray-900/25 transition-all group"
             >
               <div className="flex items-center gap-3">
-                <Package className="w-5 h-5 text-gray-600" />
-                <span className="font-medium text-gray-700">Manage Products</span>
+                <Package className="w-5 h-5" />
+                <span className="font-medium">Manage Products</span>
               </div>
-              <span className="text-gray-400">→</span>
-            </a>
-            <a
+              <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+            </Link>
+            <Link
               href="/products"
               target="_blank"
-              className="flex items-center justify-between p-4 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors"
+              className="flex items-center justify-between p-4 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors group"
             >
-              <div className="flex items-center gap-3">
-                <DollarSign className="w-5 h-5 text-gray-600" />
-                <span className="font-medium text-gray-700">View Store</span>
+              <div className="flex items-center gap-3 text-gray-700">
+                <Eye className="w-5 h-5" />
+                <span className="font-medium">View Store</span>
               </div>
-              <span className="text-gray-400">→</span>
-            </a>
+              <ArrowRight className="w-5 h-5 text-gray-400 group-hover:translate-x-1 transition-transform" />
+            </Link>
+            <Link
+              href="/admin/orders"
+              className="flex items-center justify-between p-4 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors group"
+            >
+              <div className="flex items-center gap-3 text-gray-700">
+                <ShoppingCart className="w-5 h-5" />
+                <span className="font-medium">View Orders</span>
+              </div>
+              <ArrowRight className="w-5 h-5 text-gray-400 group-hover:translate-x-1 transition-transform" />
+            </Link>
+          </div>
+
+          <div className="mt-6 p-4 bg-amber-50 rounded-xl">
+            <div className="flex items-center gap-3 mb-2">
+              <Bell className="w-5 h-5 text-amber-600" />
+              <span className="font-medium text-amber-800">Notifications</span>
+            </div>
+            <p className="text-sm text-amber-700">2 products are low in stock</p>
           </div>
         </motion.div>
       </div>
+
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.6 }}
+        className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100"
+      >
+        <h3 className="text-lg font-semibold text-gray-900 mb-4">Product Categories</h3>
+        <div className="flex flex-wrap gap-2">
+          {stats?.categories.map((category) => (
+            <span
+              key={category}
+              className="px-4 py-2 bg-gray-100 text-gray-700 rounded-full text-sm font-medium hover:bg-amber-50 hover:text-amber-700 transition-colors cursor-pointer"
+            >
+              {category}
+            </span>
+          ))}
+        </div>
+      </motion.div>
     </div>
   );
 }
