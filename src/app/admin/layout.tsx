@@ -9,9 +9,7 @@ import {
   Package, 
   ClipboardList,
   LogOut,
-  Menu,
   X,
-  ChevronRight,
   Eye,
   Shield
 } from "lucide-react";
@@ -80,11 +78,6 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
     setIsAuthenticated(false);
     sessionStorage.removeItem("ss_admin_auth");
     setPassword("");
-  };
-
-  const getCurrentPageLabel = () => {
-    const current = navItems.find(item => pathname === item.href);
-    return current?.label || "Admin";
   };
 
   if (!isAuthenticated) {
@@ -241,29 +234,6 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
       )}
 
       <main className="flex-1 min-h-screen flex flex-col w-full">
-        <header className="bg-white border-b border-gray-100 sticky top-0 z-30">
-          <div className="flex items-center justify-between px-4 sm:px-6 py-3 sm:py-4">
-            <div className="flex items-center gap-2">
-              <button
-                onClick={() => setSidebarOpen(true)}
-                className="lg:hidden p-2 -ml-2 hover:bg-gray-100 rounded-xl transition-colors"
-              >
-                <Menu className="w-5 h-5 sm:w-6 sm:h-6 text-gray-600" />
-              </button>
-              <div className="flex items-center gap-1.5 sm:gap-2 text-xs sm:text-sm">
-                <span className="text-gray-400 hidden xs:inline">SS Furniture</span>
-                <ChevronRight className="w-3 h-3 sm:w-4 sm:h-4 text-gray-300" />
-                <span className="font-semibold text-gray-900">{getCurrentPageLabel()}</span>
-              </div>
-            </div>
-            <div className="flex items-center gap-2 sm:gap-3">
-              <div className="w-8 h-8 sm:w-9 sm:h-9 bg-gradient-to-br from-amber-400 to-amber-600 rounded-full flex items-center justify-center text-white font-semibold text-xs sm:text-sm">
-                A
-              </div>
-            </div>
-          </div>
-        </header>
-
         <div className="flex-1 p-4 sm:p-6">
           <AnimatePresence mode="wait">
             <motion.div
