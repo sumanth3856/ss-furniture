@@ -3,7 +3,6 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { motion } from "framer-motion";
 import { Search, ShoppingCart, Heart, X } from "lucide-react";
 import { useCart } from "./CartContext";
 import { useWishlist } from "./WishlistContext";
@@ -40,11 +39,6 @@ const LogoIconSVG = () => (
 
 export default function Navigation() {
   const pathname = usePathname();
-  
-  if (pathname.startsWith("/admin")) {
-    return null;
-  }
-  
   const [isScrolled, setIsScrolled] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
@@ -71,6 +65,10 @@ export default function Navigation() {
       setSearchQuery("");
     }
   };
+
+  if (pathname.startsWith("/admin")) {
+    return null;
+  }
 
   return (
     <header
