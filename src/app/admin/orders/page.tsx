@@ -214,28 +214,28 @@ export default function AdminOrdersPage() {
   };
 
   return (
-    <div className="space-y-6">
-      <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+    <div className="space-y-4 sm:space-y-6">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4">
         <div>
-          <h2 className="text-2xl font-bold text-gray-900">Orders</h2>
-          <p className="text-gray-500 mt-1">
-            {filteredOrders.length} orders · ₹{totalRevenue.toLocaleString("en-IN")} total revenue
+          <h2 className="text-xl sm:text-2xl font-bold text-gray-900">Orders</h2>
+          <p className="text-gray-500 text-sm mt-0.5 sm:mt-1">
+            {filteredOrders.length} orders · ₹{totalRevenue.toLocaleString("en-IN")}
           </p>
         </div>
-        <div className="flex items-center gap-3">
-          <button className="p-2.5 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-xl transition-colors" title="Refresh">
-            <RefreshCw className="w-5 h-5" />
+        <div className="flex items-center gap-2 sm:gap-3">
+          <button className="p-2 sm:p-2.5 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-lg sm:rounded-xl transition-colors" title="Refresh">
+            <RefreshCw className="w-4 h-4 sm:w-5 sm:h-5" />
           </button>
-          <button className="flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-amber-500 to-amber-600 text-white font-medium rounded-xl hover:shadow-lg hover:shadow-amber-500/25 transition-all">
-            <FileText className="w-5 h-5" />
+          <button className="hidden sm:flex items-center gap-2 px-4 sm:px-5 py-2 sm:py-2.5 bg-gradient-to-r from-amber-500 to-amber-600 text-white font-medium rounded-xl hover:shadow-lg hover:shadow-amber-500/25 transition-all text-sm sm:text-base">
+            <FileText className="w-4 h-4 sm:w-5 sm:h-5" />
             Export
           </button>
         </div>
       </div>
 
-      <div className="grid grid-cols-2 lg:grid-cols-5 gap-4">
+      <div className="grid grid-cols-3 lg:grid-cols-5 gap-2 sm:gap-3 lg:gap-4">
         {[
-          { key: "all", label: "All Orders", icon: ShoppingCart, color: "text-gray-600", bg: "bg-gray-50" },
+          { key: "all", label: "All", icon: ShoppingCart, color: "text-gray-600", bg: "bg-gray-50" },
           { key: "pending", label: "Pending", icon: Clock, color: "text-yellow-600", bg: "bg-yellow-50" },
           { key: "processing", label: "Processing", icon: Package, color: "text-blue-600", bg: "bg-blue-50" },
           { key: "shipped", label: "Shipped", icon: Truck, color: "text-purple-600", bg: "bg-purple-50" },
@@ -249,84 +249,117 @@ export default function AdminOrdersPage() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.05 }}
               onClick={() => setStatusFilter(status.key)}
-              className={`bg-white rounded-2xl p-5 shadow-sm border cursor-pointer transition-all hover:shadow-md ${
+              className={`bg-white rounded-xl sm:rounded-2xl p-3 sm:p-5 shadow-sm border cursor-pointer transition-all hover:shadow-md ${
                 statusFilter === status.key 
                   ? "border-amber-300 ring-2 ring-amber-100" 
                   : "border-gray-100"
               }`}
             >
-              <div className={`w-10 h-10 ${status.bg} rounded-xl flex items-center justify-center mb-3`}>
-                <Icon className={`w-5 h-5 ${status.color}`} />
+              <div className={`w-8 h-8 sm:w-10 sm:h-10 ${status.bg} rounded-lg sm:rounded-xl flex items-center justify-center mb-2 sm:mb-3`}>
+                <Icon className={`w-4 h-4 sm:w-5 sm:h-5 ${status.color}`} />
               </div>
-              <p className="text-2xl font-bold text-gray-900">{statusCounts[status.key as keyof typeof statusCounts]}</p>
-              <p className="text-sm text-gray-500">{status.label}</p>
+              <p className="text-lg sm:text-2xl font-bold text-gray-900">{statusCounts[status.key as keyof typeof statusCounts]}</p>
+              <p className="text-[10px] sm:text-sm text-gray-500">{status.label}</p>
             </motion.div>
           );
         })}
       </div>
 
-      <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-        <div className="p-4 border-b border-gray-100">
-          <div className="flex flex-col sm:flex-row gap-4">
+      <div className="bg-white rounded-xl sm:rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+        <div className="p-3 sm:p-4 border-b border-gray-100">
+          <div className="flex flex-col gap-3">
             <div className="relative flex-1">
-              <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+              <Search className="absolute left-3 sm:left-4 top-1/2 -translate-y-1/2 w-4 h-4 sm:w-5 sm:h-5 text-gray-400" />
               <input
                 type="text"
-                placeholder="Search by order ID, customer name or email..."
+                placeholder="Search orders..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-12 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-amber-500 focus:border-transparent outline-none transition-all"
+                className="w-full pl-10 sm:pl-12 pr-4 py-2.5 sm:py-3 bg-gray-50 border border-gray-200 rounded-lg sm:rounded-xl focus:ring-2 focus:ring-amber-500 focus:border-transparent outline-none transition-all text-sm"
               />
             </div>
             <div className="flex items-center gap-2">
-              <Filter className="w-5 h-5 text-gray-400" />
-              <div className="relative">
+              <Filter className="w-4 h-4 sm:w-5 sm:h-5 text-gray-400" />
+              <div className="relative flex-1 sm:flex-none sm:w-auto">
                 <select 
                   value={statusFilter}
                   onChange={(e) => setStatusFilter(e.target.value)}
-                  className="appearance-none px-4 py-3 pr-10 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-amber-500 focus:border-transparent outline-none text-sm cursor-pointer"
+                  className="w-full sm:w-auto appearance-none px-3 sm:px-4 py-2 sm:py-3 pr-8 sm:pr-10 bg-gray-50 border border-gray-200 rounded-lg sm:rounded-xl focus:ring-2 focus:ring-amber-500 focus:border-transparent outline-none text-sm cursor-pointer bg-white"
                 >
-                  <option value="all">All Status</option>
+                  <option value="all">All</option>
                   <option value="pending">Pending</option>
                   <option value="processing">Processing</option>
                   <option value="shipped">Shipped</option>
                   <option value="delivered">Delivered</option>
                   <option value="cancelled">Cancelled</option>
                 </select>
-                <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
+                <ChevronDown className="absolute right-2.5 sm:right-3 top-1/2 -translate-y-1/2 w-3 h-3 sm:w-4 sm:h-4 text-gray-400 pointer-events-none" />
               </div>
             </div>
           </div>
         </div>
 
-        <div className="overflow-x-auto">
-          <table className="w-full">
-            <thead className="bg-gray-50/50">
-              <tr>
-                <th className="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Order ID</th>
-                <th className="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Customer</th>
-                <th className="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Items</th>
-                <th className="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Total</th>
-                <th className="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Status</th>
-                <th className="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Date</th>
-                <th className="px-6 py-4 text-right text-xs font-semibold text-gray-500 uppercase tracking-wider">Actions</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-gray-100">
-              {filteredOrders.length === 0 ? (
-                <tr>
-                  <td colSpan={7} className="px-6 py-12 text-center">
-                    <div className="flex flex-col items-center gap-3">
-                      <div className="w-16 h-16 bg-gray-100 rounded-2xl flex items-center justify-center">
-                        <ShoppingCart className="w-8 h-8 text-gray-400" />
-                      </div>
-                      <p className="text-gray-500 font-medium">No orders found</p>
-                      <p className="text-gray-400 text-sm">Try adjusting your search or filter</p>
+        <div className="lg:overflow-x-auto">
+          <div className="lg:hidden divide-y divide-gray-100">
+            {filteredOrders.length === 0 ? (
+              <div className="p-8 text-center">
+                <div className="w-14 h-14 bg-gray-100 rounded-xl flex items-center justify-center mx-auto mb-3">
+                  <ShoppingCart className="w-7 h-7 text-gray-400" />
+                </div>
+                <p className="text-gray-500 font-medium">No orders found</p>
+                <p className="text-gray-400 text-sm mt-1">Try adjusting your search</p>
+              </div>
+            ) : (
+              filteredOrders.map((order, index) => {
+                const status = statusConfig[order.status];
+                const StatusIcon = status.icon;
+                return (
+                  <motion.div 
+                    key={order.id}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: index * 0.03 }}
+                    onClick={() => openOrderDetails(order)}
+                    className="p-4 hover:bg-gray-50/50 transition-colors cursor-pointer"
+                  >
+                    <div className="flex items-center justify-between gap-2 mb-2">
+                      <span className="font-mono text-xs font-semibold text-gray-900">{order.id}</span>
+                      <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-medium ${status.badge}`}>
+                        <StatusIcon className="w-3 h-3" />
+                        {status.label}
+                      </span>
                     </div>
-                  </td>
+                    <div className="flex items-center justify-between gap-2">
+                      <div className="min-w-0">
+                        <p className="font-semibold text-gray-900 text-sm truncate">{order.customer.name}</p>
+                        <p className="text-xs text-gray-500">{order.items.reduce((sum, i) => sum + i.quantity, 0)} items</p>
+                      </div>
+                      <div className="text-right flex-shrink-0">
+                        <p className="font-bold text-gray-900 text-sm">₹{order.total.toLocaleString("en-IN")}</p>
+                        <p className="text-[10px] text-gray-400">{new Date(order.createdAt).toLocaleDateString("en-IN", { day: "numeric", month: "short" })}</p>
+                      </div>
+                    </div>
+                  </motion.div>
+                );
+              })
+            )}
+          </div>
+
+          <div className="hidden lg:block overflow-x-auto">
+            <table className="w-full">
+              <thead className="bg-gray-50/50">
+                <tr>
+                  <th className="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Order ID</th>
+                  <th className="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Customer</th>
+                  <th className="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Items</th>
+                  <th className="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Total</th>
+                  <th className="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Status</th>
+                  <th className="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Date</th>
+                  <th className="px-6 py-4 text-right text-xs font-semibold text-gray-500 uppercase tracking-wider">Actions</th>
                 </tr>
-              ) : (
-                filteredOrders.map((order, index) => {
+              </thead>
+              <tbody className="divide-y divide-gray-100">
+                {filteredOrders.map((order, index) => {
                   const status = statusConfig[order.status];
                   const StatusIcon = status.icon;
                   return (
@@ -383,10 +416,10 @@ export default function AdminOrdersPage() {
                       </td>
                     </motion.tr>
                   );
-                })
-              )}
-            </tbody>
-          </table>
+                })}
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
 
@@ -404,13 +437,13 @@ export default function AdminOrdersPage() {
               initial={{ opacity: 0, scale: 0.95, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 20 }}
-              className="fixed inset-0 z-50 flex items-center justify-center p-4 pointer-events-none"
+              className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 pointer-events-none"
             >
-              <div className="bg-white rounded-3xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-hidden pointer-events-auto">
-                <div className="flex items-center justify-between p-6 border-b border-gray-100">
+              <div className="bg-white rounded-t-2xl sm:rounded-2xl shadow-2xl w-full max-w-2xl max-h-[85vh] sm:max-h-[90vh] overflow-hidden pointer-events-auto">
+                <div className="flex items-center justify-between p-4 sm:p-6 border-b border-gray-100">
                   <div>
-                    <h3 className="text-xl font-bold text-gray-900">Order Details</h3>
-                    <p className="text-sm text-gray-500 mt-1">{selectedOrder.id}</p>
+                    <h3 className="text-lg sm:text-xl font-bold text-gray-900">Order Details</h3>
+                    <p className="text-xs sm:text-sm text-gray-500 mt-0.5 sm:mt-1">{selectedOrder.id}</p>
                   </div>
                   <button
                     onClick={() => setShowOrderModal(false)}
@@ -420,53 +453,53 @@ export default function AdminOrdersPage() {
                   </button>
                 </div>
 
-                <div className="p-6 overflow-y-auto max-h-[calc(90vh-160px)] space-y-6">
-                  <div className="flex items-center gap-4">
-                    <div className={`px-4 py-2 rounded-xl text-sm font-medium ${statusConfig[selectedOrder.status].badge}`}>
+                <div className="p-4 sm:p-6 overflow-y-auto max-h-[calc(85vh-80px)] sm:max-h-[calc(90vh-160px)] space-y-4 sm:space-y-6">
+                  <div className="flex items-center gap-3 sm:gap-4">
+                    <div className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg sm:rounded-xl text-xs sm:text-sm font-medium ${statusConfig[selectedOrder.status].badge}`}>
                       {statusConfig[selectedOrder.status].label}
                     </div>
-                    <span className="text-sm text-gray-500">{formatDate(selectedOrder.createdAt)}</span>
+                    <span className="text-xs sm:text-sm text-gray-500">{formatDate(selectedOrder.createdAt)}</span>
                   </div>
 
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div className="p-5 bg-gray-50 rounded-2xl">
-                      <h4 className="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-4">Customer</h4>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
+                    <div className="p-4 sm:p-5 bg-gray-50 rounded-xl sm:rounded-2xl">
+                      <h4 className="text-xs sm:text-sm font-semibold text-gray-500 uppercase tracking-wider mb-3 sm:mb-4">Customer</h4>
                       <div className="space-y-3">
-                        <div className="flex items-start gap-3">
-                          <div className="w-10 h-10 bg-amber-100 rounded-xl flex items-center justify-center flex-shrink-0">
-                            <span className="text-amber-600 font-bold text-lg">
+                        <div className="flex items-start gap-2 sm:gap-3">
+                          <div className="w-8 h-8 sm:w-10 sm:h-10 bg-amber-100 rounded-lg sm:rounded-xl flex items-center justify-center flex-shrink-0">
+                            <span className="text-amber-600 font-bold text-sm sm:text-lg">
                               {selectedOrder.customer.name.charAt(0)}
                             </span>
                           </div>
-                          <div>
-                            <p className="font-semibold text-gray-900">{selectedOrder.customer.name}</p>
-                            <div className="flex items-center gap-1.5 text-sm text-gray-500 mt-1">
-                              <Phone className="w-3.5 h-3.5" />
+                          <div className="min-w-0">
+                            <p className="font-semibold text-gray-900 text-sm sm:text-base truncate">{selectedOrder.customer.name}</p>
+                            <div className="flex items-center gap-1.5 text-xs sm:text-sm text-gray-500 mt-0.5">
+                              <Phone className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
                               {selectedOrder.customer.phone}
                             </div>
-                            <div className="flex items-center gap-1.5 text-sm text-gray-500 mt-0.5">
-                              <span className="w-3.5 h-3.5">@</span>
+                            <div className="flex items-center gap-1.5 text-xs sm:text-sm text-gray-500 mt-0.5 truncate">
+                              <span className="w-3 h-3 sm:w-3.5 sm:h-3.5">@</span>
                               {selectedOrder.customer.email}
                             </div>
                           </div>
                         </div>
-                        <div className="flex items-start gap-2 text-sm text-gray-600 pt-2 border-t border-gray-200">
-                          <MapPin className="w-4 h-4 mt-0.5 flex-shrink-0 text-gray-400" />
-                          <span>{selectedOrder.customer.address}</span>
+                        <div className="flex items-start gap-1.5 sm:gap-2 text-xs sm:text-sm text-gray-600 pt-2 border-t border-gray-200">
+                          <MapPin className="w-3.5 h-3.5 sm:w-4 sm:h-4 mt-0.5 flex-shrink-0 text-gray-400" />
+                          <span className="line-clamp-2">{selectedOrder.customer.address}</span>
                         </div>
                       </div>
                     </div>
 
-                    <div className="p-5 bg-gray-50 rounded-2xl">
-                      <h4 className="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-4">Payment</h4>
+                    <div className="p-4 sm:p-5 bg-gray-50 rounded-xl sm:rounded-2xl">
+                      <h4 className="text-xs sm:text-sm font-semibold text-gray-500 uppercase tracking-wider mb-3 sm:mb-4">Payment</h4>
                       <div className="space-y-3">
                         <div className="flex justify-between items-center">
-                          <span className="text-gray-600">Method</span>
-                          <span className="font-medium text-gray-900">{selectedOrder.paymentMethod}</span>
+                          <span className="text-gray-600 text-sm">Method</span>
+                          <span className="font-medium text-gray-900 text-sm">{selectedOrder.paymentMethod}</span>
                         </div>
                         <div className="flex justify-between items-center pt-3 border-t border-gray-200">
-                          <span className="text-gray-600">Total Amount</span>
-                          <span className="text-xl font-bold text-gray-900">
+                          <span className="text-gray-600 text-sm">Total</span>
+                          <span className="text-base sm:text-xl font-bold text-gray-900">
                             ₹{selectedOrder.total.toLocaleString("en-IN")}
                           </span>
                         </div>
@@ -475,20 +508,20 @@ export default function AdminOrdersPage() {
                   </div>
 
                   <div>
-                    <h4 className="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-4">Items ({selectedOrder.items.length})</h4>
-                    <div className="space-y-3">
+                    <h4 className="text-xs sm:text-sm font-semibold text-gray-500 uppercase tracking-wider mb-3 sm:mb-4">Items ({selectedOrder.items.length})</h4>
+                    <div className="space-y-2 sm:space-y-3">
                       {selectedOrder.items.map((item, idx) => (
-                        <div key={idx} className="flex items-center justify-between p-4 bg-gray-50 rounded-xl">
-                          <div className="flex items-center gap-4">
-                            <div className="w-10 h-10 bg-white rounded-xl flex items-center justify-center shadow-sm">
-                              <Package className="w-5 h-5 text-gray-400" />
+                        <div key={idx} className="flex items-center justify-between p-3 sm:p-4 bg-gray-50 rounded-lg sm:rounded-xl">
+                          <div className="flex items-center gap-2 sm:gap-4">
+                            <div className="w-8 h-8 sm:w-10 sm:h-10 bg-white rounded-lg sm:rounded-xl flex items-center justify-center shadow-sm">
+                              <Package className="w-4 h-4 sm:w-5 sm:h-5 text-gray-400" />
                             </div>
-                            <div>
-                              <p className="font-medium text-gray-900">{item.name}</p>
-                              <p className="text-sm text-gray-500">Qty: {item.quantity}</p>
+                            <div className="min-w-0">
+                              <p className="font-medium text-gray-900 text-xs sm:text-sm truncate max-w-[150px] sm:max-w-none">{item.name}</p>
+                              <p className="text-xs text-gray-500">Qty: {item.quantity}</p>
                             </div>
                           </div>
-                          <span className="font-semibold text-gray-900">
+                          <span className="font-semibold text-gray-900 text-xs sm:text-sm flex-shrink-0 ml-2">
                             ₹{item.price.toLocaleString("en-IN")}
                           </span>
                         </div>
@@ -497,16 +530,16 @@ export default function AdminOrdersPage() {
                   </div>
                 </div>
 
-                <div className="flex items-center gap-4 p-6 border-t border-gray-100 bg-gray-50/50">
+                <div className="flex items-center gap-3 sm:gap-4 p-4 sm:p-6 border-t border-gray-100 bg-gray-50/50">
                   <button
                     onClick={() => setShowOrderModal(false)}
-                    className="flex-1 px-4 py-3.5 border border-gray-200 text-gray-700 font-medium rounded-xl hover:bg-gray-100 transition-colors"
+                    className="flex-1 px-4 py-3 sm:py-3.5 border border-gray-200 text-gray-700 font-medium rounded-xl hover:bg-gray-100 transition-colors text-sm sm:text-base"
                   >
                     Close
                   </button>
-                  <button className="flex-1 px-4 py-3.5 bg-gradient-to-r from-amber-500 to-amber-600 text-white font-medium rounded-xl hover:shadow-lg hover:shadow-amber-500/25 transition-all flex items-center justify-center gap-2">
-                    <FileText className="w-5 h-5" />
-                    Download Invoice
+                  <button className="flex-1 px-4 py-3 sm:py-3.5 bg-gradient-to-r from-amber-500 to-amber-600 text-white font-medium rounded-xl hover:shadow-lg hover:shadow-amber-500/25 transition-all flex items-center justify-center gap-2 text-sm sm:text-base">
+                    <FileText className="w-4 h-4 sm:w-5 sm:h-5" />
+                    <span className="hidden xs:inline">Download Invoice</span>
                   </button>
                 </div>
               </div>

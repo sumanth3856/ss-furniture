@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { Package, ShoppingCart, Heart, TrendingUp, ArrowRight, Eye, Settings, Bell, Calendar } from "lucide-react";
+import { Package, ShoppingCart, Heart, TrendingUp, ArrowRight, Eye, Settings, Bell, Calendar, Plus, ClipboardList } from "lucide-react";
 
 interface Stats {
   totalProducts: number;
@@ -51,7 +51,7 @@ export default function AdminDashboard() {
 
   const statCards = [
     {
-      title: "Total Products",
+      title: "Products",
       value: stats?.totalProducts || 0,
       icon: Package,
       color: "from-blue-500 to-blue-600",
@@ -69,7 +69,7 @@ export default function AdminDashboard() {
       trend: "+8%",
     },
     {
-      title: "Wishlist Items",
+      title: "Wishlist",
       value: stats?.totalWishlistItems || 0,
       icon: Heart,
       color: "from-rose-500 to-rose-600",
@@ -89,10 +89,10 @@ export default function AdminDashboard() {
   ];
 
   const recentActivity: RecentActivity[] = [
-    { id: 1, action: "Added new product", item: "Milano Leather Sofa", time: "2 hours ago", type: "create" },
-    { id: 2, action: "Updated price", item: "Oak Dining Table", time: "4 hours ago", type: "update" },
-    { id: 3, action: "Stock updated", item: "Velvet Armchair", time: "6 hours ago", type: "update" },
-    { id: 4, action: "Removed product", item: "Vintage Lamp", time: "1 day ago", type: "delete" },
+    { id: 1, action: "Added new product", item: "Milano Leather Sofa", time: "2h ago", type: "create" },
+    { id: 2, action: "Updated price", item: "Oak Dining Table", time: "4h ago", type: "update" },
+    { id: 3, action: "Stock updated", item: "Velvet Armchair", time: "6h ago", type: "update" },
+    { id: 4, action: "Removed product", item: "Vintage Lamp", time: "1d ago", type: "delete" },
   ];
 
   if (loading) {
@@ -104,27 +104,25 @@ export default function AdminDashboard() {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-5 sm:space-y-6">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4"
+        className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3"
       >
         <div>
-          <h2 className="text-2xl font-bold text-gray-900">Welcome back, Admin</h2>
-          <p className="text-gray-500 mt-1">Here&apos;s what&apos;s happening with your store today.</p>
+          <h2 className="text-xl sm:text-2xl font-bold text-gray-900">Welcome back</h2>
+          <p className="text-gray-500 text-sm sm:text-base mt-0.5">Here&apos;s your store overview</p>
         </div>
-        <div className="flex items-center gap-3">
-          <div className="flex items-center gap-2 px-4 py-2 bg-amber-50 rounded-xl">
-            <Calendar className="w-4 h-4 text-amber-600" />
-            <span className="text-sm font-medium text-amber-700">
-              {new Date().toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}
-            </span>
-          </div>
+        <div className="flex items-center gap-2 px-3 py-1.5 sm:px-4 sm:py-2 bg-amber-50 rounded-xl self-start sm:self-auto">
+          <Calendar className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-amber-600" />
+          <span className="text-xs sm:text-sm font-medium text-amber-700">
+            {new Date().toLocaleDateString("en-US", { month: "short", day: "numeric" })}
+          </span>
         </div>
       </motion.div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
         {statCards.map((stat, index) => {
           const Icon = stat.icon;
           return (
@@ -133,54 +131,54 @@ export default function AdminDashboard() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.1 }}
-              className="bg-white rounded-2xl p-5 shadow-sm border border-gray-100 hover:shadow-lg hover:border-gray-200 transition-all duration-300"
+              className="bg-white rounded-xl sm:rounded-2xl p-3 sm:p-5 shadow-sm border border-gray-100 hover:shadow-md transition-all duration-300"
             >
-              <div className="flex items-center justify-between mb-4">
-                <div className={`p-3 rounded-xl ${stat.bgColor}`}>
-                  <Icon className={`w-6 h-6 ${stat.textColor}`} />
+              <div className="flex items-center justify-between mb-2 sm:mb-4">
+                <div className={`p-2 sm:p-3 rounded-lg sm:rounded-xl ${stat.bgColor}`}>
+                  <Icon className={`w-4 h-4 sm:w-6 sm:h-6 ${stat.textColor}`} />
                 </div>
-                <span className="text-xs font-medium text-emerald-600 bg-emerald-50 px-2 py-1 rounded-full">
+                <span className="text-[10px] sm:text-xs font-medium text-emerald-600 bg-emerald-50 px-1.5 py-0.5 sm:px-2 sm:py-1 rounded-full">
                   {stat.trend}
                 </span>
               </div>
-              <p className="text-sm text-gray-500 mb-1">{stat.title}</p>
-              <p className="text-3xl font-bold text-gray-900">{stat.value}</p>
+              <p className="text-[10px] sm:text-sm text-gray-500 mb-0.5 sm:mb-1">{stat.title}</p>
+              <p className="text-xl sm:text-3xl font-bold text-gray-900">{stat.value}</p>
             </motion.div>
           );
         })}
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4 }}
-          className="lg:col-span-2 bg-white rounded-2xl p-6 shadow-sm border border-gray-100"
+          className="lg:col-span-2 bg-white rounded-xl sm:rounded-2xl p-4 sm:p-6 shadow-sm border border-gray-100"
         >
-          <div className="flex items-center justify-between mb-6">
-            <h3 className="text-lg font-semibold text-gray-900">Recent Activity</h3>
-            <button className="text-sm text-amber-600 hover:text-amber-700 font-medium flex items-center gap-1">
+          <div className="flex items-center justify-between mb-4 sm:mb-6">
+            <h3 className="text-base sm:text-lg font-semibold text-gray-900">Recent Activity</h3>
+            <button className="text-xs sm:text-sm text-amber-600 hover:text-amber-700 font-medium flex items-center gap-1">
               View All
-              <ArrowRight className="w-4 h-4" />
+              <ArrowRight className="w-3 h-3 sm:w-4 sm:h-4" />
             </button>
           </div>
-          <div className="space-y-4">
+          <div className="space-y-2 sm:space-y-4">
             {recentActivity.map((activity) => (
-              <div key={activity.id} className="flex items-center gap-4 p-4 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors">
-                <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${
+              <div key={activity.id} className="flex items-center gap-3 sm:gap-4 p-3 sm:p-4 bg-gray-50 rounded-lg sm:rounded-xl hover:bg-gray-100 transition-colors">
+                <div className={`w-8 h-8 sm:w-10 sm:h-10 rounded-lg sm:rounded-xl flex items-center justify-center flex-shrink-0 ${
                   activity.type === "create" ? "bg-emerald-100 text-emerald-600" :
                   activity.type === "update" ? "bg-blue-100 text-blue-600" :
                   "bg-red-100 text-red-600"
                 }`}>
-                  {activity.type === "create" && <Package className="w-5 h-5" />}
-                  {activity.type === "update" && <Settings className="w-5 h-5" />}
-                  {activity.type === "delete" && <Heart className="w-5 h-5" />}
+                  {activity.type === "create" && <Plus className="w-4 h-4" />}
+                  {activity.type === "update" && <Settings className="w-4 h-4" />}
+                  {activity.type === "delete" && <Heart className="w-4 h-4" />}
                 </div>
-                <div className="flex-1">
-                  <p className="font-medium text-gray-900">{activity.action}</p>
-                  <p className="text-sm text-gray-500">{activity.item}</p>
+                <div className="flex-1 min-w-0">
+                  <p className="font-medium text-gray-900 text-sm truncate">{activity.action}</p>
+                  <p className="text-xs text-gray-500 truncate">{activity.item}</p>
                 </div>
-                <span className="text-xs text-gray-400">{activity.time}</span>
+                <span className="text-[10px] sm:text-xs text-gray-400 flex-shrink-0">{activity.time}</span>
               </div>
             ))}
           </div>
@@ -190,49 +188,49 @@ export default function AdminDashboard() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.5 }}
-          className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100"
+          className="bg-white rounded-xl sm:rounded-2xl p-4 sm:p-6 shadow-sm border border-gray-100"
         >
-          <h3 className="text-lg font-semibold text-gray-900 mb-6">Quick Actions</h3>
-          <div className="space-y-3">
+          <h3 className="text-base sm:text-lg font-semibold text-gray-900 mb-4 sm:mb-6">Quick Actions</h3>
+          <div className="space-y-2 sm:space-y-3">
             <Link
               href="/admin/products"
-              className="flex items-center justify-between p-4 bg-gradient-to-r from-gray-900 to-gray-800 rounded-xl text-white hover:shadow-lg hover:shadow-gray-900/25 transition-all group"
+              className="flex items-center justify-between p-3 sm:p-4 bg-gradient-to-r from-gray-900 to-gray-800 rounded-lg sm:rounded-xl text-white hover:shadow-lg hover:shadow-gray-900/25 transition-all group"
             >
-              <div className="flex items-center gap-3">
-                <Package className="w-5 h-5" />
-                <span className="font-medium">Manage Products</span>
+              <div className="flex items-center gap-2 sm:gap-3">
+                <Package className="w-4 h-4 sm:w-5 sm:h-5" />
+                <span className="font-medium text-sm sm:text-base">Products</span>
               </div>
-              <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-            </Link>
-            <Link
-              href="/products"
-              target="_blank"
-              className="flex items-center justify-between p-4 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors group"
-            >
-              <div className="flex items-center gap-3 text-gray-700">
-                <Eye className="w-5 h-5" />
-                <span className="font-medium">View Store</span>
-              </div>
-              <ArrowRight className="w-5 h-5 text-gray-400 group-hover:translate-x-1 transition-transform" />
+              <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 group-hover:translate-x-1 transition-transform" />
             </Link>
             <Link
               href="/admin/orders"
-              className="flex items-center justify-between p-4 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors group"
+              className="flex items-center justify-between p-3 sm:p-4 bg-gray-50 rounded-lg sm:rounded-xl hover:bg-gray-100 transition-colors group"
             >
-              <div className="flex items-center gap-3 text-gray-700">
-                <ShoppingCart className="w-5 h-5" />
-                <span className="font-medium">View Orders</span>
+              <div className="flex items-center gap-2 sm:gap-3 text-gray-700">
+                <ClipboardList className="w-4 h-4 sm:w-5 sm:h-5" />
+                <span className="font-medium text-sm sm:text-base">Orders</span>
               </div>
-              <ArrowRight className="w-5 h-5 text-gray-400 group-hover:translate-x-1 transition-transform" />
+              <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 text-gray-400 group-hover:translate-x-1 transition-transform" />
+            </Link>
+            <Link
+              href="/"
+              target="_blank"
+              className="flex items-center justify-between p-3 sm:p-4 bg-gray-50 rounded-lg sm:rounded-xl hover:bg-gray-100 transition-colors group"
+            >
+              <div className="flex items-center gap-2 sm:gap-3 text-gray-700">
+                <Eye className="w-4 h-4 sm:w-5 sm:h-5" />
+                <span className="font-medium text-sm sm:text-base">View Store</span>
+              </div>
+              <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 text-gray-400 group-hover:translate-x-1 transition-transform" />
             </Link>
           </div>
 
-          <div className="mt-6 p-4 bg-amber-50 rounded-xl">
-            <div className="flex items-center gap-3 mb-2">
-              <Bell className="w-5 h-5 text-amber-600" />
-              <span className="font-medium text-amber-800">Notifications</span>
+          <div className="mt-4 sm:mt-6 p-3 sm:p-4 bg-amber-50 rounded-lg sm:rounded-xl">
+            <div className="flex items-center gap-2 sm:gap-3 mb-1 sm:mb-2">
+              <Bell className="w-4 h-4 sm:w-5 sm:h-5 text-amber-600" />
+              <span className="font-medium text-amber-800 text-sm">Alerts</span>
             </div>
-            <p className="text-sm text-amber-700">2 products are low in stock</p>
+            <p className="text-xs sm:text-sm text-amber-700">2 products low in stock</p>
           </div>
         </motion.div>
       </div>
@@ -241,14 +239,14 @@ export default function AdminDashboard() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.6 }}
-        className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100"
+        className="bg-white rounded-xl sm:rounded-2xl p-4 sm:p-6 shadow-sm border border-gray-100"
       >
-        <h3 className="text-lg font-semibold text-gray-900 mb-4">Product Categories</h3>
+        <h3 className="text-base sm:text-lg font-semibold text-gray-900 mb-3 sm:mb-4">Categories</h3>
         <div className="flex flex-wrap gap-2">
           {stats?.categories.map((category) => (
             <span
               key={category}
-              className="px-4 py-2 bg-gray-100 text-gray-700 rounded-full text-sm font-medium hover:bg-amber-50 hover:text-amber-700 transition-colors cursor-pointer"
+              className="px-3 py-1.5 sm:px-4 sm:py-2 bg-gray-100 text-gray-700 rounded-full text-xs sm:text-sm font-medium hover:bg-amber-50 hover:text-amber-700 transition-colors cursor-pointer"
             >
               {category}
             </span>
