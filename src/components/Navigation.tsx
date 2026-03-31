@@ -40,6 +40,11 @@ const LogoIconSVG = () => (
 
 export default function Navigation() {
   const pathname = usePathname();
+  
+  if (pathname.startsWith("/admin")) {
+    return null;
+  }
+  
   const [isScrolled, setIsScrolled] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");

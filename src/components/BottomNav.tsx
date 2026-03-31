@@ -15,6 +15,11 @@ const navItems = [
 
 export default function BottomNav() {
   const pathname = usePathname();
+  
+  if (pathname.startsWith("/admin")) {
+    return null;
+  }
+  
   const { itemCount: cartCount } = useCart();
   const { itemCount: wishlistCount } = useWishlist();
 

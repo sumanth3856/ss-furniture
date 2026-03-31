@@ -1,10 +1,15 @@
 import type { Metadata } from "next";
 import { Playfair_Display, Inter } from "next/font/google";
 import "./globals.css";
-import SiteLayout from "@/components/SiteLayout";
+import BottomNav from "@/components/BottomNav";
+import Navigation from "@/components/Navigation";
+import BackToTop from "@/components/BackToTop";
 import { ToastProvider } from "@/components/Toast";
 import { CartProvider } from "@/components/CartContext";
 import { WishlistProvider } from "@/components/WishlistContext";
+import PageTransition from "@/components/PageTransition";
+import AnnouncementBanner from "@/components/AnnouncementBanner";
+import CookieConsent from "@/components/CookieConsent";
 import ErrorBoundary from "@/components/ErrorBoundary";
 import {
   generateOrganizationStructuredData,
@@ -91,7 +96,25 @@ export default function RootLayout({
           <CartProvider>
             <WishlistProvider>
               <ToastProvider>
-                <SiteLayout>{children}</SiteLayout>
+                <a
+                  href="#main-content"
+                  className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2 focus:bg-[#C9A96E] focus:text-white focus:rounded-lg focus:font-medium"
+                >
+                  Skip to main content
+                </a>
+
+                <AnnouncementBanner />
+                <Navigation />
+
+                <PageTransition>
+                  <main id="main-content" className="pb-24 md:pb-0" tabIndex={-1}>
+                    {children}
+                  </main>
+                </PageTransition>
+
+                <BottomNav />
+                <BackToTop />
+                <CookieConsent />
               </ToastProvider>
             </WishlistProvider>
           </CartProvider>
