@@ -65,11 +65,9 @@ export const metadata: Metadata = {
   },
   icons: {
     icon: [
-      {
-        url: "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect fill='%231A1A1A' rx='15' width='100' height='100'/><text y='.9em' x='50%' text-anchor='middle' font-size='70' fill='%23C9A96E'>S</text></svg>",
-        type: "image/svg+xml",
-      },
+      { url: "/favicon.svg", type: "image/svg+xml" },
     ],
+    shortcut: { url: "/favicon.svg", type: "image/svg+xml" },
   },
 };
 
