@@ -163,7 +163,7 @@ export default function ProductDetailPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100">
       {/* HEADER */}
-      <section className="sticky top-0 z-30 bg-white/80 backdrop-blur-xl border-b border-gray-100 shadow-sm">
+      <section className="sticky top-0 z-20 bg-white/80 backdrop-blur-xl border-b border-gray-100 shadow-sm">
         <div className="max-w-7xl mx-auto px-4 py-4">
           <Breadcrumbs />
         </div>
