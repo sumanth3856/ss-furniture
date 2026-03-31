@@ -97,7 +97,7 @@ function ProductCard({ product, onEdit, onDelete, onToggleStock }: {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, scale: 0.95 }}
-      className="group bg-gradient-to-br from-white to-slate-50 rounded-2xl shadow-sm border border-slate-200/80 overflow-hidden hover:shadow-2xl hover:shadow-purple-500/10 hover:border-purple-200/50 transition-all duration-300"
+      className="group bg-gradient-to-br from-white via-slate-50/50 to-white rounded-2xl shadow-sm border border-slate-200/60 overflow-hidden hover:shadow-2xl hover:shadow-emerald-500/10 hover:border-emerald-200/50 transition-all duration-500"
     >
       <div className="relative aspect-square overflow-hidden">
         {product.image ? (
@@ -130,7 +130,7 @@ function ProductCard({ product, onEdit, onDelete, onToggleStock }: {
             onClick={onEdit}
             className="flex-1 flex items-center justify-center gap-2 py-2.5 bg-white/95 backdrop-blur-md rounded-xl text-slate-700 font-semibold text-sm hover:bg-white transition-all shadow-xl"
           >
-            <Edit3 className="w-4 h-4 text-purple-600" />
+            <Edit3 className="w-4 h-4 text-emerald-600" />
             Edit
           </button>
           <button
@@ -144,7 +144,7 @@ function ProductCard({ product, onEdit, onDelete, onToggleStock }: {
       
       <div className="p-4">
         <div className="flex items-start justify-between gap-2 mb-2">
-          <span className="px-2.5 py-1 bg-gradient-to-r from-amber-100 to-orange-100 text-amber-800 rounded-lg text-xs font-bold border border-amber-200/50">
+          <span className="px-2.5 py-1 bg-gradient-to-r from-sky-100 to-blue-100 text-sky-800 rounded-lg text-xs font-bold border border-sky-200/50">
             {product.category}
           </span>
           <StockToggle 
@@ -153,7 +153,7 @@ function ProductCard({ product, onEdit, onDelete, onToggleStock }: {
           />
         </div>
         
-        <h3 className="font-bold text-slate-900 text-base mb-1 line-clamp-2 leading-tight group-hover:text-purple-700 transition-colors">
+        <h3 className="font-bold text-slate-900 text-base mb-1 line-clamp-2 leading-tight group-hover:text-emerald-700 transition-colors">
           {product.name}
         </h3>
         
@@ -171,7 +171,7 @@ function ProductCard({ product, onEdit, onDelete, onToggleStock }: {
           </div>
           <button
             onClick={onEdit}
-            className="p-2.5 bg-gradient-to-r from-purple-500 to-indigo-500 text-white rounded-xl hover:shadow-lg hover:shadow-purple-500/30 transition-all"
+            className="p-2.5 bg-gradient-to-r from-emerald-500 to-teal-500 text-white rounded-xl hover:shadow-lg hover:shadow-emerald-500/30 transition-all"
           >
             <Pencil className="w-4 h-4" />
           </button>
@@ -407,14 +407,14 @@ export default function AdminProductsPage() {
 
   return (
     <ErrorBoundary>
-    <div className="space-y-6">
+    <div className="space-y-5 sm:space-y-6">
       <AnimatePresence>
         {error && (
           <motion.div
             initial={{ opacity: 0, y: -20, height: 0 }}
             animate={{ opacity: 1, y: 0, height: "auto" }}
             exit={{ opacity: 0, y: -20, height: 0 }}
-            className="p-4 bg-gradient-to-r from-red-50 to-red-100/50 border border-red-200/50 rounded-2xl flex items-center gap-3 overflow-hidden shadow-lg shadow-red-500/10"
+            className="p-4 bg-gradient-to-r from-red-50/80 to-rose-50/60 border border-red-200/40 rounded-2xl flex items-center gap-3 overflow-hidden shadow-lg shadow-red-500/10 backdrop-blur-sm"
           >
             <div className="w-10 h-10 bg-red-100 rounded-xl flex items-center justify-center flex-shrink-0">
               <AlertCircle className="w-5 h-5 text-red-600" />
@@ -429,36 +429,41 @@ export default function AdminProductsPage() {
 
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
         <div>
-          <h1 className="text-2xl lg:text-3xl font-black text-slate-900">
-            <span className="bg-gradient-to-r from-purple-600 to-indigo-600 bg-clip-text text-transparent">Products</span>
-          </h1>
-          <p className="text-slate-500 mt-0.5 sm:mt-1 text-sm font-medium">Manage your furniture inventory</p>
+          <div className="flex items-center gap-2 mb-1">
+            <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center shadow-lg shadow-emerald-500/20">
+              <Package className="w-4 h-4 text-white" />
+            </div>
+            <h1 className="text-2xl lg:text-3xl font-black text-slate-900">
+              <span className="bg-gradient-to-r from-slate-800 via-emerald-800 to-teal-800 bg-clip-text text-transparent">Products</span>
+            </h1>
+          </div>
+          <p className="text-slate-500 mt-0.5 sm:mt-1 text-sm font-medium ml-10">Manage your furniture inventory</p>
         </div>
         <div className="flex items-center gap-2 sm:gap-3">
           <button
             onClick={() => fetchProducts()}
-            className="p-2 sm:p-3 text-slate-500 hover:text-purple-600 hover:bg-purple-50 rounded-xl transition-all border border-slate-200"
+            className="p-2 sm:p-3 text-slate-500 hover:text-emerald-600 hover:bg-emerald-50 rounded-xl transition-all border border-slate-200/60"
             title="Refresh"
           >
             <RefreshCw className="w-4 h-4 sm:w-5 sm:h-5" />
           </button>
-          <div className="flex bg-slate-100 rounded-xl p-1 border border-slate-200">
+          <div className="flex bg-slate-100/80 backdrop-blur-sm rounded-xl p-1 border border-slate-200/50">
             <button
               onClick={() => setViewMode("grid")}
-              className={`p-2 rounded-lg transition-all ${viewMode === "grid" ? "bg-gradient-to-br from-purple-500 to-indigo-500 text-white shadow-lg shadow-purple-500/30" : "text-slate-500 hover:text-slate-700"}`}
+              className={`p-2 rounded-lg transition-all ${viewMode === "grid" ? "bg-gradient-to-br from-emerald-500 to-teal-500 text-white shadow-lg shadow-emerald-500/30" : "text-slate-500 hover:text-slate-700"}`}
             >
               <Grid3X3 className="w-4 h-4 sm:w-5 sm:h-5" />
             </button>
             <button
               onClick={() => setViewMode("list")}
-              className={`p-2 rounded-lg transition-all ${viewMode === "list" ? "bg-gradient-to-br from-purple-500 to-indigo-500 text-white shadow-lg shadow-purple-500/30" : "text-slate-500 hover:text-slate-700"}`}
+              className={`p-2 rounded-lg transition-all ${viewMode === "list" ? "bg-gradient-to-br from-emerald-500 to-teal-500 text-white shadow-lg shadow-emerald-500/30" : "text-slate-500 hover:text-slate-700"}`}
             >
               <List className="w-4 h-4 sm:w-5 sm:h-5" />
             </button>
           </div>
           <button
             onClick={() => openModal()}
-            className="flex items-center gap-1.5 sm:gap-2 px-3 sm:px-5 py-2.5 sm:py-3 bg-gradient-to-r from-purple-600 via-indigo-600 to-purple-600 bg-size-200 text-white font-bold rounded-xl hover:shadow-xl hover:shadow-purple-500/40 transition-all"
+            className="flex items-center gap-1.5 sm:gap-2 px-3 sm:px-5 py-2.5 sm:py-3 bg-gradient-to-r from-emerald-500 via-teal-500 to-cyan-500 text-white font-bold rounded-xl hover:shadow-xl hover:shadow-emerald-500/30 transition-all"
           >
             <Plus className="w-4 h-4 sm:w-5 sm:h-5" />
             <span className="hidden sm:inline">Add Product</span>
@@ -470,51 +475,63 @@ export default function AdminProductsPage() {
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-gradient-to-br from-white to-blue-50 rounded-2xl p-5 shadow-lg border border-blue-100/50"
+          className="group relative overflow-hidden bg-gradient-to-br from-white via-sky-50/30 to-white rounded-2xl p-5 shadow-lg border border-slate-200/60 hover:shadow-xl transition-all duration-300"
         >
-          <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl flex items-center justify-center mb-4 shadow-lg shadow-blue-500/30">
-            <Package className="w-6 h-6 text-white" />
+          <div className="absolute top-0 right-0 w-20 h-20 bg-gradient-to-br from-sky-100/30 to-transparent rounded-full blur-xl" />
+          <div className="relative">
+            <div className="w-12 h-12 bg-gradient-to-br from-sky-500 via-blue-600 to-indigo-700 rounded-xl flex items-center justify-center mb-4 shadow-xl shadow-sky-500/30 group-hover:scale-110 transition-transform">
+              <Package className="w-6 h-6 text-white" />
+            </div>
+            <p className="text-3xl lg:text-4xl font-black bg-gradient-to-r from-sky-600 to-blue-800 bg-clip-text text-transparent">{stats.total}</p>
+            <p className="text-sm text-slate-500 font-medium mt-1">Total Products</p>
           </div>
-          <p className="text-3xl lg:text-4xl font-black bg-gradient-to-r from-blue-600 to-blue-800 bg-clip-text text-transparent">{stats.total}</p>
-          <p className="text-sm text-slate-500 font-medium mt-1">Total Products</p>
         </motion.div>
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.05 }}
-          className="bg-gradient-to-br from-white to-emerald-50 rounded-2xl p-5 shadow-lg border border-emerald-100/50"
+          className="group relative overflow-hidden bg-gradient-to-br from-white via-emerald-50/30 to-white rounded-2xl p-5 shadow-lg border border-slate-200/60 hover:shadow-xl transition-all duration-300"
         >
-          <div className="w-12 h-12 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-xl flex items-center justify-center mb-4 shadow-lg shadow-emerald-500/30">
-            <CheckCircle className="w-6 h-6 text-white" />
+          <div className="absolute top-0 right-0 w-20 h-20 bg-gradient-to-br from-emerald-100/30 to-transparent rounded-full blur-xl" />
+          <div className="relative">
+            <div className="w-12 h-12 bg-gradient-to-br from-emerald-500 via-teal-600 to-cyan-700 rounded-xl flex items-center justify-center mb-4 shadow-xl shadow-emerald-500/30 group-hover:scale-110 transition-transform">
+              <CheckCircle className="w-6 h-6 text-white" />
+            </div>
+            <p className="text-3xl lg:text-4xl font-black bg-gradient-to-r from-emerald-600 to-teal-800 bg-clip-text text-transparent">{stats.inStock}</p>
+            <p className="text-sm text-slate-500 font-medium mt-1">In Stock</p>
           </div>
-          <p className="text-3xl lg:text-4xl font-black bg-gradient-to-r from-emerald-600 to-teal-800 bg-clip-text text-transparent">{stats.inStock}</p>
-          <p className="text-sm text-slate-500 font-medium mt-1">In Stock</p>
         </motion.div>
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
-          className="bg-gradient-to-br from-white to-red-50 rounded-2xl p-5 shadow-lg border border-red-100/50"
+          className="group relative overflow-hidden bg-gradient-to-br from-white via-rose-50/30 to-white rounded-2xl p-5 shadow-lg border border-slate-200/60 hover:shadow-xl transition-all duration-300"
         >
-          <div className="w-12 h-12 bg-gradient-to-br from-red-500 to-rose-600 rounded-xl flex items-center justify-center mb-4 shadow-lg shadow-red-500/30">
-            <XCircle className="w-6 h-6 text-white" />
+          <div className="absolute top-0 right-0 w-20 h-20 bg-gradient-to-br from-rose-100/30 to-transparent rounded-full blur-xl" />
+          <div className="relative">
+            <div className="w-12 h-12 bg-gradient-to-br from-rose-500 via-pink-600 to-fuchsia-700 rounded-xl flex items-center justify-center mb-4 shadow-xl shadow-rose-500/30 group-hover:scale-110 transition-transform">
+              <XCircle className="w-6 h-6 text-white" />
+            </div>
+            <p className="text-3xl lg:text-4xl font-black bg-gradient-to-r from-rose-600 to-fuchsia-800 bg-clip-text text-transparent">{stats.outOfStock}</p>
+            <p className="text-sm text-slate-500 font-medium mt-1">Out of Stock</p>
           </div>
-          <p className="text-3xl lg:text-4xl font-black bg-gradient-to-r from-red-600 to-rose-800 bg-clip-text text-transparent">{stats.outOfStock}</p>
-          <p className="text-sm text-slate-500 font-medium mt-1">Out of Stock</p>
         </motion.div>
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.15 }}
-          className="bg-gradient-to-br from-purple-600 via-indigo-600 to-purple-700 rounded-2xl p-5 shadow-xl shadow-purple-500/30 text-white"
+          className="group relative overflow-hidden bg-gradient-to-br from-emerald-600 via-teal-600 to-cyan-700 rounded-2xl p-5 shadow-xl shadow-emerald-500/20 text-white"
         >
-          <div className="w-12 h-12 bg-white/20 backdrop-blur-md rounded-xl flex items-center justify-center mb-4">
-            <Sparkles className="w-6 h-6" />
+          <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent" />
+          <div className="relative">
+            <div className="w-12 h-12 bg-white/20 backdrop-blur-md rounded-xl flex items-center justify-center mb-4 shadow-lg">
+              <Sparkles className="w-6 h-6" />
+            </div>
+            <p className="text-3xl lg:text-4xl font-black">
+              {stats.total > 0 ? Math.round((stats.inStock / stats.total) * 100) : 0}%
+            </p>
+            <p className="text-sm text-white/80 font-medium mt-1">Availability Rate</p>
           </div>
-          <p className="text-3xl lg:text-4xl font-black">
-            {stats.total > 0 ? Math.round((stats.inStock / stats.total) * 100) : 0}%
-          </p>
-          <p className="text-sm text-white/80 font-medium mt-1">Availability Rate</p>
         </motion.div>
       </div>
 
