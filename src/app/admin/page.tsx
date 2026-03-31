@@ -21,20 +21,23 @@ interface RecentActivity {
 }
 
 function LiveClock() {
-  const [time, setTime] = useState(new Date());
-  const [isClient, setIsClient] = useState(false);
+  const [time, setTime] = useState(() => {
+    if (typeof window !== "undefined") {
+      return new Date();
+    }
+    return null;
+  });
 
   useEffect(() => {
-    setIsClient(true);
     const interval = setInterval(() => setTime(new Date()), 1000);
     return () => clearInterval(interval);
   }, []);
 
-  if (!isClient) {
+  if (!time) {
     return (
-      <div className="flex items-center gap-2 px-4 py-2.5 bg-gradient-to-r from-purple-100 to-indigo-100 rounded-xl">
-        <Clock className="w-5 h-5 text-purple-600" />
-        <span className="text-sm font-medium text-purple-700">Loading...</span>
+      <div className="flex items-center gap-2 px-3 py-2 bg-gradient-to-r from-purple-100 to-indigo-100 rounded-xl">
+        <Clock className="w-4 h-4 text-purple-600" />
+        <span className="text-xs font-medium text-purple-700">Loading...</span>
       </div>
     );
   }
@@ -44,22 +47,27 @@ function LiveClock() {
   const greeting = hours < 12 ? "Good Morning" : hours < 17 ? "Good Afternoon" : "Good Evening";
 
   return (
-    <div className="flex items-center gap-3 px-4 py-2.5 bg-gradient-to-r from-purple-100 to-indigo-100 rounded-xl border border-purple-200/50 shadow-sm">
-      <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${isNight ? "bg-indigo-200" : "bg-amber-100"}`}>
+    <div className="flex items-center gap-2 sm:gap-3 px-3 sm:px-4 py-2 sm:py-2.5 bg-gradient-to-r from-purple-100 to-indigo-100 rounded-xl sm:rounded-2xl border border-purple-200/50 shadow-sm">
+      <div className={`w-8 h-8 sm:w-10 sm:h-10 rounded-lg flex items-center justify-center ${isNight ? "bg-indigo-200" : "bg-amber-100"}`}>
         {isNight ? (
-          <Moon className="w-5 h-5 text-indigo-600" />
+          <Moon className="w-4 h-4 sm:w-5 sm:h-5 text-indigo-600" />
         ) : (
-          <Sun className="w-5 h-5 text-amber-600" />
+          <Sun className="w-4 h-4 sm:w-5 sm:h-5 text-amber-600" />
         )}
       </div>
-      <div>
+      <div className="hidden sm:block">
         <p className="text-xs text-purple-600 font-medium">{greeting}</p>
         <p className="text-lg font-bold text-purple-800 leading-tight">
           {time.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit", second: "2-digit" })}
         </p>
       </div>
-      <div className="h-10 w-px bg-purple-300 mx-1" />
-      <div>
+      <div className="block sm:hidden">
+        <p className="text-xs font-bold text-purple-800">
+          {time.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit" })}
+        </p>
+      </div>
+      <div className="hidden sm:block h-10 w-px bg-purple-300 mx-1" />
+      <div className="hidden md:block">
         <p className="text-xs text-purple-600 font-medium">
           {time.toLocaleDateString("en-US", { weekday: "short" })}
         </p>
@@ -164,15 +172,17 @@ export default function AdminDashboard() {
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4"
+        className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3"
       >
         <div>
           <h2 className="text-2xl lg:text-3xl font-black text-slate-900">
             <span className="bg-gradient-to-r from-purple-600 to-indigo-600 bg-clip-text text-transparent">Dashboard</span>
           </h2>
-          <p className="text-slate-500 font-medium mt-1">Here&apos;s your store overview</p>
+          <p className="text-slate-500 font-medium mt-0.5 sm:mt-1 text-sm sm:text-base">Here&apos;s your store overview</p>
         </div>
-        <LiveClock />
+        <div className="flex-shrink-0">
+          <LiveClock />
+        </div>
       </motion.div>
 
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">

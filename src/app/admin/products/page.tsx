@@ -18,12 +18,10 @@ import {
   Grid3X3,
   List,
   ChevronDown,
-  Eye,
   Edit3,
   Trash,
   CheckCircle,
   XCircle,
-  ArrowUpDown,
   Sparkles
 } from "lucide-react";
 import Image from "next/image";
@@ -429,46 +427,46 @@ export default function AdminProductsPage() {
         )}
       </AnimatePresence>
 
-      <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
         <div>
           <h1 className="text-2xl lg:text-3xl font-black text-slate-900">
             <span className="bg-gradient-to-r from-purple-600 to-indigo-600 bg-clip-text text-transparent">Products</span>
           </h1>
-          <p className="text-slate-500 mt-1 font-medium">Manage your furniture inventory</p>
+          <p className="text-slate-500 mt-0.5 sm:mt-1 text-sm font-medium">Manage your furniture inventory</p>
         </div>
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2 sm:gap-3">
           <button
             onClick={() => fetchProducts()}
-            className="p-3 text-slate-500 hover:text-purple-600 hover:bg-purple-50 rounded-xl transition-all border border-slate-200"
+            className="p-2 sm:p-3 text-slate-500 hover:text-purple-600 hover:bg-purple-50 rounded-xl transition-all border border-slate-200"
             title="Refresh"
           >
-            <RefreshCw className="w-5 h-5" />
+            <RefreshCw className="w-4 h-4 sm:w-5 sm:h-5" />
           </button>
           <div className="flex bg-slate-100 rounded-xl p-1 border border-slate-200">
             <button
               onClick={() => setViewMode("grid")}
-              className={`p-2.5 rounded-lg transition-all ${viewMode === "grid" ? "bg-gradient-to-br from-purple-500 to-indigo-500 text-white shadow-lg shadow-purple-500/30" : "text-slate-500 hover:text-slate-700"}`}
+              className={`p-2 rounded-lg transition-all ${viewMode === "grid" ? "bg-gradient-to-br from-purple-500 to-indigo-500 text-white shadow-lg shadow-purple-500/30" : "text-slate-500 hover:text-slate-700"}`}
             >
-              <Grid3X3 className="w-5 h-5" />
+              <Grid3X3 className="w-4 h-4 sm:w-5 sm:h-5" />
             </button>
             <button
               onClick={() => setViewMode("list")}
-              className={`p-2.5 rounded-lg transition-all ${viewMode === "list" ? "bg-gradient-to-br from-purple-500 to-indigo-500 text-white shadow-lg shadow-purple-500/30" : "text-slate-500 hover:text-slate-700"}`}
+              className={`p-2 rounded-lg transition-all ${viewMode === "list" ? "bg-gradient-to-br from-purple-500 to-indigo-500 text-white shadow-lg shadow-purple-500/30" : "text-slate-500 hover:text-slate-700"}`}
             >
-              <List className="w-5 h-5" />
+              <List className="w-4 h-4 sm:w-5 sm:h-5" />
             </button>
           </div>
           <button
             onClick={() => openModal()}
-            className="flex items-center gap-2 px-5 py-3 bg-gradient-to-r from-purple-600 via-indigo-600 to-purple-600 bg-size-200 text-white font-bold rounded-xl hover:shadow-xl hover:shadow-purple-500/40 transition-all"
+            className="flex items-center gap-1.5 sm:gap-2 px-3 sm:px-5 py-2.5 sm:py-3 bg-gradient-to-r from-purple-600 via-indigo-600 to-purple-600 bg-size-200 text-white font-bold rounded-xl hover:shadow-xl hover:shadow-purple-500/40 transition-all"
           >
-            <Plus className="w-5 h-5" />
-            Add Product
+            <Plus className="w-4 h-4 sm:w-5 sm:h-5" />
+            <span className="hidden sm:inline">Add Product</span>
           </button>
         </div>
       </div>
 
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
