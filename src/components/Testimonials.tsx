@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import Image from "next/image";
 import { Star, Quote } from "lucide-react";
 
 const testimonials = [
@@ -68,10 +69,12 @@ export default function Testimonials() {
               
               <div className="flex items-center gap-3 mb-4">
                 <div className="relative w-12 h-12 rounded-full overflow-hidden">
-                  <img
+                  <Image
                     src={testimonial.avatar}
                     alt={testimonial.name}
+                    fill
                     className="object-cover"
+                    sizes="48px"
                   />
                 </div>
                 <div>
@@ -90,7 +93,7 @@ export default function Testimonials() {
               </div>
 
               <p className="text-[#6B6B6B] leading-relaxed text-sm">
-                "{testimonial.text}"
+                &quot;{testimonial.text}&quot;
               </p>
             </motion.div>
           ))}

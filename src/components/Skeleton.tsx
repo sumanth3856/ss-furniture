@@ -9,9 +9,12 @@ interface SkeletonProps {
 export function Skeleton({ className = "" }: SkeletonProps) {
   return (
     <motion.div
-      animate={{ opacity: [0.5, 1, 0.5] }}
+      animate={{ 
+        opacity: [0.5, 1, 0.5],
+        backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"]
+      }}
       transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
-      className={`bg-gray-200 rounded ${className}`}
+      className={`bg-gradient-to-r from-gray-200 via-gray-100 to-gray-200 bg-[length:200%_100%] rounded ${className}`}
       aria-hidden="true"
     />
   );
@@ -19,16 +22,21 @@ export function Skeleton({ className = "" }: SkeletonProps) {
 
 export function ProductCardSkeleton() {
   return (
-    <div className="bg-white rounded-2xl overflow-hidden shadow-sm">
+    <div className="bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100">
       <Skeleton className="aspect-[4/3] rounded-none" />
-      <div className="p-5 space-y-3">
-        <Skeleton className="h-3 w-16" />
-        <Skeleton className="h-5 w-3/4" />
-        <Skeleton className="h-4 w-full" />
-        <Skeleton className="h-4 w-2/3" />
-        <div className="flex items-center justify-between pt-2">
-          <Skeleton className="h-6 w-20" />
-          <Skeleton className="h-9 w-24 rounded-full" />
+      <div className="p-5 space-y-4">
+        <div className="flex items-start justify-between">
+          <Skeleton className="h-3 w-16 rounded-full" />
+          <Skeleton className="h-5 w-20 rounded-full" />
+        </div>
+        <Skeleton className="h-6 w-3/4" />
+        <div className="space-y-2">
+          <Skeleton className="h-4 w-full" />
+          <Skeleton className="h-4 w-2/3" />
+        </div>
+        <div className="flex items-center justify-between pt-3 border-t border-gray-100">
+          <Skeleton className="h-7 w-24" />
+          <Skeleton className="h-10 w-28 rounded-full" />
         </div>
       </div>
     </div>

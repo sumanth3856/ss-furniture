@@ -32,8 +32,8 @@ export default function NotFound() {
             Page Not Found
           </h1>
           <p className="text-[#6B6B6B] mb-8 max-w-md mx-auto">
-            The page you're looking for doesn't exist or has been moved. 
-            Let's get you back on track.
+            The page you&apos;re looking for doesn&apos;t exist or has been moved. 
+            Let&apos;s get you back on track.
           </p>
           
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">

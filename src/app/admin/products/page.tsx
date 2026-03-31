@@ -3,7 +3,6 @@
 import { useEffect, useState, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { 
-  Package, 
   Plus, 
   Edit2, 
   Trash2, 

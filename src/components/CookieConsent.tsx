@@ -51,7 +51,7 @@ export default function CookieConsent() {
                   We value your privacy
                 </h3>
                 <p className="text-sm text-[#6B6B6B] leading-relaxed">
-                  We use cookies to enhance your browsing experience, serve personalized content, and analyze our traffic. By clicking "Accept", you consent to our use of cookies.
+                  We use cookies to enhance your browsing experience, serve personalized content, and analyze our traffic. By clicking &quot;Accept&quot;, you consent to our use of cookies.
                 </p>
               </div>
               <button

@@ -76,14 +76,14 @@ export default function Hero() {
         >
           <Link
             href="/products"
-            className="group relative px-8 py-4 bg-[#1A1A1A] text-white font-medium rounded-full overflow-hidden transition-all duration-300 hover:shadow-2xl hover:shadow-[#1A1A1A]/20"
+            className="group relative px-8 py-4 bg-gradient-to-r from-gray-900 to-gray-800 text-white font-semibold rounded-full overflow-hidden transition-all duration-300 hover:shadow-2xl hover:shadow-gray-900/30 hover:-translate-y-0.5"
           >
             <span className="relative z-10">Explore Collection</span>
-            <div className="absolute inset-0 bg-[#C9A96E] translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
+            <div className="absolute inset-0 bg-gradient-to-r from-gray-800 to-gray-700 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
           </Link>
           <Link
             href="/about"
-            className="px-8 py-4 text-[#1A1A1A] font-medium border-2 border-[#1A1A1A] rounded-full hover:bg-[#1A1A1A] hover:text-white transition-all duration-300"
+            className="group px-8 py-4 bg-white text-gray-900 font-medium border-2 border-gray-200 rounded-full hover:border-gray-900 transition-all duration-300 hover:shadow-lg"
           >
             Our Story
           </Link>

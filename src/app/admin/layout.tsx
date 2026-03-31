@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
@@ -10,7 +10,6 @@ import {
   ShoppingCart, 
   LogOut,
   Menu,
-  X,
   ChevronRight,
   Boxes
 } from "lucide-react";
@@ -35,6 +34,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
   useEffect(() => {
     const auth = sessionStorage.getItem("ss_admin_auth");
     if (auth === "true") {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setIsAuthenticated(true);
     }
   }, []);

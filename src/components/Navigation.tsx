@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
-import { Search, ShoppingCart, Heart, Menu, X } from "lucide-react";
+import { Search, ShoppingCart, Heart, X } from "lucide-react";
 import { useCart } from "./CartContext";
 import { useWishlist } from "./WishlistContext";
 
@@ -14,6 +14,29 @@ const navLinks = [
   { href: "/about", label: "About" },
   { href: "/contact", label: "Contact" },
 ];
+
+const LogoIconSVG = () => (
+  <svg
+    width="48"
+    height="48"
+    viewBox="0 0 48 48"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    className="w-12 h-12"
+    suppressHydrationWarning
+  >
+    <rect x="2" y="2" width="44" height="44" rx="10" fill="#1a1a1a" />
+    <path
+      d="M14 14C14 11.7909 15.7909 10 18 10H22C24.2091 10 26 11.7909 26 14V14.5H22V14C22 12.8954 21.1046 12 20 12H18C16.8954 12 16 12.8954 16 14V32C16 33.1046 16.8954 34 18 34H22C24.2091 34 26 32.2091 26 30V30.5H22V30C22 31.1046 21.1046 32 20 32H18C16.8954 32 16 31.1046 16 30V14H14Z"
+      fill="#C9A96E"
+    />
+    <path
+      d="M34 14C34 11.7909 35.7909 10 38 10H42C44.2091 10 46 11.7909 46 14V30C46 32.2091 44.2091 34 42 34H38C35.7909 34 34 32.2091 34 30V14Z"
+      fill="#C9A96E"
+      fillOpacity="0.7"
+    />
+  </svg>
+);
 
 export default function Navigation() {
   const pathname = usePathname();
@@ -42,27 +65,24 @@ export default function Navigation() {
 
   return (
     <header
-      className={`hidden md:block sticky top-0 z-40 transition-all duration-300 ${
+      className={`hidden md:block sticky top-0 z-40 transition-all duration-500 ${
         isScrolled
-          ? "bg-white/95 backdrop-blur-xl shadow-sm border-b border-black/5"
-          : "bg-[#FAFAFA]/95 backdrop-blur-md"
+          ? "bg-white/95 backdrop-blur-2xl shadow-[0_1px_3px_rgba(0,0,0,0.05)] border-b border-gray-100/50"
+          : "bg-white/80 backdrop-blur-xl"
       }`}
     >
-      <div className="max-w-7xl mx-auto px-6">
+      <div className="w-full px-4 sm:px-6 lg:px-8 xl:px-12">
         <div className="flex items-center justify-between h-20">
           <Link 
             href="/" 
-            className="flex items-center gap-3 group"
+            className="flex items-center gap-3.5 group flex-shrink-0"
           >
-            <div className="relative w-12 h-12 bg-[#1A1A1A] rounded-xl flex items-center justify-center overflow-hidden transition-transform duration-300 group-hover:scale-105">
-              <span className="text-[#C9A96E] font-serif text-2xl font-bold">S</span>
-              <div className="absolute inset-0 bg-gradient-to-br from-[#C9A96E]/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-            </div>
+            <LogoIconSVG />
             <div className="flex flex-col">
-              <span className="font-serif text-xl font-bold text-[#1A1A1A] leading-tight">
+              <span className="font-serif text-xl font-bold text-gray-900 leading-tight tracking-tight">
                 SS Furniture
               </span>
-              <span className="text-[10px] text-[#6B6B6B] uppercase tracking-widest">
+              <span className="text-[10px] text-gray-400 uppercase tracking-[0.2em] font-medium">
                 Premium Living
               </span>
             </div>
@@ -77,15 +97,31 @@ export default function Navigation() {
                   href={link.href}
                   role="menuitem"
                   aria-current={isActive ? "page" : undefined}
-                  className="relative px-5 py-2.5 text-sm font-medium transition-all duration-200 rounded-full hover:bg-black/5 focus:outline-none focus:ring-2 focus:ring-[#C9A96E] focus:ring-offset-2"
+                  className="relative px-5 py-2.5 text-sm font-medium transition-all duration-300 rounded-full"
                 >
-                  <span className={`relative z-10 ${isActive ? "text-[#1A1A1A]" : "text-[#6B6B6B] hover:text-[#1A1A1A]"}`}>
+                  <AnimatePresence mode="wait">
+                    {isActive && (
+                      <motion.div
+                        layoutId="desktopActive"
+                        className="absolute inset-0 bg-gradient-to-r from-gray-900/10 via-gray-900/5 to-gray-900/10 rounded-full border border-gray-900/10"
+                        initial={{ opacity: 0, scale: 0.8 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        exit={{ opacity: 0, scale: 0.8 }}
+                        transition={{ type: "spring", stiffness: 400, damping: 30 }}
+                      />
+                    )}
+                  </AnimatePresence>
+                  <span className={`relative z-10 transition-colors duration-300 ${
+                    isActive 
+                      ? "text-gray-900 font-semibold" 
+                      : "text-gray-500 hover:text-gray-900"
+                  }`}>
                     {link.label}
                   </span>
                   {isActive && (
                     <motion.div
-                      layoutId="desktopActive"
-                      className="absolute inset-0 bg-[#C9A96E]/10 rounded-full"
+                      className="absolute -bottom-0.5 left-1/2 -translate-x-1/2 w-1.5 h-1.5 bg-gray-900 rounded-full"
+                      layoutId="activeDot"
                       transition={{ type: "spring", stiffness: 500, damping: 30 }}
                     />
                   )}
@@ -94,46 +130,57 @@ export default function Navigation() {
             })}
           </nav>
 
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1">
             <button
               onClick={() => setIsSearchOpen(!isSearchOpen)}
-              className="p-3 rounded-full hover:bg-black/5 transition-colors focus:outline-none focus:ring-2 focus:ring-[#C9A96E]"
+              className="group p-3 rounded-full hover:bg-gray-100 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-gray-900/20"
               aria-label="Search"
             >
-              <Search className="w-5 h-5 text-[#6B6B6B]" />
+              <Search className="w-5 h-5 text-gray-500 group-hover:text-gray-900 transition-colors" />
             </button>
 
             <Link
               href="/wishlist"
-              className="relative p-3 rounded-full hover:bg-black/5 transition-colors focus:outline-none focus:ring-2 focus:ring-[#C9A96E]"
+              className="relative p-3 rounded-full hover:bg-gray-100 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-gray-900/20"
               aria-label={`Wishlist, ${wishlistCount} items`}
             >
-              <Heart className="w-5 h-5 text-[#6B6B6B] hover:text-[#C9A96E] transition-colors" />
+              <Heart className="w-5 h-5 text-gray-500 hover:text-rose-500 transition-colors" />
               {wishlistCount > 0 && (
-                <span className="absolute -top-0.5 -right-0.5 w-5 h-5 bg-[#C9A96E] text-white text-[10px] font-bold rounded-full flex items-center justify-center">
+                <motion.span
+                  initial={{ scale: 0 }}
+                  animate={{ scale: 1 }}
+                  className="absolute -top-0.5 -right-0.5 min-w-[20px] h-5 bg-gradient-to-br from-rose-500 to-pink-500 text-white text-[10px] font-bold rounded-full flex items-center justify-center shadow-lg shadow-rose-500/30 px-1"
+                >
                   {wishlistCount}
-                </span>
+                </motion.span>
               )}
             </Link>
 
             <Link
               href="/cart"
-              className="relative p-3 rounded-full hover:bg-black/5 transition-colors focus:outline-none focus:ring-2 focus:ring-[#C9A96E]"
+              className="relative p-3 rounded-full hover:bg-gray-100 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-gray-900/20"
               aria-label={`Cart, ${cartCount} items`}
             >
-              <ShoppingCart className="w-5 h-5 text-[#6B6B6B] hover:text-[#1A1A1A] transition-colors" />
+              <ShoppingCart className="w-5 h-5 text-gray-500 hover:text-gray-900 transition-colors" />
               {cartCount > 0 && (
-                <span className="absolute -top-0.5 -right-0.5 w-5 h-5 bg-[#1A1A1A] text-white text-[10px] font-bold rounded-full flex items-center justify-center">
+                <motion.span
+                  initial={{ scale: 0 }}
+                  animate={{ scale: 1 }}
+                  className="absolute -top-0.5 -right-0.5 min-w-[20px] h-5 bg-gradient-to-br from-gray-900 to-gray-800 text-white text-[10px] font-bold rounded-full flex items-center justify-center shadow-lg shadow-gray-900/30 px-1"
+                >
                   {cartCount}
-                </span>
+                </motion.span>
               )}
             </Link>
 
             <Link
               href="/contact"
-              className="ml-2 px-6 py-2.5 bg-[#1A1A1A] text-white text-sm font-medium rounded-full hover:bg-[#2C2C2C] transition-all duration-300 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-[#C9A96E] focus:ring-offset-2"
+              className="ml-2 group relative px-6 py-2.5 overflow-hidden rounded-full"
             >
-              Get in Touch
+              <div className="absolute inset-0 bg-gradient-to-r from-gray-900 to-gray-800 transition-all duration-300 group-hover:shadow-lg group-hover:shadow-gray-900/30 group-hover:-translate-y-0.5" />
+              <span className="relative z-10 text-sm font-semibold text-white tracking-wide">
+                Get in Touch
+              </span>
             </Link>
           </div>
         </div>
@@ -144,30 +191,34 @@ export default function Navigation() {
               initial={{ height: 0, opacity: 0 }}
               animate={{ height: "auto", opacity: 1 }}
               exit={{ height: 0, opacity: 0 }}
-              transition={{ duration: 0.2 }}
-              className="overflow-hidden border-t border-black/5"
+              transition={{ duration: 0.3, ease: "easeInOut" }}
+              className="overflow-hidden"
             >
-              <form onSubmit={handleSearch} className="py-4">
-                <div className="relative max-w-xl mx-auto">
-                  <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-[#6B6B6B]" />
-                  <input
-                    type="text"
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    placeholder="Search for furniture..."
-                    className="w-full pl-12 pr-12 py-3 bg-[#FAFAFA] rounded-full border border-black/10 focus:outline-none focus:border-[#C9A96E] focus:ring-2 focus:ring-[#C9A96E]/20 transition-all"
-                    autoFocus
-                  />
-                  <button
-                    type="button"
-                    onClick={() => setIsSearchOpen(false)}
-                    className="absolute right-4 top-1/2 -translate-y-1/2 p-1 rounded-full hover:bg-black/5 transition-colors"
-                    aria-label="Close search"
-                  >
-                    <X className="w-4 h-4 text-[#6B6B6B]" />
-                  </button>
-                </div>
-              </form>
+              <div className="py-4 border-t border-gray-100">
+                <form onSubmit={handleSearch} className="relative">
+                  <div className="relative max-w-2xl mx-auto group">
+                    <div className="relative flex items-center">
+                      <Search className="absolute left-5 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                      <input
+                        type="text"
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                        placeholder="Search for furniture, sofas, tables..."
+                        className="w-full pl-14 pr-14 py-4 bg-gray-50/80 rounded-full border-2 border-gray-100 focus:border-gray-900 focus:bg-white focus:outline-none transition-all duration-300 text-gray-900 placeholder:text-gray-400"
+                        autoFocus
+                      />
+                      <button
+                        type="button"
+                        onClick={() => setIsSearchOpen(false)}
+                        className="absolute right-3 top-1/2 -translate-y-1/2 p-2 rounded-full hover:bg-gray-100 transition-colors"
+                        aria-label="Close search"
+                      >
+                        <X className="w-4 h-4 text-gray-400" />
+                      </button>
+                    </div>
+                  </div>
+                </form>
+              </div>
             </motion.div>
           )}
         </AnimatePresence>

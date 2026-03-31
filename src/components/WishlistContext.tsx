@@ -6,6 +6,7 @@ import {
   useState,
   useEffect,
   useCallback,
+  useMemo,
   ReactNode,
 } from "react";
 import type { Product } from "@/lib/data";
@@ -117,21 +118,26 @@ export function WishlistProvider({ children }: { children: ReactNode }) {
     }
   }, [items]);
 
+  const itemCount = useMemo(() => items.length, [items]);
+
+  const contextValue = useMemo(
+    () => ({
+      items,
+      addItem,
+      removeItem,
+      isInWishlist,
+      toggleItem,
+      clearWishlist,
+      itemCount,
+      isLoading,
+      isHydrated,
+      refreshWishlist,
+    }),
+    [items, addItem, removeItem, isInWishlist, toggleItem, clearWishlist, itemCount, isLoading, isHydrated, refreshWishlist]
+  );
+
   return (
-    <WishlistContext.Provider
-      value={{
-        items,
-        addItem,
-        removeItem,
-        isInWishlist,
-        toggleItem,
-        clearWishlist,
-        itemCount: items.length,
-        isLoading,
-        isHydrated,
-        refreshWishlist,
-      }}
-    >
+    <WishlistContext.Provider value={contextValue}>
       {children}
     </WishlistContext.Provider>
   );

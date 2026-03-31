@@ -18,10 +18,11 @@ export default function AdminDashboard() {
   useEffect(() => {
     async function fetchStats() {
       try {
-        const productsRes = await fetch("/api/products");
-        const products = await productsRes.json();
+        const productsRes = await fetch("/api/products?limit=1000");
+        const response = await productsRes.json();
+        const products = response.data || [];
 
-        const categories: string[] = [...new Set<string>(products.map((p: any) => p.category))];
+        const categories: string[] = [...new Set<string>(products.map((p: { category: string }) => p.category))];
 
         setStats({
           totalProducts: products.length,

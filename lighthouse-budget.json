@@ -1,0 +1,92 @@
+{
+  "budgets": [
+    {
+      "resourceSizes": [
+        {
+          "resourceType": "total",
+          "budget": 350
+        },
+        {
+          "resourceType": "script",
+          "budget": 100
+        },
+        {
+          "resourceType": "image",
+          "budget": 150
+        },
+        {
+          "resourceType": "stylesheet",
+          "budget": 30
+        },
+        {
+          "resourceType": "font",
+          "budget": 20
+        },
+        {
+          "resourceType": "document",
+          "budget": 10
+        },
+        {
+          "resourceType": "worker",
+          "budget": 20
+        },
+        {
+          "resourceType": "other",
+          "budget": 30
+        }
+      ],
+      "resourceCounts": [
+        {
+          "resourceType": "total",
+          "budget": 60
+        },
+        {
+          "resourceType": "third-party",
+          "budget": 15
+        }
+      ]
+    },
+    {
+      "timings": [
+        {
+          "metric": "first-contentful-paint",
+          "budget": 1500
+        },
+        {
+          "metric": "largest-contentful-paint",
+          "budget": 2500
+        },
+        {
+          "metric": "cumulative-layout-shift",
+          "budget": 0.1
+        },
+        {
+          "metric": "total-blocking-time",
+          "budget": 200
+        },
+        {
+          "metric": "speed-index",
+          "budget": 3000
+        },
+        {
+          "metric": "interactive",
+          "budget": 3500
+        }
+      ]
+    }
+  ],
+  "categories": {
+    "performance": {
+      "passMarks": [0.8, 0.9, 0.95]
+    },
+    "accessibility": {
+      "passMarks": [0.9, 0.95]
+    },
+    "best-practices": {
+      "passMarks": [0.85, 0.9, 0.95]
+    },
+    "seo": {
+      "passMarks": [0.9, 0.95]
+    }
+  }
+}

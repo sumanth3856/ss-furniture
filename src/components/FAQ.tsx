@@ -136,7 +136,7 @@ export default function FAQ() {
 
         <div className="mt-8 text-center">
           <p className="text-[#6B6B6B] mb-4">
-            Still have questions? We're here to help.
+            Still have questions? We&apos;re here to help.
           </p>
           <a
             href="/contact"

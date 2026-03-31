@@ -6,13 +6,23 @@ export async function GET(request: NextRequest) {
     const { searchParams } = new URL(request.url);
     const category = searchParams.get("category");
     const search = searchParams.get("search");
-    const limit = searchParams.get("limit") || "50";
+    const page = parseInt(searchParams.get("page") || "1");
+    const limit = Math.min(parseInt(searchParams.get("limit") || "20"), 100);
+    const offset = (page - 1) * limit;
+
+    let countQuery = supabase.from("products").select("id", { count: "exact", head: true });
+    
+    if (category && category !== "All") {
+      countQuery = countQuery.eq("category", category);
+    }
+    
+    const { count: total } = await countQuery;
 
     let query = supabase
       .from("products")
       .select("*")
       .order("created_at", { ascending: false })
-      .limit(parseInt(limit));
+      .range(offset, offset + limit - 1);
 
     if (category && category !== "All") {
       query = query.eq("category", category);
@@ -29,7 +39,15 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: error.message }, { status: 500 });
     }
 
-    return NextResponse.json(data);
+    return NextResponse.json({
+      data,
+      pagination: {
+        page,
+        limit,
+        total: total || 0,
+        totalPages: Math.ceil((total || 0) / limit),
+      },
+    });
   } catch (error) {
     console.error("API error:", error);
     return NextResponse.json(
