@@ -5,19 +5,17 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { 
-  LayoutDashboard, 
-  Package, 
-  ClipboardList,
-  LogOut,
   X,
   Eye,
-  Shield
+  Shield,
+  LogOut,
+  Menu
 } from "lucide-react";
 
 const navItems = [
-  { href: "/admin", icon: LayoutDashboard, label: "Dashboard" },
-  { href: "/admin/products", icon: Package, label: "Products" },
-  { href: "/admin/orders", icon: ClipboardList, label: "Orders" },
+  { href: "/admin", label: "Dashboard" },
+  { href: "/admin/products", label: "Products" },
+  { href: "/admin/orders", label: "Orders" },
 ];
 
 interface AdminLayoutProps {
@@ -30,16 +28,6 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const pathname = usePathname();
-  const [isMobile, setIsMobile] = useState(false);
-
-  useEffect(() => {
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth < 1024);
-    };
-    checkMobile();
-    window.addEventListener("resize", checkMobile);
-    return () => window.removeEventListener("resize", checkMobile);
-  }, []);
 
   useEffect(() => {
     const initAuth = () => {
@@ -50,17 +38,6 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
     };
     initAuth();
   }, []);
-
-  useEffect(() => {
-    if (sidebarOpen && isMobile) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "";
-    }
-    return () => {
-      document.body.style.overflow = "";
-    };
-  }, [sidebarOpen, isMobile]);
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
@@ -153,101 +130,117 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 flex">
-      <aside className={`
-        fixed lg:static inset-0 z-50 w-full sm:w-72 bg-gray-900 transform transition-transform duration-300 ease-out
-        ${sidebarOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"}
-      `}>
-        <div className="flex flex-col h-full">
-          <div className="p-4 sm:p-6 border-b border-white/5">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br from-amber-400 to-amber-600 rounded-xl sm:rounded-2xl flex items-center justify-center shadow-lg shadow-amber-500/20">
-                  <Shield className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
-                </div>
-                <div className="hidden sm:block">
-                  <h2 className="font-bold text-white text-base sm:text-lg">SS Furniture</h2>
-                  <p className="text-xs text-gray-400">Admin Dashboard</p>
-                </div>
+    <div className="min-h-screen bg-gray-50">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6">
+        <div className="flex items-center justify-between mb-4 sm:mb-6">
+          <div className="flex items-center gap-3">
+            <button
+              onClick={() => setSidebarOpen(!sidebarOpen)}
+              className="lg:hidden p-2 hover:bg-gray-100 rounded-xl transition-colors"
+            >
+              <Menu className="w-5 h-5 text-gray-600" />
+            </button>
+            <div className="flex items-center gap-2">
+              <div className="w-8 h-8 bg-gradient-to-br from-amber-400 to-amber-600 rounded-lg flex items-center justify-center">
+                <Shield className="w-4 h-4 text-white" />
               </div>
-              <button
-                onClick={() => setSidebarOpen(false)}
-                className="lg:hidden p-2 text-gray-400 hover:text-white hover:bg-white/10 rounded-xl transition-colors"
-              >
-                <X className="w-6 h-6" />
-              </button>
+              <span className="font-bold text-gray-900 hidden sm:inline">SS Furniture Admin</span>
             </div>
           </div>
-
-          <nav className="flex-1 p-3 sm:p-4 space-y-1 overflow-y-auto">
-            {navItems.map((item) => {
-              const Icon = item.icon;
-              const isActive = pathname === item.href;
-              return (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  onClick={() => setSidebarOpen(false)}
-                  className={`
-                    flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200
-                    ${isActive 
-                      ? "bg-gradient-to-r from-amber-500 to-amber-600 text-white shadow-lg shadow-amber-500/20" 
-                      : "text-gray-400 hover:bg-white/5 hover:text-white"
-                    }
-                  `}
-                >
-                  <Icon className={`w-5 h-5 ${isActive ? "text-white" : ""}`} />
-                  <span className="font-medium">{item.label}</span>
-                  {isActive && (
-                    <ChevronRight className="w-4 h-4 ml-auto" />
-                  )}
-                </Link>
-              );
-            })}
-          </nav>
-
-          <div className="p-3 sm:p-4 space-y-1 border-t border-white/5">
+          <div className="flex items-center gap-2">
             <Link
               href="/"
               target="_blank"
-              className="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-400 hover:bg-white/5 hover:text-white transition-all"
+              className="p-2 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-xl transition-colors hidden sm:flex items-center gap-2"
             >
-              <Eye className="w-5 h-5" />
-              <span className="font-medium">View Store</span>
+              <Eye className="w-4 h-4" />
+              <span className="text-sm">View Store</span>
             </Link>
             <button
               onClick={handleLogout}
-              className="flex items-center gap-3 px-4 py-3 w-full rounded-xl text-gray-400 hover:bg-red-500/10 hover:text-red-400 transition-all"
+              className="p-2 text-gray-500 hover:text-red-600 hover:bg-red-50 rounded-xl transition-colors"
+              title="Sign Out"
             >
-              <LogOut className="w-5 h-5" />
-              <span className="font-medium">Sign Out</span>
+              <LogOut className="w-4 h-4" />
             </button>
           </div>
         </div>
-      </aside>
+
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={pathname}
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.2 }}
+          >
+            {children}
+          </motion.div>
+        </AnimatePresence>
+      </div>
 
       {sidebarOpen && (
-        <div 
-          className="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 lg:hidden"
-          onClick={() => setSidebarOpen(false)}
-        />
+        <>
+          <div 
+            className="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 lg:hidden"
+            onClick={() => setSidebarOpen(false)}
+          />
+          <div className="fixed top-0 left-0 bottom-0 w-64 bg-white shadow-2xl z-50 p-4">
+            <div className="flex items-center justify-between mb-6">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 bg-gradient-to-br from-amber-400 to-amber-600 rounded-xl flex items-center justify-center">
+                  <Shield className="w-5 h-5 text-white" />
+                </div>
+                <span className="font-bold text-gray-900">Menu</span>
+              </div>
+              <button
+                onClick={() => setSidebarOpen(false)}
+                className="p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-xl transition-colors"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+            <nav className="space-y-1">
+              {navItems.map((item) => {
+                const isActive = pathname === item.href;
+                return (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    onClick={() => setSidebarOpen(false)}
+                    className={`
+                      flex items-center px-4 py-3 rounded-xl transition-all
+                      ${isActive 
+                        ? "bg-amber-50 text-amber-700 font-medium" 
+                        : "text-gray-600 hover:bg-gray-100"
+                      }
+                    `}
+                  >
+                    {item.label}
+                  </Link>
+                );
+              })}
+            </nav>
+            <div className="absolute bottom-4 left-4 right-4">
+              <Link
+                href="/"
+                target="_blank"
+                className="flex items-center gap-2 px-4 py-3 text-gray-600 hover:bg-gray-100 rounded-xl transition-colors"
+              >
+                <Eye className="w-5 h-5" />
+                View Store
+              </Link>
+              <button
+                onClick={handleLogout}
+                className="flex items-center gap-2 px-4 py-3 w-full text-red-600 hover:bg-red-50 rounded-xl transition-colors"
+              >
+                <LogOut className="w-5 h-5" />
+                Sign Out
+              </button>
+            </div>
+          </div>
+        </>
       )}
-
-      <main className="flex-1 min-h-screen flex flex-col w-full">
-        <div className="flex-1 p-4 sm:p-6">
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={pathname}
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -10 }}
-              transition={{ duration: 0.2 }}
-            >
-              {children}
-            </motion.div>
-          </AnimatePresence>
-        </div>
-      </main>
     </div>
   );
 }
