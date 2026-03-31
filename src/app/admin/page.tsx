@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { Package, ShoppingCart, Heart, TrendingUp, ArrowRight, Eye, Settings, Bell, Plus, ClipboardList, Clock, Sun, Moon, Gem, Crown } from "lucide-react";
+import { Package, ShoppingCart, Heart, TrendingUp, ArrowRight, Eye, Settings, Bell, Plus, ClipboardList, Clock, Sun, Moon, Activity, LayoutGrid, LayoutDashboard } from "lucide-react";
 
 interface Stats {
   totalProducts: number;
@@ -162,7 +162,7 @@ export default function AdminDashboard() {
         <div>
           <div className="flex items-center gap-2 mb-1">
             <div className="w-8 h-8 rounded-lg bg-slate-900 flex items-center justify-center">
-              <Crown className="w-4 h-4 text-white" />
+              <LayoutDashboard className="w-4 h-4 text-white" />
             </div>
             <h2 className="text-2xl lg:text-3xl font-black text-slate-900">
               Dashboard
@@ -213,7 +213,7 @@ export default function AdminDashboard() {
           <div className="flex items-center justify-between mb-4 sm:mb-6">
             <div className="flex items-center gap-2">
               <div className="w-7 h-7 rounded-lg bg-indigo-500 flex items-center justify-center">
-                <Gem className="w-4 h-4 text-white" />
+                <Activity className="w-4 h-4 text-white" />
               </div>
               <h3 className="text-base sm:text-lg font-bold text-slate-900">Recent Activity</h3>
             </div>
@@ -252,7 +252,7 @@ export default function AdminDashboard() {
         >
           <div className="flex items-center gap-2 mb-4 sm:mb-5">
             <div className="w-7 h-7 rounded-lg bg-indigo-500 flex items-center justify-center">
-              <Crown className="w-4 h-4 text-white" />
+              <LayoutGrid className="w-4 h-4 text-white" />
             </div>
             <h3 className="text-base sm:text-lg font-bold text-slate-900">Quick Actions</h3>
           </div>

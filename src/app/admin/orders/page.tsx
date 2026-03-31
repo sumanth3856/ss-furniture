@@ -20,7 +20,7 @@ import {
   Phone,
   MapPin,
   CreditCard,
-  Sparkles
+  IndianRupee
 } from "lucide-react";
 
 interface OrderItem {
@@ -257,7 +257,7 @@ export default function AdminOrdersPage() {
 
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
         <StatCard label="Total Orders" value={statusCounts.all} icon={ShoppingCart} bgColor="bg-indigo-500" delay={0} />
-        <StatCard label="Total Revenue" value={`₹${(totalRevenue / 100000).toFixed(1)}L`} icon={Sparkles} bgColor="bg-amber-500" delay={0.05} />
+        <StatCard label="Total Revenue" value={`₹${(totalRevenue / 100000).toFixed(1)}L`} icon={IndianRupee} bgColor="bg-amber-500" delay={0.05} />
         <StatCard label="Delivered" value={statusCounts.delivered} icon={CheckCircle} bgColor="bg-emerald-500" delay={0.1} />
         <StatCard label="Pending" value={statusCounts.pending} icon={Clock} bgColor="bg-orange-500" delay={0.15} />
       </div>

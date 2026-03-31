@@ -22,7 +22,7 @@ import {
   Trash,
   CheckCircle,
   XCircle,
-  Sparkles
+  Gauge
 } from "lucide-react";
 import Image from "next/image";
 import ErrorBoundary from "@/components/ErrorBoundary";
@@ -496,7 +496,7 @@ export default function AdminProductsPage() {
           className="bg-slate-900 rounded-2xl p-4 sm:p-5"
         >
           <div className="w-11 h-11 bg-white/10 rounded-xl flex items-center justify-center mb-3">
-            <Sparkles className="w-5 h-5 text-white" />
+            <Gauge className="w-5 h-5 text-white" />
           </div>
           <p className="text-2xl sm:text-3xl font-bold text-white">
             {stats.total > 0 ? Math.round((stats.inStock / stats.total) * 100) : 0}%
