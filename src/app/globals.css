@@ -73,10 +73,6 @@ body {
   }
 }
 
-.safe-area-bottom {
-  padding-bottom: max(env(safe-area-inset-bottom), 0.5rem);
-}
-
 .line-clamp-2 {
   display: -webkit-box;
   -webkit-line-clamp: 2;

@@ -13,8 +13,7 @@ import {
   X,
   ChevronRight,
   Eye,
-  Shield,
-  Home
+  Shield
 } from "lucide-react";
 
 const navItems = [
@@ -265,7 +264,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
           </div>
         </header>
 
-        <div className="flex-1 p-4 sm:p-6 pb-20 lg:pb-6">
+        <div className="flex-1 p-4 sm:p-6">
           <AnimatePresence mode="wait">
             <motion.div
               key={pathname}
@@ -278,48 +277,6 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
             </motion.div>
           </AnimatePresence>
         </div>
-
-        <nav className="lg:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-100 z-40 safe-area-bottom">
-          <div className="flex items-center justify-around py-2 px-2">
-            {navItems.map((item) => {
-              const Icon = item.icon;
-              const isActive = pathname === item.href;
-              return (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  className={`
-                    flex flex-col items-center justify-center gap-1 py-2 px-3 rounded-xl transition-all min-w-[64px]
-                    ${isActive 
-                      ? "text-amber-600" 
-                      : "text-gray-400 hover:text-gray-600"
-                    }
-                  `}
-                >
-                  <div className={`
-                    p-2 rounded-xl transition-all
-                    ${isActive ? "bg-amber-50" : ""}
-                  `}>
-                    <Icon className="w-5 h-5" />
-                  </div>
-                  <span className={`text-xs font-medium ${isActive ? "text-amber-600" : ""}`}>
-                    {item.label}
-                  </span>
-                </Link>
-              );
-            })}
-            <Link
-              href="/"
-              target="_blank"
-              className="flex flex-col items-center justify-center gap-1 py-2 px-3 rounded-xl text-gray-400 hover:text-gray-600 transition-all min-w-[64px]"
-            >
-              <div className="p-2 rounded-xl">
-                <Home className="w-5 h-5" />
-              </div>
-              <span className="text-xs font-medium">Store</span>
-            </Link>
-          </div>
-        </nav>
       </main>
     </div>
   );
