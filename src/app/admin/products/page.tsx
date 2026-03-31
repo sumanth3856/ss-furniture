@@ -668,44 +668,121 @@ export default function AdminProductsPage() {
                       )}
                     </div>
 
-                    <div className="p-4 bg-gray-50 rounded-xl">
-                      <label className="block text-sm font-semibold text-gray-700 mb-4">
-                        Stock Status
-                      </label>
-                      <div className="flex items-center gap-4">
-                        <motion.button
-                          type="button"
-                          whileTap={{ scale: 0.95 }}
-                          onClick={() => setFormData({ ...formData, in_stock: !formData.in_stock })}
-                          className={`relative w-14 h-8 rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-offset-2 ${
-                            formData.in_stock ? "bg-emerald-500" : "bg-gray-300"
+                    <div className="p-5 bg-gradient-to-br from-gray-50 to-gray-100/50 rounded-2xl border border-gray-100">
+                      <div className="flex items-center justify-between mb-4">
+                        <label className="text-sm font-semibold text-gray-700">
+                          Stock Availability
+                        </label>
+                        <motion.div
+                          initial={false}
+                          animate={{
+                            backgroundColor: formData.in_stock ? "rgba(16, 185, 129, 0.1)" : "rgba(107, 114, 128, 0.1)"
+                          }}
+                          className={`px-3 py-1 rounded-full text-xs font-medium ${
+                            formData.in_stock 
+                              ? "bg-emerald-100 text-emerald-700" 
+                              : "bg-gray-200 text-gray-600"
                           }`}
                         >
-                          <motion.span
-                            animate={{ x: formData.in_stock ? 28 : 4 }}
-                            transition={{ type: "spring", stiffness: 500, damping: 30 }}
-                            className="absolute top-1 w-6 h-6 bg-white rounded-full shadow-lg"
-                          />
-                        </motion.button>
-                        <div className="flex items-center gap-3">
-                          {formData.in_stock ? (
-                            <>
-                              <div className="w-2.5 h-2.5 bg-emerald-500 rounded-full animate-pulse" />
-                              <span className="font-semibold text-emerald-600">In Stock</span>
-                            </>
-                          ) : (
-                            <>
-                              <div className="w-2.5 h-2.5 bg-gray-400 rounded-full" />
-                              <span className="font-semibold text-gray-500">Out of Stock</span>
-                            </>
-                          )}
+                          {formData.in_stock ? "Active" : "Inactive"}
+                        </motion.div>
+                      </div>
+                      
+                      <div className="flex items-center gap-5">
+                        <div className="relative">
+                          <motion.button
+                            type="button"
+                            whileTap={{ scale: 0.95 }}
+                            onClick={() => setFormData({ ...formData, in_stock: !formData.in_stock })}
+                            className={`relative w-16 h-9 rounded-full transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-offset-2 shadow-inner ${
+                              formData.in_stock 
+                                ? "bg-gradient-to-r from-emerald-500 to-emerald-600 shadow-emerald-500/30" 
+                                : "bg-gradient-to-r from-gray-300 to-gray-400 shadow-gray-300/30"
+                            }`}
+                          >
+                            <motion.div
+                              initial={false}
+                              animate={{
+                                x: formData.in_stock ? 32 : 4,
+                                scale: formData.in_stock ? 1 : 0.9
+                              }}
+                              transition={{ 
+                                type: "spring", 
+                                stiffness: 500, 
+                                damping: 30 
+                              }}
+                              className="absolute top-1 w-7 h-7 bg-white rounded-full shadow-lg flex items-center justify-center"
+                            >
+                              <motion.div
+                                initial={false}
+                                animate={{
+                                  opacity: formData.in_stock ? 1 : 0.3,
+                                  scale: formData.in_stock ? 1 : 0.8
+                                }}
+                                transition={{ duration: 0.2 }}
+                                className="w-3 h-3 rounded-full bg-emerald-500"
+                              />
+                            </motion.div>
+                            
+                            {formData.in_stock && (
+                              <motion.div
+                                initial={{ opacity: 0, scale: 0 }}
+                                animate={{ opacity: 1, scale: 1 }}
+                                className="absolute right-1.5 top-1/2 -translate-y-1/2"
+                              >
+                                <Check className="w-3 h-3 text-white/90" />
+                              </motion.div>
+                            )}
+                          </motion.button>
+                          
+                          <div className="absolute -bottom-6 left-1/2 -translate-x-1/2 whitespace-nowrap">
+                            <span className={`text-[10px] font-medium transition-colors duration-200 ${
+                              formData.in_stock ? "text-emerald-600" : "text-gray-400"
+                            }`}>
+                              {formData.in_stock ? "In Stock" : "Out of Stock"}
+                            </span>
+                          </div>
+                        </div>
+
+                        <div className="flex-1 pl-2">
+                          <motion.p
+                            initial={false}
+                            animate={{
+                              color: formData.in_stock ? "#059669" : "#6b7280"
+                            }}
+                            className="font-semibold text-base"
+                          >
+                            {formData.in_stock ? "Available for Sale" : "Not Available"}
+                          </motion.p>
+                          <motion.p
+                            initial={false}
+                            animate={{ opacity: formData.in_stock ? 1 : 0.7 }}
+                            className="text-xs text-gray-500 mt-0.5"
+                          >
+                            {formData.in_stock 
+                              ? "Customers can purchase this item" 
+                              : "This item is hidden from customers"}
+                          </motion.p>
                         </div>
                       </div>
-                      <p className="mt-3 text-xs text-gray-500">
-                        {formData.in_stock 
-                          ? "Product is available for purchase" 
-                          : "Product is not available for purchase"}
-                      </p>
+                      
+                      <div className={`mt-6 pt-4 border-t border-gray-200/60 ${
+                        formData.in_stock ? "border-emerald-100" : "border-gray-200"
+                      }`}>
+                        <div className="flex items-center gap-2">
+                          <motion.div
+                            initial={false}
+                            animate={{
+                              backgroundColor: formData.in_stock ? "#10b981" : "#9ca3af",
+                              boxShadow: formData.in_stock ? "0 0 8px rgba(16, 185, 129, 0.6)" : "none"
+                            }}
+                            className="w-2 h-2 rounded-full"
+                          />
+                          <span className="text-xs text-gray-500">
+                            Status will be updated when you save the product
+                          </span>
+                        </div>
+                      </div>
                     </div>
                   </div>
 
