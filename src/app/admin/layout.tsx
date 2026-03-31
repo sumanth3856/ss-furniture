@@ -132,17 +132,17 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
 
   return (
     <div className="min-h-screen bg-slate-100 flex">
-      <aside className="hidden lg:flex lg:flex-col lg:w-72 lg:bg-slate-900 lg:border-r lg:border-slate-800 lg:fixed lg:inset-y-0">
-        <div className="p-6 border-b border-slate-800">
+      <aside className="hidden lg:flex lg:flex-col lg:w-72 lg:bg-white lg:border-r lg:border-slate-200 lg:fixed lg:inset-y-0">
+        <div className="p-6 border-b border-slate-100">
           <div className="flex items-center gap-3">
-            <div className="w-12 h-12 bg-slate-800 rounded-2xl flex items-center justify-center">
+            <div className="w-12 h-12 bg-indigo-500 rounded-2xl flex items-center justify-center">
               <Shield className="w-6 h-6 text-white" />
             </div>
             <div>
-              <h2 className="font-bold text-xl text-white">SS Furniture</h2>
+              <h2 className="font-bold text-xl text-slate-900">SS Furniture</h2>
               <div className="flex items-center gap-1.5 mt-0.5">
                 <span className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse" />
-                <p className="text-xs text-slate-400 font-medium">Admin Dashboard</p>
+                <p className="text-xs text-slate-500 font-medium">Admin Dashboard</p>
               </div>
             </div>
           </div>
@@ -153,6 +153,12 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
             {navItems.map((item, index) => {
               const Icon = item.icon;
               const isActive = pathname === item.href;
+              const iconColors: Record<string, string> = {
+                "/admin": "bg-blue-500",
+                "/admin/products": "bg-emerald-500",
+                "/admin/orders": "bg-amber-500",
+              };
+              const iconBg = iconColors[item.href] || "bg-slate-500";
               return (
                 <motion.div
                   key={item.href}
@@ -165,15 +171,17 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
                     className={`
                       flex items-center gap-3 px-4 py-3.5 rounded-xl transition-all duration-300
                       ${isActive 
-                        ? "bg-slate-800 text-white" 
-                        : "text-slate-400 hover:text-white hover:bg-slate-800/50"
+                        ? "bg-indigo-500 text-white" 
+                        : "text-slate-600 hover:text-slate-900 hover:bg-slate-100"
                       }
                     `}
                   >
-                    <Icon className="w-5 h-5" />
+                    <div className={`w-9 h-9 rounded-xl ${iconBg} flex items-center justify-center`}>
+                      <Icon className="w-5 h-5 text-white" />
+                    </div>
                     <span className="font-medium">{item.label}</span>
                     {isActive && (
-                      <div className="ml-auto w-2 h-2 bg-emerald-500 rounded-full" />
+                      <div className="ml-auto w-2 h-2 bg-white rounded-full" />
                     )}
                   </Link>
                 </motion.div>
@@ -182,18 +190,18 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
           </nav>
         </div>
 
-        <div className="mt-auto p-4 space-y-2 border-t border-slate-800">
+        <div className="mt-auto p-4 space-y-2 border-t border-slate-100">
           <Link
             href="/"
             target="_blank"
-            className="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-400 hover:text-white hover:bg-slate-800/50 transition-all duration-300"
+            className="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-500 hover:text-slate-900 hover:bg-slate-50 transition-all duration-300"
           >
             <Eye className="w-5 h-5" />
             <span className="font-medium">View Store</span>
           </Link>
           <button
             onClick={handleLogout}
-            className="flex items-center gap-3 px-4 py-3 w-full rounded-xl text-red-400 hover:text-red-300 hover:bg-red-500/10 transition-all duration-300"
+            className="flex items-center gap-3 px-4 py-3 w-full rounded-xl text-red-500 hover:text-red-600 hover:bg-red-50 transition-all duration-300"
           >
             <LogOut className="w-5 h-5" />
             <span className="font-medium">Sign Out</span>
@@ -207,12 +215,12 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
             <div className="flex items-center gap-3">
               <button
                 onClick={() => setSidebarOpen(true)}
-                className="p-2.5 bg-slate-100 text-slate-700 rounded-xl hover:bg-slate-200 transition-all"
+                className="p-2.5 bg-indigo-500 text-white rounded-xl hover:bg-indigo-600 transition-all"
               >
                 <Menu className="w-5 h-5" />
               </button>
               <div className="flex items-center gap-2.5">
-                <div className="w-9 h-9 bg-slate-900 rounded-xl flex items-center justify-center">
+                <div className="w-9 h-9 bg-indigo-500 rounded-xl flex items-center justify-center">
                   <Shield className="w-4 h-4 text-white" />
                 </div>
                 <span className="font-bold text-lg text-slate-900">Admin</span>
@@ -257,22 +265,22 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: -100 }}
               transition={{ type: "spring", damping: 25, stiffness: 300 }}
-              className="fixed top-0 left-0 bottom-0 w-80 bg-slate-900 shadow-2xl z-50 lg:hidden border-r border-slate-800"
+              className="fixed top-0 left-0 bottom-0 w-80 bg-white shadow-2xl z-50 lg:hidden border-r border-slate-200"
             >
-              <div className="p-5 border-b border-slate-800">
+              <div className="p-5 border-b border-slate-100">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-3">
-                    <div className="w-11 h-11 bg-slate-800 rounded-xl flex items-center justify-center">
+                    <div className="w-11 h-11 bg-indigo-500 rounded-xl flex items-center justify-center">
                       <Shield className="w-5 h-5 text-white" />
                     </div>
                     <div>
-                      <h3 className="font-bold text-white">Menu</h3>
-                      <p className="text-xs text-slate-400">Navigation</p>
+                      <h3 className="font-bold text-slate-900">Menu</h3>
+                      <p className="text-xs text-slate-500">Navigation</p>
                     </div>
                   </div>
                   <button
                     onClick={() => setSidebarOpen(false)}
-                    className="p-2.5 text-slate-400 hover:text-white hover:bg-slate-800 rounded-xl transition-all"
+                    className="p-2.5 text-slate-400 hover:text-slate-900 hover:bg-slate-100 rounded-xl transition-all"
                   >
                     <X className="w-5 h-5" />
                   </button>
@@ -283,6 +291,12 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
                   {navItems.map((item) => {
                     const Icon = item.icon;
                     const isActive = pathname === item.href;
+                    const iconColors: Record<string, string> = {
+                      "/admin": "bg-blue-500",
+                      "/admin/products": "bg-emerald-500",
+                      "/admin/orders": "bg-amber-500",
+                    };
+                    const iconBg = iconColors[item.href] || "bg-slate-500";
                     return (
                       <Link
                         key={item.href}
@@ -291,12 +305,14 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
                         className={`
                           flex items-center gap-3 px-4 py-3.5 rounded-xl transition-all duration-300
                           ${isActive 
-                            ? "bg-slate-800 text-white" 
-                            : "text-slate-400 hover:text-white hover:bg-slate-800/50"
+                            ? "bg-indigo-500 text-white" 
+                            : "text-slate-600 hover:text-slate-900 hover:bg-slate-100"
                           }
                         `}
                       >
-                        <Icon className="w-5 h-5" />
+                        <div className={`w-9 h-9 rounded-xl ${iconBg} flex items-center justify-center`}>
+                          <Icon className="w-5 h-5 text-white" />
+                        </div>
                         <span className="font-medium">{item.label}</span>
                       </Link>
                     );
@@ -304,18 +320,18 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
                 </nav>
               </div>
               <div className="absolute bottom-6 left-4 right-4 space-y-1">
-                <div className="h-px bg-slate-800 mb-4" />
+                <div className="h-px bg-slate-100 mb-4" />
                 <Link
                   href="/"
                   target="_blank"
-                  className="flex items-center gap-3 px-4 py-3 text-slate-400 hover:text-white hover:bg-slate-800/50 rounded-xl transition-all"
+                  className="flex items-center gap-3 px-4 py-3 text-slate-500 hover:text-slate-900 hover:bg-slate-50 rounded-xl transition-all"
                 >
                   <Eye className="w-5 h-5" />
                   <span className="font-medium">View Store</span>
                 </Link>
                 <button
                   onClick={handleLogout}
-                  className="flex items-center gap-3 px-4 py-3 w-full text-red-400 hover:text-red-300 hover:bg-red-500/10 rounded-xl transition-all"
+                  className="flex items-center gap-3 px-4 py-3 w-full text-red-500 hover:text-red-600 hover:bg-red-50 rounded-xl transition-all"
                 >
                   <LogOut className="w-5 h-5" />
                   <span className="font-medium">Sign Out</span>

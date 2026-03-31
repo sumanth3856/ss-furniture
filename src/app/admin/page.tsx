@@ -35,9 +35,9 @@ function LiveClock() {
 
   if (!time) {
     return (
-      <div className="flex items-center gap-2 px-3 py-2 bg-slate-100/80 backdrop-blur-sm rounded-xl border border-slate-200/60">
-        <Clock className="w-4 h-4 text-slate-600" />
-        <span className="text-xs font-medium text-slate-600">Loading...</span>
+      <div className="flex items-center gap-2 px-4 py-2.5 bg-white rounded-xl border border-slate-200 shadow-sm">
+        <Clock className="w-5 h-5 text-slate-400" />
+        <span className="text-sm text-slate-500">Loading...</span>
       </div>
     );
   }
@@ -46,34 +46,31 @@ function LiveClock() {
   const isNight = hours >= 18 || hours < 6;
   const greeting = hours < 12 ? "Good Morning" : hours < 17 ? "Good Afternoon" : "Good Evening";
 
+  const timeString = time.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit", second: "2-digit" });
+  const dateString = time.toLocaleDateString("en-US", { weekday: "short", month: "short", day: "numeric" });
+
   return (
-    <div className="flex items-center gap-2 sm:gap-3 px-3 sm:px-4 py-2 sm:py-2.5 bg-slate-100/80 backdrop-blur-sm rounded-xl sm:rounded-2xl border border-slate-200/60 shadow-sm">
-      <div className={`w-8 h-8 sm:w-10 sm:h-10 rounded-lg flex items-center justify-center ${isNight ? "bg-slate-800/90" : "bg-slate-200/80"}`}>
+    <div className="flex items-center gap-4 px-4 py-3 bg-white rounded-xl border border-slate-200 shadow-sm">
+      <div className={`w-11 h-11 rounded-xl flex items-center justify-center ${isNight ? "bg-slate-800" : "bg-amber-100"}`}>
         {isNight ? (
-          <Moon className="w-4 h-4 sm:w-5 sm:h-5 text-slate-600" />
+          <Moon className="w-5 h-5 text-white" />
         ) : (
-          <Sun className="w-4 h-4 sm:w-5 sm:h-5 text-amber-600" />
+          <Sun className="w-5 h-5 text-amber-600" />
         )}
       </div>
-      <div className="hidden sm:block">
-        <p className="text-xs text-slate-500 font-medium">{greeting}</p>
-        <p className="text-lg font-bold text-slate-800 leading-tight">
-          {time.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit", second: "2-digit" })}
+      <div>
+        <p className="text-xs text-slate-500 font-medium mb-0.5">{greeting}</p>
+        <p className="text-xl font-bold text-slate-900 tracking-tight">
+          {timeString}
         </p>
+      </div>
+      <div className="h-10 w-px bg-slate-200 mx-1" />
+      <div className="hidden sm:block">
+        <p className="text-sm font-medium text-slate-700">{dateString}</p>
+        <p className="text-xs text-slate-400">{time.getFullYear()}</p>
       </div>
       <div className="block sm:hidden">
-        <p className="text-xs font-bold text-slate-800">
-          {time.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit" })}
-        </p>
-      </div>
-      <div className="hidden sm:block h-10 w-px bg-slate-300/60 mx-1" />
-      <div className="hidden md:block">
-        <p className="text-xs text-slate-500 font-medium">
-          {time.toLocaleDateString("en-US", { weekday: "short" })}
-        </p>
-        <p className="text-sm font-bold text-slate-800 leading-tight">
-          {time.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}
-        </p>
+        <p className="text-xs text-slate-500">{dateString}</p>
       </div>
     </div>
   );
@@ -113,28 +110,28 @@ export default function AdminDashboard() {
       title: "Products",
       value: stats?.totalProducts || 0,
       icon: Package,
-      gradient: "from-slate-800 via-slate-700 to-slate-900",
+      bgColor: "bg-blue-500",
       trend: "+12%",
     },
     {
       title: "Active Carts",
       value: stats?.totalCartItems || 0,
       icon: ShoppingCart,
-      gradient: "from-slate-800 via-slate-700 to-slate-900",
+      bgColor: "bg-emerald-500",
       trend: "+8%",
     },
     {
       title: "Wishlist",
       value: stats?.totalWishlistItems || 0,
       icon: Heart,
-      gradient: "from-slate-800 via-slate-700 to-slate-900",
+      bgColor: "bg-rose-500",
       trend: "+15%",
     },
     {
       title: "Categories",
       value: stats?.categories.length || 0,
       icon: TrendingUp,
-      gradient: "from-slate-800 via-slate-700 to-slate-900",
+      bgColor: "bg-amber-500",
       trend: "+3",
     },
   ];
@@ -190,11 +187,11 @@ export default function AdminDashboard() {
               className="group relative overflow-hidden bg-white rounded-2xl p-4 sm:p-5 shadow-lg border border-slate-200/60 hover:shadow-xl hover:border-slate-300/80 transition-all duration-300"
             >
               <div className="relative">
-                <div className={`w-11 h-11 sm:w-12 sm:h-12 rounded-xl bg-gradient-to-br ${stat.gradient} flex items-center justify-center mb-3 sm:mb-4 shadow-lg`}>
+                <div className={`w-11 h-11 sm:w-12 sm:h-12 rounded-xl ${stat.bgColor} flex items-center justify-center mb-3 sm:mb-4`}>
                   <Icon className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
                 </div>
                 <div className="absolute top-3 sm:top-4 right-3 sm:right-4">
-                  <span className="text-xs font-semibold px-2 py-0.5 bg-slate-100 text-slate-600 rounded-full">
+                  <span className="text-xs font-semibold px-2 py-0.5 bg-emerald-100 text-emerald-700 rounded-full">
                     {stat.trend}
                   </span>
                 </div>
@@ -215,7 +212,7 @@ export default function AdminDashboard() {
         >
           <div className="flex items-center justify-between mb-4 sm:mb-6">
             <div className="flex items-center gap-2">
-              <div className="w-7 h-7 rounded-lg bg-slate-900 flex items-center justify-center">
+              <div className="w-7 h-7 rounded-lg bg-indigo-500 flex items-center justify-center">
                 <Gem className="w-4 h-4 text-white" />
               </div>
               <h3 className="text-base sm:text-lg font-bold text-slate-900">Recent Activity</h3>
@@ -229,9 +226,9 @@ export default function AdminDashboard() {
             {recentActivity.map((activity) => (
               <div key={activity.id} className="flex items-center gap-3 sm:gap-4 p-3 sm:p-4 bg-slate-50/80 rounded-xl hover:bg-slate-100/80 transition-all border border-transparent hover:border-slate-200/60 group">
                 <div className={`w-10 h-10 sm:w-11 sm:h-11 rounded-lg flex items-center justify-center flex-shrink-0 ${
-                  activity.type === "create" ? "bg-slate-900" :
-                  activity.type === "update" ? "bg-slate-700" :
-                  "bg-slate-800"
+                  activity.type === "create" ? "bg-emerald-500" :
+                  activity.type === "update" ? "bg-blue-500" :
+                  "bg-rose-500"
                 }`}>
                   {activity.type === "create" && <Plus className="w-4 h-4 text-white" />}
                   {activity.type === "update" && <Settings className="w-4 h-4 text-white" />}
@@ -254,7 +251,7 @@ export default function AdminDashboard() {
           className="bg-white rounded-2xl p-5 sm:p-6 shadow-lg border border-slate-200/60"
         >
           <div className="flex items-center gap-2 mb-4 sm:mb-5">
-            <div className="w-7 h-7 rounded-lg bg-slate-900 flex items-center justify-center">
+            <div className="w-7 h-7 rounded-lg bg-indigo-500 flex items-center justify-center">
               <Crown className="w-4 h-4 text-white" />
             </div>
             <h3 className="text-base sm:text-lg font-bold text-slate-900">Quick Actions</h3>
@@ -262,7 +259,7 @@ export default function AdminDashboard() {
           <div className="space-y-2 sm:space-y-3">
             <Link
               href="/admin/products"
-              className="flex items-center justify-between p-3 sm:p-4 bg-slate-900 text-white rounded-xl hover:bg-slate-800 transition-all group"
+              className="flex items-center justify-between p-3 sm:p-4 bg-blue-500 text-white rounded-xl hover:bg-blue-600 transition-all group"
             >
               <div className="flex items-center gap-2 sm:gap-3">
                 <Package className="w-5 h-5" />
@@ -272,28 +269,28 @@ export default function AdminDashboard() {
             </Link>
             <Link
               href="/admin/orders"
-              className="flex items-center justify-between p-3 sm:p-4 bg-white rounded-xl hover:shadow-md transition-all group border border-slate-200/80 hover:border-slate-300"
+              className="flex items-center justify-between p-3 sm:p-4 bg-white rounded-xl hover:shadow-md transition-all group border border-slate-200/80 hover:border-emerald-300"
             >
-              <div className="flex items-center gap-2 sm:gap-3 text-slate-700">
+              <div className="flex items-center gap-2 sm:gap-3 text-emerald-600">
                 <ClipboardList className="w-5 h-5" />
                 <span className="font-medium text-sm sm:text-base">Orders</span>
               </div>
-              <ArrowRight className="w-5 h-5 text-slate-400 group-hover:translate-x-1 group-hover:text-slate-700 transition-all" />
+              <ArrowRight className="w-5 h-5 text-slate-400 group-hover:translate-x-1 group-hover:text-emerald-600 transition-all" />
             </Link>
             <Link
               href="/"
               target="_blank"
-              className="flex items-center justify-between p-3 sm:p-4 bg-white rounded-xl hover:shadow-md transition-all group border border-slate-200/80 hover:border-slate-300"
+              className="flex items-center justify-between p-3 sm:p-4 bg-white rounded-xl hover:shadow-md transition-all group border border-slate-200/80 hover:border-amber-300"
             >
-              <div className="flex items-center gap-2 sm:gap-3 text-slate-700">
+              <div className="flex items-center gap-2 sm:gap-3 text-amber-600">
                 <Eye className="w-5 h-5" />
                 <span className="font-medium text-sm sm:text-base">View Store</span>
               </div>
-              <ArrowRight className="w-5 h-5 text-slate-400 group-hover:translate-x-1 group-hover:text-slate-700 transition-all" />
+              <ArrowRight className="w-5 h-5 text-slate-400 group-hover:translate-x-1 group-hover:text-amber-600 transition-all" />
             </Link>
           </div>
 
-          <div className="mt-5 p-4 bg-amber-50/80 rounded-xl border border-amber-200/60">
+          <div className="mt-5 p-4 bg-amber-50 rounded-xl border border-amber-200">
             <div className="flex items-center gap-2.5 mb-2">
               <div className="w-8 h-8 bg-amber-500 rounded-lg flex items-center justify-center">
                 <Bell className="w-4 h-4 text-white" />
@@ -312,7 +309,7 @@ export default function AdminDashboard() {
         className="bg-white rounded-2xl p-5 sm:p-6 shadow-lg border border-slate-200/60"
       >
         <div className="flex items-center gap-2 mb-3 sm:mb-4">
-          <div className="w-6 h-6 rounded bg-slate-900 flex items-center justify-center">
+          <div className="w-6 h-6 rounded bg-indigo-500 flex items-center justify-center">
             <TrendingUp className="w-3.5 h-3.5 text-white" />
           </div>
           <h3 className="text-base sm:text-lg font-bold text-slate-900">Categories</h3>

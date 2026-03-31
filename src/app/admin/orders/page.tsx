@@ -133,52 +133,32 @@ const statusConfig = {
   pending: { 
     label: "Pending", 
     icon: Clock, 
-    gradient: "from-amber-400 to-orange-500",
-    bgGradient: "from-amber-50 to-orange-50",
-    iconBg: "bg-amber-100",
-    textColor: "text-amber-700",
-    borderColor: "border-amber-200",
-    badge: "bg-gradient-to-r from-amber-500 to-orange-500 text-white shadow-lg shadow-amber-500/30"
+    bgColor: "bg-amber-500",
+    badge: "bg-amber-500 text-white"
   },
   processing: { 
     label: "Processing", 
     icon: Package, 
-    gradient: "from-blue-500 to-indigo-500",
-    bgGradient: "from-blue-50 to-indigo-50",
-    iconBg: "bg-blue-100",
-    textColor: "text-blue-700",
-    borderColor: "border-blue-200",
-    badge: "bg-gradient-to-r from-blue-500 to-indigo-500 text-white shadow-lg shadow-blue-500/30"
+    bgColor: "bg-blue-500",
+    badge: "bg-blue-500 text-white"
   },
   shipped: { 
     label: "Shipped", 
     icon: Truck, 
-    gradient: "from-purple-500 to-violet-500",
-    bgGradient: "from-purple-50 to-violet-50",
-    iconBg: "bg-purple-100",
-    textColor: "text-purple-700",
-    borderColor: "border-purple-200",
-    badge: "bg-gradient-to-r from-purple-500 to-violet-500 text-white shadow-lg shadow-purple-500/30"
+    bgColor: "bg-purple-500",
+    badge: "bg-purple-500 text-white"
   },
   delivered: { 
     label: "Delivered", 
     icon: CheckCircle, 
-    gradient: "from-emerald-500 to-teal-500",
-    bgGradient: "from-emerald-50 to-teal-50",
-    iconBg: "bg-emerald-100",
-    textColor: "text-emerald-700",
-    borderColor: "border-emerald-200",
-    badge: "bg-gradient-to-r from-emerald-500 to-teal-500 text-white shadow-lg shadow-emerald-500/30"
+    bgColor: "bg-emerald-500",
+    badge: "bg-emerald-500 text-white"
   },
   cancelled: { 
     label: "Cancelled", 
     icon: X, 
-    gradient: "from-red-500 to-rose-500",
-    bgGradient: "from-red-50 to-rose-50",
-    iconBg: "bg-red-100",
-    textColor: "text-red-700",
-    borderColor: "border-red-200",
-    badge: "bg-gradient-to-r from-red-500 to-rose-500 text-white shadow-lg shadow-red-500/30"
+    bgColor: "bg-red-500",
+    badge: "bg-red-500 text-white"
   }
 };
 
@@ -194,7 +174,7 @@ function StatusBadge({ status }: { status: Order["status"] }) {
   );
 }
 
-function StatCard({ label, value, icon: Icon, gradient, delay }: { label: string; value: string | number; icon: LucideIcon; gradient: string; delay: number }) {
+function StatCard({ label, value, icon: Icon, bgColor, delay }: { label: string; value: string | number; icon: LucideIcon; bgColor: string; delay: number }) {
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -202,7 +182,7 @@ function StatCard({ label, value, icon: Icon, gradient, delay }: { label: string
       transition={{ delay }}
       className="bg-white rounded-2xl p-4 sm:p-5 shadow-lg border border-slate-200/60 hover:shadow-xl transition-all"
     >
-      <div className={`w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-gradient-to-br ${gradient} flex items-center justify-center mb-3 sm:mb-4 shadow-lg`}>
+      <div className={`w-10 h-10 sm:w-12 sm:h-12 rounded-xl ${bgColor} flex items-center justify-center mb-3 sm:mb-4`}>
         <Icon className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
       </div>
       <p className="text-2xl sm:text-3xl font-bold text-slate-900">{value}</p>
@@ -265,7 +245,7 @@ export default function AdminOrdersPage() {
           <p className="text-slate-500 font-medium mt-0.5 sm:mt-1 text-sm">Manage customer orders</p>
         </div>
         <div className="flex items-center gap-2 sm:gap-3">
-          <button className="p-2 sm:p-3 text-slate-500 hover:text-purple-600 hover:bg-purple-50 rounded-xl transition-all border border-slate-200" title="Refresh">
+          <button className="p-2 sm:p-3 text-slate-500 hover:text-indigo-600 hover:bg-indigo-50 rounded-xl transition-all border border-slate-200" title="Refresh">
             <RefreshCw className="w-4 h-4 sm:w-5 sm:h-5" />
           </button>
           <button className="hidden sm:flex items-center gap-2 px-5 py-3 bg-slate-900 text-white font-medium rounded-xl hover:bg-slate-800 transition-all">
@@ -276,19 +256,19 @@ export default function AdminOrdersPage() {
       </div>
 
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
-        <StatCard label="Total Orders" value={statusCounts.all} icon={ShoppingCart} gradient="from-purple-500 to-indigo-500" delay={0} />
-        <StatCard label="Total Revenue" value={`₹${(totalRevenue / 100000).toFixed(1)}L`} icon={Sparkles} gradient="from-amber-500 to-orange-500" delay={0.05} />
-        <StatCard label="Delivered" value={statusCounts.delivered} icon={CheckCircle} gradient="from-emerald-500 to-teal-500" delay={0.1} />
-        <StatCard label="Pending" value={statusCounts.pending} icon={Clock} gradient="from-amber-500 to-orange-500" delay={0.15} />
+        <StatCard label="Total Orders" value={statusCounts.all} icon={ShoppingCart} bgColor="bg-indigo-500" delay={0} />
+        <StatCard label="Total Revenue" value={`₹${(totalRevenue / 100000).toFixed(1)}L`} icon={Sparkles} bgColor="bg-amber-500" delay={0.05} />
+        <StatCard label="Delivered" value={statusCounts.delivered} icon={CheckCircle} bgColor="bg-emerald-500" delay={0.1} />
+        <StatCard label="Pending" value={statusCounts.pending} icon={Clock} bgColor="bg-orange-500" delay={0.15} />
       </div>
 
       <div className="flex flex-wrap gap-2 sm:gap-3">
         {[
-          { key: "all", label: "All", icon: ShoppingCart, gradient: "from-slate-500 to-slate-600" },
-          { key: "pending", label: "Pending", icon: Clock, gradient: "from-amber-500 to-orange-500" },
-          { key: "processing", label: "Processing", icon: Package, gradient: "from-blue-500 to-indigo-500" },
-          { key: "shipped", label: "Shipped", icon: Truck, gradient: "from-purple-500 to-violet-500" },
-          { key: "delivered", label: "Delivered", icon: CheckCircle, gradient: "from-emerald-500 to-teal-500" },
+          { key: "all", label: "All", icon: ShoppingCart, bgColor: "bg-slate-500" },
+          { key: "pending", label: "Pending", icon: Clock, bgColor: "bg-amber-500" },
+          { key: "processing", label: "Processing", icon: Package, bgColor: "bg-blue-500" },
+          { key: "shipped", label: "Shipped", icon: Truck, bgColor: "bg-purple-500" },
+          { key: "delivered", label: "Delivered", icon: CheckCircle, bgColor: "bg-emerald-500" },
         ].map((status, index) => {
           const Icon = status.icon;
           return (
@@ -300,8 +280,8 @@ export default function AdminOrdersPage() {
               onClick={() => setStatusFilter(status.key)}
               className={`flex items-center gap-2 px-4 py-2.5 rounded-xl font-bold text-sm transition-all ${
                 statusFilter === status.key 
-                  ? `bg-gradient-to-r ${status.gradient} text-white shadow-lg` 
-                  : "bg-white text-slate-600 border border-slate-200 hover:border-purple-300 hover:bg-purple-50"
+                  ? `${status.bgColor} text-white` 
+                  : "bg-white text-slate-600 border border-slate-200 hover:border-indigo-300 hover:bg-indigo-50"
               }`}
             >
               <Icon className="w-4 h-4" />

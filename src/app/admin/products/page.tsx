@@ -430,7 +430,7 @@ export default function AdminProductsPage() {
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
         <div>
           <div className="flex items-center gap-2 mb-1">
-            <div className="w-8 h-8 rounded-lg bg-slate-900 flex items-center justify-center">
+            <div className="w-8 h-8 rounded-lg bg-indigo-500 flex items-center justify-center">
               <Package className="w-4 h-4 text-white" />
             </div>
             <h1 className="text-2xl lg:text-3xl font-black text-slate-900">Products</h1>
@@ -475,7 +475,7 @@ export default function AdminProductsPage() {
           animate={{ opacity: 1, y: 0 }}
           className="bg-white rounded-2xl p-4 sm:p-5 shadow-lg border border-slate-200/60 hover:shadow-xl transition-all"
         >
-          <div className="w-10 h-10 sm:w-11 sm:h-11 bg-slate-900 rounded-xl flex items-center justify-center mb-3 sm:mb-4">
+          <div className="w-10 h-10 sm:w-11 sm:h-11 bg-blue-500 rounded-xl flex items-center justify-center mb-3 sm:mb-4">
             <Package className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
           </div>
           <p className="text-2xl sm:text-3xl font-bold text-slate-900">{stats.total}</p>
@@ -487,9 +487,9 @@ export default function AdminProductsPage() {
           transition={{ delay: 0.05 }}
           className="bg-white rounded-2xl p-4 sm:p-5 shadow-lg border border-slate-200/60 hover:shadow-xl transition-all"
         >
-          <div className="w-10 h-10 sm:w-11 sm:h-11 bg-emerald-600 rounded-xl flex items-center justify-center mb-3 sm:mb-4">
-            <CheckCircle className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
-          </div>
+            <div className="w-10 h-10 sm:w-11 sm:h-11 bg-emerald-500 rounded-xl flex items-center justify-center mb-3 sm:mb-4">
+              <CheckCircle className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
+            </div>
           <p className="text-2xl sm:text-3xl font-bold text-slate-900">{stats.inStock}</p>
           <p className="text-xs sm:text-sm text-slate-500 font-medium mt-1">In Stock</p>
         </motion.div>
@@ -499,9 +499,9 @@ export default function AdminProductsPage() {
           transition={{ delay: 0.1 }}
           className="bg-white rounded-2xl p-4 sm:p-5 shadow-lg border border-slate-200/60 hover:shadow-xl transition-all"
         >
-          <div className="w-10 h-10 sm:w-11 sm:h-11 bg-rose-600 rounded-xl flex items-center justify-center mb-3 sm:mb-4">
-            <XCircle className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
-          </div>
+            <div className="w-10 h-10 sm:w-11 sm:h-11 bg-rose-500 rounded-xl flex items-center justify-center mb-3 sm:mb-4">
+              <XCircle className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
+            </div>
           <p className="text-2xl sm:text-3xl font-bold text-slate-900">{stats.outOfStock}</p>
           <p className="text-xs sm:text-sm text-slate-500 font-medium mt-1">Out of Stock</p>
         </motion.div>
@@ -509,7 +509,7 @@ export default function AdminProductsPage() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.15 }}
-          className="bg-slate-900 rounded-2xl p-4 sm:p-5 shadow-xl text-white"
+          className="bg-indigo-500 rounded-2xl p-4 sm:p-5 shadow-xl text-white"
         >
           <div className="w-10 h-10 sm:w-11 sm:h-11 bg-white/20 rounded-xl flex items-center justify-center mb-3 sm:mb-4">
             <Sparkles className="w-5 h-5 sm:w-6 sm:h-6" />
@@ -517,12 +517,12 @@ export default function AdminProductsPage() {
           <p className="text-2xl sm:text-3xl font-bold">
             {stats.total > 0 ? Math.round((stats.inStock / stats.total) * 100) : 0}%
           </p>
-          <p className="text-xs sm:text-sm text-slate-400 font-medium mt-1">Availability</p>
+          <p className="text-xs sm:text-sm text-white/80 font-medium mt-1">Availability</p>
         </motion.div>
       </div>
 
-      <div                 className="bg-white rounded-2xl shadow-lg border border-slate-200/60 overflow-hidden">
-          <div className="p-4 lg:p-5 border-b border-slate-100">
+      <div className="bg-white rounded-2xl shadow-lg border border-slate-200/60 overflow-hidden">
+        <div className="p-4 lg:p-5 border-b border-slate-100">
           <div className="flex flex-col sm:flex-row gap-4">
             <div className="relative flex-1">
               <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
