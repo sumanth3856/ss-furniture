@@ -2,7 +2,7 @@
 
 import { useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { MapPin, Phone, Mail, Clock, Send, CheckCircle, AlertCircle, MessageCircle, Headphones, Truck } from "lucide-react";
+import { MapPin, Phone, Mail, Clock, Send, CheckCircle, AlertCircle, MessageCircle, Headphones, Truck, Star, Heart } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 import Breadcrumbs from "@/components/Breadcrumbs";
@@ -21,28 +21,40 @@ const contactInfo = [
     title: "Visit Our Showroom",
     lines: ["MG Road, Near Benz Circle", "Vijayawada, AP 520010"],
     link: "https://maps.google.com",
-    linkText: "Get Directions"
+    linkText: "Get Directions",
+    color: "from-rose-500 to-pink-600",
+    iconBg: "bg-rose-100",
+    iconColor: "text-rose-600"
   },
   {
     icon: Phone,
     title: "Call Us",
     lines: ["+91 98765 43210"],
     link: "tel:+919876543210",
-    linkText: "Tap to Call"
+    linkText: "Tap to Call",
+    color: "from-emerald-500 to-teal-600",
+    iconBg: "bg-emerald-100",
+    iconColor: "text-emerald-600"
   },
   {
     icon: Mail,
     title: "Email Us",
     lines: ["hello@ssfurniture.com"],
     link: `mailto:${siteConfig.contact.email}`,
-    linkText: "Send Email"
+    linkText: "Send Email",
+    color: "from-blue-500 to-indigo-600",
+    iconBg: "bg-blue-100",
+    iconColor: "text-blue-600"
   },
   {
     icon: Clock,
     title: "Showroom Hours",
     lines: ["Mon-Sat: 10:00 AM - 8:00 PM", "Sunday: 11:00 AM - 6:00 PM"],
     link: null,
-    linkText: null
+    linkText: null,
+    color: "from-amber-500 to-orange-600",
+    iconBg: "bg-amber-100",
+    iconColor: "text-amber-600"
   },
 ];
 
@@ -53,10 +65,10 @@ const quickActions = [
 ];
 
 const stats = [
-  { value: "< 24h", label: "Response Time" },
-  { value: "4.9", label: "Avg Rating" },
-  { value: "5K+", label: "Messages Handled" },
-  { value: "98%", label: "Satisfaction" },
+  { value: "< 24h", label: "Response Time", color: "from-amber-400 to-orange-500", icon: Clock },
+  { value: "4.9", label: "Avg Rating", color: "from-yellow-400 to-amber-500", icon: Star },
+  { value: "5K+", label: "Messages Handled", color: "from-emerald-400 to-teal-500", icon: MessageCircle },
+  { value: "98%", label: "Satisfaction", color: "from-blue-400 to-indigo-500", icon: Heart },
 ];
 
 export default function ContactPage() {
@@ -429,10 +441,10 @@ export default function ContactPage() {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.3 + index * 0.1 }}
                     whileHover={{ scale: 1.02, y: -2 }}
-                    className="bg-white rounded-xl p-5 shadow-sm border border-gray-100 hover:shadow-lg hover:border-amber-200 transition-all duration-300"
+                    className="bg-white rounded-xl p-5 shadow-sm border border-gray-100 hover:shadow-lg transition-all duration-300 group"
                   >
                     <div className="flex items-start gap-4">
-                      <div className="w-11 h-11 bg-gradient-to-br from-amber-500 to-amber-600 rounded-xl flex items-center justify-center shadow-lg shadow-gray-900/20 shrink-0">
+                      <div className={`w-12 h-12 bg-gradient-to-br ${info.color} rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300 shrink-0`}>
                         <Icon className="w-5 h-5 text-white" />
                       </div>
                       <div className="flex-1 min-w-0">
@@ -443,7 +455,7 @@ export default function ContactPage() {
                         {info.link && (
                           <a 
                             href={info.link}
-                            className="inline-flex items-center gap-1 mt-2 text-sm font-medium text-amber-600 hover:text-amber-700 transition-colors"
+                            className={`inline-flex items-center gap-1 mt-2 text-sm font-medium transition-colors bg-clip-text hover:text-transparent bg-gradient-to-r ${info.color}`}
                           >
                             {info.linkText}
                             <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -574,19 +586,25 @@ export default function ContactPage() {
         <div className="max-w-5xl mx-auto">
           <div className="bg-gradient-to-br from-gray-900 via-gray-900 to-gray-800 rounded-2xl lg:rounded-3xl p-8 lg:p-12 shadow-2xl">
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
-              {stats.map((stat, i) => (
-                <motion.div
-                  key={stat.label}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: i * 0.1 }}
-                  className="text-center"
-                >
-                  <p className="text-3xl lg:text-4xl font-bold text-white mb-1">{stat.value}</p>
-                  <p className="text-sm text-gray-400">{stat.label}</p>
-                </motion.div>
-              ))}
+              {stats.map((stat, i) => {
+                const Icon = stat.icon;
+                return (
+                  <motion.div
+                    key={stat.label}
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: i * 0.1 }}
+                    className="text-center group"
+                  >
+                    <div className={`w-14 h-14 mx-auto mb-4 rounded-2xl bg-gradient-to-br ${stat.color} flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300`}>
+                      <Icon className="w-6 h-6 text-white" />
+                    </div>
+                    <p className="text-3xl lg:text-4xl font-bold text-white mb-1">{stat.value}</p>
+                    <p className="text-sm text-gray-400">{stat.label}</p>
+                  </motion.div>
+                );
+              })}
             </div>
           </div>
         </div>
