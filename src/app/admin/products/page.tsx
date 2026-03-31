@@ -97,7 +97,7 @@ function ProductCard({ product, onEdit, onDelete, onToggleStock }: {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, scale: 0.95 }}
-      className="group bg-gradient-to-br from-white via-slate-50/50 to-white rounded-2xl shadow-sm border border-slate-200/60 overflow-hidden hover:shadow-2xl hover:shadow-emerald-500/10 hover:border-emerald-200/50 transition-all duration-500"
+      className="group bg-white rounded-2xl shadow-sm border border-slate-200/60 overflow-hidden hover:shadow-xl hover:border-slate-300/80 transition-all duration-300"
     >
       <div className="relative aspect-square overflow-hidden">
         {product.image ? (
@@ -144,7 +144,7 @@ function ProductCard({ product, onEdit, onDelete, onToggleStock }: {
       
       <div className="p-4">
         <div className="flex items-start justify-between gap-2 mb-2">
-          <span className="px-2.5 py-1 bg-gradient-to-r from-sky-100 to-blue-100 text-sky-800 rounded-lg text-xs font-bold border border-sky-200/50">
+          <span className="px-2.5 py-1 bg-slate-100 text-slate-700 rounded-lg text-xs font-medium">
             {product.category}
           </span>
           <StockToggle 
@@ -171,7 +171,7 @@ function ProductCard({ product, onEdit, onDelete, onToggleStock }: {
           </div>
           <button
             onClick={onEdit}
-            className="p-2.5 bg-gradient-to-r from-emerald-500 to-teal-500 text-white rounded-xl hover:shadow-lg hover:shadow-emerald-500/30 transition-all"
+            className="p-2.5 bg-slate-900 text-white rounded-xl hover:bg-slate-800 transition-all"
           >
             <Pencil className="w-4 h-4" />
           </button>
@@ -191,7 +191,7 @@ function DeleteConfirmation({ productName, onConfirm, onCancel }: {
       initial={{ opacity: 0, scale: 0.9, y: 20 }}
       animate={{ opacity: 1, scale: 1, y: 0 }}
       exit={{ opacity: 0, scale: 0.9, y: 20 }}
-      className="bg-gradient-to-br from-white to-slate-50 rounded-3xl p-8 shadow-2xl border border-slate-200 max-w-md mx-auto"
+      className="bg-white rounded-3xl p-8 shadow-2xl border border-slate-200 max-w-md mx-auto"
     >
       <div className="w-16 h-16 bg-gradient-to-br from-red-100 to-red-200 rounded-2xl flex items-center justify-center mx-auto mb-5 shadow-lg shadow-red-500/20">
         <Trash className="w-8 h-8 text-red-600" />
@@ -414,12 +414,12 @@ export default function AdminProductsPage() {
             initial={{ opacity: 0, y: -20, height: 0 }}
             animate={{ opacity: 1, y: 0, height: "auto" }}
             exit={{ opacity: 0, y: -20, height: 0 }}
-            className="p-4 bg-gradient-to-r from-red-50/80 to-rose-50/60 border border-red-200/40 rounded-2xl flex items-center gap-3 overflow-hidden shadow-lg shadow-red-500/10 backdrop-blur-sm"
+            className="p-4 bg-red-50/80 border border-red-200/40 rounded-2xl flex items-center gap-3 overflow-hidden shadow-lg"
           >
             <div className="w-10 h-10 bg-red-100 rounded-xl flex items-center justify-center flex-shrink-0">
               <AlertCircle className="w-5 h-5 text-red-600" />
             </div>
-            <span className="text-red-700 font-bold flex-1">{error}</span>
+            <span className="text-red-700 font-semibold flex-1">{error}</span>
             <button onClick={() => setError("")} className="p-1.5 text-red-400 hover:text-red-600 hover:bg-red-100 rounded-lg transition-all">
               <X className="w-5 h-5" />
             </button>
@@ -430,40 +430,38 @@ export default function AdminProductsPage() {
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
         <div>
           <div className="flex items-center gap-2 mb-1">
-            <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center shadow-lg shadow-emerald-500/20">
+            <div className="w-8 h-8 rounded-lg bg-slate-900 flex items-center justify-center">
               <Package className="w-4 h-4 text-white" />
             </div>
-            <h1 className="text-2xl lg:text-3xl font-black text-slate-900">
-              <span className="bg-gradient-to-r from-slate-800 via-emerald-800 to-teal-800 bg-clip-text text-transparent">Products</span>
-            </h1>
+            <h1 className="text-2xl lg:text-3xl font-black text-slate-900">Products</h1>
           </div>
           <p className="text-slate-500 mt-0.5 sm:mt-1 text-sm font-medium ml-10">Manage your furniture inventory</p>
         </div>
         <div className="flex items-center gap-2 sm:gap-3">
           <button
             onClick={() => fetchProducts()}
-            className="p-2 sm:p-3 text-slate-500 hover:text-emerald-600 hover:bg-emerald-50 rounded-xl transition-all border border-slate-200/60"
+            className="p-2 sm:p-3 text-slate-500 hover:text-slate-900 hover:bg-slate-100 rounded-xl transition-all border border-slate-200/60"
             title="Refresh"
           >
             <RefreshCw className="w-4 h-4 sm:w-5 sm:h-5" />
           </button>
-          <div className="flex bg-slate-100/80 backdrop-blur-sm rounded-xl p-1 border border-slate-200/50">
+          <div className="flex bg-slate-100/80 rounded-xl p-1 border border-slate-200/50">
             <button
               onClick={() => setViewMode("grid")}
-              className={`p-2 rounded-lg transition-all ${viewMode === "grid" ? "bg-gradient-to-br from-emerald-500 to-teal-500 text-white shadow-lg shadow-emerald-500/30" : "text-slate-500 hover:text-slate-700"}`}
+              className={`p-2 rounded-lg transition-all ${viewMode === "grid" ? "bg-slate-900 text-white" : "text-slate-500 hover:text-slate-700"}`}
             >
               <Grid3X3 className="w-4 h-4 sm:w-5 sm:h-5" />
             </button>
             <button
               onClick={() => setViewMode("list")}
-              className={`p-2 rounded-lg transition-all ${viewMode === "list" ? "bg-gradient-to-br from-emerald-500 to-teal-500 text-white shadow-lg shadow-emerald-500/30" : "text-slate-500 hover:text-slate-700"}`}
+              className={`p-2 rounded-lg transition-all ${viewMode === "list" ? "bg-slate-900 text-white" : "text-slate-500 hover:text-slate-700"}`}
             >
               <List className="w-4 h-4 sm:w-5 sm:h-5" />
             </button>
           </div>
           <button
             onClick={() => openModal()}
-            className="flex items-center gap-1.5 sm:gap-2 px-3 sm:px-5 py-2.5 sm:py-3 bg-gradient-to-r from-emerald-500 via-teal-500 to-cyan-500 text-white font-bold rounded-xl hover:shadow-xl hover:shadow-emerald-500/30 transition-all"
+            className="flex items-center gap-1.5 sm:gap-2 px-3 sm:px-5 py-2.5 sm:py-3 bg-slate-900 text-white font-medium rounded-xl hover:bg-slate-800 transition-all"
           >
             <Plus className="w-4 h-4 sm:w-5 sm:h-5" />
             <span className="hidden sm:inline">Add Product</span>
@@ -475,68 +473,56 @@ export default function AdminProductsPage() {
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="group relative overflow-hidden bg-gradient-to-br from-white via-sky-50/30 to-white rounded-2xl p-5 shadow-lg border border-slate-200/60 hover:shadow-xl transition-all duration-300"
+          className="bg-white rounded-2xl p-4 sm:p-5 shadow-lg border border-slate-200/60 hover:shadow-xl transition-all"
         >
-          <div className="absolute top-0 right-0 w-20 h-20 bg-gradient-to-br from-sky-100/30 to-transparent rounded-full blur-xl" />
-          <div className="relative">
-            <div className="w-12 h-12 bg-gradient-to-br from-sky-500 via-blue-600 to-indigo-700 rounded-xl flex items-center justify-center mb-4 shadow-xl shadow-sky-500/30 group-hover:scale-110 transition-transform">
-              <Package className="w-6 h-6 text-white" />
-            </div>
-            <p className="text-3xl lg:text-4xl font-black bg-gradient-to-r from-sky-600 to-blue-800 bg-clip-text text-transparent">{stats.total}</p>
-            <p className="text-sm text-slate-500 font-medium mt-1">Total Products</p>
+          <div className="w-10 h-10 sm:w-11 sm:h-11 bg-slate-900 rounded-xl flex items-center justify-center mb-3 sm:mb-4">
+            <Package className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
           </div>
+          <p className="text-2xl sm:text-3xl font-bold text-slate-900">{stats.total}</p>
+          <p className="text-xs sm:text-sm text-slate-500 font-medium mt-1">Total Products</p>
         </motion.div>
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.05 }}
-          className="group relative overflow-hidden bg-gradient-to-br from-white via-emerald-50/30 to-white rounded-2xl p-5 shadow-lg border border-slate-200/60 hover:shadow-xl transition-all duration-300"
+          className="bg-white rounded-2xl p-4 sm:p-5 shadow-lg border border-slate-200/60 hover:shadow-xl transition-all"
         >
-          <div className="absolute top-0 right-0 w-20 h-20 bg-gradient-to-br from-emerald-100/30 to-transparent rounded-full blur-xl" />
-          <div className="relative">
-            <div className="w-12 h-12 bg-gradient-to-br from-emerald-500 via-teal-600 to-cyan-700 rounded-xl flex items-center justify-center mb-4 shadow-xl shadow-emerald-500/30 group-hover:scale-110 transition-transform">
-              <CheckCircle className="w-6 h-6 text-white" />
-            </div>
-            <p className="text-3xl lg:text-4xl font-black bg-gradient-to-r from-emerald-600 to-teal-800 bg-clip-text text-transparent">{stats.inStock}</p>
-            <p className="text-sm text-slate-500 font-medium mt-1">In Stock</p>
+          <div className="w-10 h-10 sm:w-11 sm:h-11 bg-emerald-600 rounded-xl flex items-center justify-center mb-3 sm:mb-4">
+            <CheckCircle className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
           </div>
+          <p className="text-2xl sm:text-3xl font-bold text-slate-900">{stats.inStock}</p>
+          <p className="text-xs sm:text-sm text-slate-500 font-medium mt-1">In Stock</p>
         </motion.div>
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
-          className="group relative overflow-hidden bg-gradient-to-br from-white via-rose-50/30 to-white rounded-2xl p-5 shadow-lg border border-slate-200/60 hover:shadow-xl transition-all duration-300"
+          className="bg-white rounded-2xl p-4 sm:p-5 shadow-lg border border-slate-200/60 hover:shadow-xl transition-all"
         >
-          <div className="absolute top-0 right-0 w-20 h-20 bg-gradient-to-br from-rose-100/30 to-transparent rounded-full blur-xl" />
-          <div className="relative">
-            <div className="w-12 h-12 bg-gradient-to-br from-rose-500 via-pink-600 to-fuchsia-700 rounded-xl flex items-center justify-center mb-4 shadow-xl shadow-rose-500/30 group-hover:scale-110 transition-transform">
-              <XCircle className="w-6 h-6 text-white" />
-            </div>
-            <p className="text-3xl lg:text-4xl font-black bg-gradient-to-r from-rose-600 to-fuchsia-800 bg-clip-text text-transparent">{stats.outOfStock}</p>
-            <p className="text-sm text-slate-500 font-medium mt-1">Out of Stock</p>
+          <div className="w-10 h-10 sm:w-11 sm:h-11 bg-rose-600 rounded-xl flex items-center justify-center mb-3 sm:mb-4">
+            <XCircle className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
           </div>
+          <p className="text-2xl sm:text-3xl font-bold text-slate-900">{stats.outOfStock}</p>
+          <p className="text-xs sm:text-sm text-slate-500 font-medium mt-1">Out of Stock</p>
         </motion.div>
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.15 }}
-          className="group relative overflow-hidden bg-gradient-to-br from-emerald-600 via-teal-600 to-cyan-700 rounded-2xl p-5 shadow-xl shadow-emerald-500/20 text-white"
+          className="bg-slate-900 rounded-2xl p-4 sm:p-5 shadow-xl text-white"
         >
-          <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent" />
-          <div className="relative">
-            <div className="w-12 h-12 bg-white/20 backdrop-blur-md rounded-xl flex items-center justify-center mb-4 shadow-lg">
-              <Sparkles className="w-6 h-6" />
-            </div>
-            <p className="text-3xl lg:text-4xl font-black">
-              {stats.total > 0 ? Math.round((stats.inStock / stats.total) * 100) : 0}%
-            </p>
-            <p className="text-sm text-white/80 font-medium mt-1">Availability Rate</p>
+          <div className="w-10 h-10 sm:w-11 sm:h-11 bg-white/20 rounded-xl flex items-center justify-center mb-3 sm:mb-4">
+            <Sparkles className="w-5 h-5 sm:w-6 sm:h-6" />
           </div>
+          <p className="text-2xl sm:text-3xl font-bold">
+            {stats.total > 0 ? Math.round((stats.inStock / stats.total) * 100) : 0}%
+          </p>
+          <p className="text-xs sm:text-sm text-slate-400 font-medium mt-1">Availability</p>
         </motion.div>
       </div>
 
-      <div className="bg-gradient-to-br from-white to-slate-50 rounded-2xl shadow-lg border border-slate-200/80 overflow-hidden">
-        <div className="p-4 lg:p-5 border-b border-slate-100 bg-gradient-to-r from-white to-slate-50">
+      <div                 className="bg-white rounded-2xl shadow-lg border border-slate-200/60 overflow-hidden">
+          <div className="p-4 lg:p-5 border-b border-slate-100">
           <div className="flex flex-col sm:flex-row gap-4">
             <div className="relative flex-1">
               <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
@@ -545,7 +531,7 @@ export default function AdminProductsPage() {
                 placeholder="Search by name, category, or description..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-12 pr-4 py-3.5 bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-purple-300 outline-none transition-all shadow-sm"
+                className="w-full pl-12 pr-4 py-3.5 bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-slate-400 focus:border-slate-300 outline-none transition-all shadow-sm"
               />
             </div>
             <div className="relative">
@@ -553,7 +539,7 @@ export default function AdminProductsPage() {
               <select
                 value={categoryFilter}
                 onChange={(e) => setCategoryFilter(e.target.value)}
-                className="w-full sm:w-48 pl-11 pr-10 py-3.5 bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-purple-300 outline-none transition-all appearance-none cursor-pointer shadow-sm"
+                className="w-full sm:w-48 pl-11 pr-10 py-3.5 bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-slate-400 focus:border-slate-300 outline-none transition-all appearance-none cursor-pointer shadow-sm"
               >
                 <option value="">All Categories</option>
                 {categories.map((cat) => (
@@ -579,7 +565,7 @@ export default function AdminProductsPage() {
             {!searchTerm && !categoryFilter && (
               <button
                 onClick={() => openModal()}
-                className="mt-6 flex items-center gap-2 px-5 py-3 bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-bold rounded-xl hover:shadow-xl hover:shadow-purple-500/40 transition-all"
+                className="mt-6 flex items-center gap-2 px-5 py-3 bg-slate-900 text-white font-medium rounded-xl hover:bg-slate-800 transition-all"
               >
                 <Plus className="w-5 h-5" />
                 Add Product
@@ -613,7 +599,7 @@ export default function AdminProductsPage() {
                 </thead>
                 <tbody className="divide-y divide-slate-100">
                   {filteredProducts.map((product) => (
-                    <tr key={product.id} className="hover:bg-gradient-to-r hover:from-purple-50/50 hover:to-indigo-50/50 transition-all">
+                    <tr key={product.id} className="hover:bg-slate-50 transition-all">
                       <td className="px-4 lg:px-6 py-3 lg:py-4">
                         <div className="flex items-center gap-3 lg:gap-4">
                           <div className="relative w-12 h-12 lg:w-14 lg:h-14 rounded-lg lg:rounded-xl overflow-hidden bg-gradient-to-br from-slate-100 to-slate-200 flex-shrink-0 shadow-inner">
@@ -677,7 +663,7 @@ export default function AdminProductsPage() {
                   key={product.id}
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
-                  className="bg-gradient-to-br from-white to-slate-50 rounded-xl sm:rounded-2xl p-3 sm:p-4 shadow-sm border border-slate-200/80 hover:shadow-md transition-all"
+                  className="bg-white rounded-xl sm:rounded-2xl p-3 sm:p-4 shadow-sm border border-slate-200/60 hover:shadow-md transition-all"
                 >
                   <div className="flex items-start gap-3 sm:gap-4">
                     <div className="relative w-16 h-16 sm:w-20 sm:h-20 rounded-xl overflow-hidden bg-gradient-to-br from-slate-100 to-slate-200 flex-shrink-0 shadow-inner">
@@ -737,7 +723,7 @@ export default function AdminProductsPage() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="fixed inset-0 bg-gradient-to-br from-slate-900/80 via-purple-900/40 to-slate-900/80 backdrop-blur-md z-50"
+              className="fixed inset-0 bg-black/50 backdrop-blur-md z-50"
               onClick={closeModal}
             />
             <motion.div
@@ -746,8 +732,8 @@ export default function AdminProductsPage() {
               exit={{ opacity: 0, scale: 0.95, y: 20 }}
               className="fixed inset-0 z-50 flex items-center justify-center p-4 pointer-events-none"
             >
-              <div className="bg-gradient-to-br from-white to-slate-50 rounded-3xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-hidden pointer-events-auto border border-slate-200/50">
-                <div className="flex items-center justify-between px-6 lg:px-8 py-5 border-b border-slate-100 bg-gradient-to-r from-purple-50/50 via-white to-indigo-50/50">
+              <div               className="bg-white rounded-3xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-hidden pointer-events-auto border border-slate-200">
+                <div className="flex items-center justify-between px-6 lg:px-8 py-5 border-b border-slate-100">
                   <div>
                     <h2 className="text-xl font-black text-slate-900">
                       {editingProduct ? "Edit Product" : "Add New Product"}
@@ -846,7 +832,7 @@ export default function AdminProductsPage() {
                         placeholder="https://example.com/image.jpg"
                       />
                       {formData.image && (
-                        <div className="mt-3 relative w-full h-48 rounded-2xl overflow-hidden bg-gradient-to-br from-slate-100 to-slate-200 border-2 border-dashed border-slate-300 shadow-inner">
+                        <div className="mt-3 relative w-full h-48 rounded-2xl overflow-hidden bg-slate-100 border-2 border-dashed border-slate-300">
                           <Image
                             src={formData.image}
                             alt="Preview"
@@ -858,7 +844,7 @@ export default function AdminProductsPage() {
                       )}
                     </div>
 
-                    <div className="p-6 bg-gradient-to-br from-purple-50/50 to-indigo-50/50 rounded-2xl border border-purple-100/50">
+                    <div className="p-6 bg-slate-50 rounded-2xl border border-slate-200">
                       <div className="flex items-center justify-between mb-5">
                         <label className="text-base font-black text-slate-900">
                           Stock Availability
@@ -931,7 +917,7 @@ export default function AdminProductsPage() {
                     <button
                       type="submit"
                       disabled={saving}
-                      className="flex-1 px-6 py-4 bg-gradient-to-r from-purple-600 via-indigo-600 to-purple-600 bg-size-200 text-white font-bold rounded-xl hover:shadow-xl hover:shadow-purple-500/40 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 text-base"
+                      className="flex-1 px-6 py-4 bg-slate-900 text-white font-medium rounded-xl hover:bg-slate-800 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 text-base"
                     >
                       {saving ? (
                         <>
@@ -960,7 +946,7 @@ export default function AdminProductsPage() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="fixed inset-0 bg-gradient-to-br from-slate-900/80 via-red-900/40 to-slate-900/80 backdrop-blur-md z-50"
+              className="fixed inset-0 bg-black/50 backdrop-blur-md z-50"
               onClick={() => setDeleteProduct(null)}
             />
             <motion.div

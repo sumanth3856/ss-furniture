@@ -200,12 +200,12 @@ function StatCard({ label, value, icon: Icon, gradient, delay }: { label: string
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay }}
-      className="bg-gradient-to-br from-white to-slate-50 rounded-2xl p-4 sm:p-5 shadow-lg border border-slate-200/80 hover:shadow-xl transition-all"
+      className="bg-white rounded-2xl p-4 sm:p-5 shadow-lg border border-slate-200/60 hover:shadow-xl transition-all"
     >
       <div className={`w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-gradient-to-br ${gradient} flex items-center justify-center mb-3 sm:mb-4 shadow-lg`}>
         <Icon className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
       </div>
-      <p className="text-2xl sm:text-3xl font-black bg-gradient-to-r from-slate-900 to-slate-700 bg-clip-text text-transparent">{value}</p>
+      <p className="text-2xl sm:text-3xl font-bold text-slate-900">{value}</p>
       <p className="text-xs sm:text-sm text-slate-500 font-medium mt-1">{label}</p>
     </motion.div>
   );
@@ -260,7 +260,7 @@ export default function AdminOrdersPage() {
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
         <div>
           <h1 className="text-2xl lg:text-3xl font-black text-slate-900">
-            <span className="bg-gradient-to-r from-purple-600 to-indigo-600 bg-clip-text text-transparent">Orders</span>
+            <span className="text-slate-900">Orders</span>
           </h1>
           <p className="text-slate-500 font-medium mt-0.5 sm:mt-1 text-sm">Manage customer orders</p>
         </div>
@@ -268,7 +268,7 @@ export default function AdminOrdersPage() {
           <button className="p-2 sm:p-3 text-slate-500 hover:text-purple-600 hover:bg-purple-50 rounded-xl transition-all border border-slate-200" title="Refresh">
             <RefreshCw className="w-4 h-4 sm:w-5 sm:h-5" />
           </button>
-          <button className="hidden sm:flex items-center gap-2 px-5 py-3 bg-gradient-to-r from-purple-600 via-indigo-600 to-purple-600 bg-size-200 text-white font-bold rounded-xl hover:shadow-xl hover:shadow-purple-500/40 transition-all">
+          <button className="hidden sm:flex items-center gap-2 px-5 py-3 bg-slate-900 text-white font-medium rounded-xl hover:bg-slate-800 transition-all">
             <FileText className="w-5 h-5" />
             Export
           </button>
@@ -318,7 +318,7 @@ export default function AdminOrdersPage() {
         })}
       </div>
 
-      <div className="bg-gradient-to-br from-white to-slate-50 rounded-2xl shadow-lg border border-slate-200/80 overflow-hidden">
+      <div className="bg-white rounded-2xl shadow-lg border border-slate-200/60 overflow-hidden">
         <div className="p-4 lg:p-5 border-b border-slate-100">
           <div className="flex flex-col sm:flex-row gap-4">
             <div className="relative flex-1">
@@ -352,7 +352,7 @@ export default function AdminOrdersPage() {
 
         {filteredOrders.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-20 px-4">
-            <div className="w-20 h-20 bg-gradient-to-br from-slate-100 to-slate-200 rounded-2xl flex items-center justify-center mb-4 shadow-inner">
+            <div className="w-20 h-20 bg-slate-100 rounded-2xl flex items-center justify-center mb-4">
               <ShoppingCart className="w-10 h-10 text-slate-400" />
             </div>
             <h3 className="text-lg font-bold text-slate-900 mb-2">No orders found</h3>
@@ -364,7 +364,7 @@ export default function AdminOrdersPage() {
           <>
             <div className="hidden lg:block overflow-x-auto">
               <table className="w-full">
-                <thead className="bg-gradient-to-r from-slate-50 to-slate-100/50">
+                <thead className="bg-slate-50">
                   <tr>
                     <th className="px-6 py-4 text-left text-xs font-bold text-slate-600 uppercase tracking-wider">Order</th>
                     <th className="px-6 py-4 text-left text-xs font-bold text-slate-600 uppercase tracking-wider">Customer</th>
@@ -383,14 +383,14 @@ export default function AdminOrdersPage() {
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         transition={{ delay: index * 0.03 }}
-                        className="hover:bg-gradient-to-r hover:from-purple-50/50 hover:to-indigo-50/50 transition-all"
+                        className="hover:bg-slate-50 transition-all"
                       >
                         <td className="px-6 py-4">
                           <span className="font-mono text-sm font-bold text-slate-900">{order.id}</span>
                         </td>
                         <td className="px-6 py-4">
                           <div className="flex items-center gap-3">
-                            <div className="w-10 h-10 bg-gradient-to-br from-purple-100 to-indigo-100 rounded-xl flex items-center justify-center font-bold text-purple-700">
+                            <div className="w-10 h-10 bg-slate-100 rounded-xl flex items-center justify-center font-bold text-slate-700">
                               {order.customer.name.charAt(0)}
                             </div>
                             <div>
@@ -417,7 +417,7 @@ export default function AdminOrdersPage() {
                           <div className="flex items-center justify-end gap-2">
                             <button
                               onClick={() => openOrderDetails(order)}
-                              className="p-2.5 bg-gradient-to-r from-purple-500 to-indigo-500 text-white rounded-xl hover:shadow-lg hover:shadow-purple-500/30 transition-all"
+                              className="p-2.5 bg-slate-900 text-white rounded-xl hover:bg-slate-800 transition-all"
                               title="View Details"
                             >
                               <Eye className="w-4 h-4" />
@@ -441,11 +441,11 @@ export default function AdminOrdersPage() {
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: index * 0.03 }}
-                  className="bg-gradient-to-br from-white to-slate-50 rounded-2xl p-4 shadow-sm border border-slate-200/80 hover:shadow-md transition-all"
+                  className="bg-white rounded-2xl p-4 shadow-sm border border-slate-200/60 hover:shadow-md transition-all"
                 >
                   <div className="flex items-start justify-between gap-3 mb-3">
                     <div className="flex items-center gap-3">
-                      <div className="w-11 h-11 bg-gradient-to-br from-purple-100 to-indigo-100 rounded-xl flex items-center justify-center font-bold text-purple-700 text-lg">
+                      <div className="w-11 h-11 bg-slate-100 rounded-xl flex items-center justify-center font-bold text-slate-700 text-lg">
                         {order.customer.name.charAt(0)}
                       </div>
                       <div>
@@ -468,7 +468,7 @@ export default function AdminOrdersPage() {
 
                   <button
                     onClick={() => openOrderDetails(order)}
-                    className="w-full py-2.5 bg-gradient-to-r from-purple-500 to-indigo-500 text-white font-semibold rounded-xl hover:shadow-lg hover:shadow-purple-500/30 transition-all flex items-center justify-center gap-2"
+                    className="w-full py-2.5 bg-slate-900 text-white font-medium rounded-xl hover:bg-slate-800 transition-all flex items-center justify-center gap-2"
                   >
                     <Eye className="w-4 h-4" />
                     View Details
@@ -487,7 +487,7 @@ export default function AdminOrdersPage() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="fixed inset-0 bg-gradient-to-br from-slate-900/80 via-purple-900/40 to-slate-900/80 backdrop-blur-md z-50"
+              className="fixed inset-0 bg-black/50 backdrop-blur-md z-50"
               onClick={() => setShowOrderModal(false)}
             />
             <motion.div
@@ -496,8 +496,8 @@ export default function AdminOrdersPage() {
               exit={{ opacity: 0, scale: 0.95, y: 20 }}
               className="fixed inset-0 z-50 flex items-center justify-center p-4 pointer-events-none"
             >
-              <div className="bg-gradient-to-br from-white to-slate-50 rounded-3xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-hidden pointer-events-auto border border-slate-200/50">
-                <div className="flex items-center justify-between px-6 lg:px-8 py-5 border-b border-slate-100 bg-gradient-to-r from-purple-50/50 via-white to-indigo-50/50">
+              <div className="bg-white rounded-3xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-hidden pointer-events-auto border border-slate-200">
+                <div className="flex items-center justify-between px-6 lg:px-8 py-5 border-b border-slate-100">
                   <div>
                     <h2 className="text-xl font-black text-slate-900">Order Details</h2>
                     <p className="text-sm text-slate-500 font-medium mt-1">{selectedOrder.id}</p>
@@ -517,9 +517,9 @@ export default function AdminOrdersPage() {
                   </div>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-                    <div className="p-5 bg-gradient-to-br from-purple-50/50 to-indigo-50/50 rounded-2xl border border-purple-100/50">
+                    <div className="p-5 bg-slate-50 rounded-2xl border border-slate-200">
                       <div className="flex items-center gap-3 mb-4">
-                        <div className="w-10 h-10 bg-gradient-to-br from-purple-500 to-indigo-500 rounded-xl flex items-center justify-center shadow-lg shadow-purple-500/30">
+                        <div className="w-10 h-10 bg-slate-900 rounded-xl flex items-center justify-center">
                           <span className="text-white font-bold text-lg">{selectedOrder.customer.name.charAt(0)}</span>
                         </div>
                         <h4 className="font-bold text-slate-900">{selectedOrder.customer.name}</h4>
@@ -540,7 +540,7 @@ export default function AdminOrdersPage() {
                       </div>
                     </div>
 
-                    <div className="p-5 bg-gradient-to-br from-amber-50/50 to-orange-50/50 rounded-2xl border border-amber-100/50">
+                    <div className="p-5 bg-amber-50 rounded-2xl border border-amber-200">
                       <div className="flex items-center gap-3 mb-4">
                         <div className="w-10 h-10 bg-gradient-to-br from-amber-500 to-orange-500 rounded-xl flex items-center justify-center shadow-lg shadow-amber-500/30">
                           <CreditCard className="w-5 h-5 text-white" />
@@ -562,13 +562,13 @@ export default function AdminOrdersPage() {
                     </div>
                   </div>
 
-                  <div className="p-5 bg-gradient-to-br from-slate-50 to-slate-100/50 rounded-2xl border border-slate-200">
+                    <div className="p-5 bg-slate-50 rounded-2xl border border-slate-200">
                     <h4 className="font-bold text-slate-900 mb-4">Order Items ({selectedOrder.items.length})</h4>
                     <div className="space-y-3">
                       {selectedOrder.items.map((item, idx) => (
                         <div key={idx} className="flex items-center justify-between p-4 bg-white rounded-xl shadow-sm border border-slate-100">
                           <div className="flex items-center gap-4">
-                            <div className="w-12 h-12 bg-gradient-to-br from-purple-100 to-indigo-100 rounded-xl flex items-center justify-center shadow-inner">
+                            <div className="w-12 h-12 bg-slate-100 rounded-xl flex items-center justify-center">
                               <Package className="w-6 h-6 text-purple-600" />
                             </div>
                             <div>
@@ -585,14 +585,14 @@ export default function AdminOrdersPage() {
                   </div>
                 </div>
 
-                <div className="flex items-center gap-4 p-6 border-t border-slate-100 bg-gradient-to-r from-slate-50 to-white">
+                  <div className="flex items-center gap-4 p-6 border-t border-slate-100 bg-slate-50">
                   <button
                     onClick={() => setShowOrderModal(false)}
                     className="flex-1 px-6 py-4 bg-slate-100 text-slate-700 font-bold rounded-xl hover:bg-slate-200 transition-all border border-slate-200"
                   >
                     Close
                   </button>
-                  <button className="flex-1 px-6 py-4 bg-gradient-to-r from-purple-600 via-indigo-600 to-purple-600 bg-size-200 text-white font-bold rounded-xl hover:shadow-xl hover:shadow-purple-500/40 transition-all flex items-center justify-center gap-2">
+                  <button className="flex-1 px-6 py-4 bg-slate-900 text-white font-medium rounded-xl hover:bg-slate-800 transition-all flex items-center justify-center gap-2">
                     <FileText className="w-5 h-5" />
                     Download Invoice
                   </button>
