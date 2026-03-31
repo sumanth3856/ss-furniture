@@ -2,7 +2,7 @@
 
 import { useState, useMemo, useCallback, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Search, X, ChevronLeft, ChevronRight, Grid3X3, Grid2X2, Sparkles, ArrowUpDown, Check, Command, SlidersHorizontal, Zap, ArrowRight, RotateCcw, LayoutGrid, TrendingUp, ArrowDown, ArrowUp, DollarSign } from "lucide-react";
+import { Search, X, ChevronLeft, ChevronRight, Grid3X3, Grid2X2, MessageCircle, ArrowUpDown, Check, Command, SlidersHorizontal, Zap, ArrowRight, RotateCcw, LayoutGrid, TrendingUp, ArrowDown, ArrowUp, DollarSign } from "lucide-react";
 import ProductCard from "@/components/ProductCard";
 import { ProductCardSkeleton } from "@/components/Skeleton";
 import Breadcrumbs from "@/components/Breadcrumbs";
@@ -669,7 +669,7 @@ export default function ProductsPage() {
             viewport={{ once: true }}
           >
             <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-white/10 backdrop-blur rounded-full mb-4">
-              <Sparkles className="w-4 h-4 text-white" />
+              <MessageCircle className="w-4 h-4 text-white" />
               <span className="text-sm font-semibold text-white">Need Help?</span>
             </div>
 

@@ -4,7 +4,7 @@ import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
-import { Heart, ShoppingCart, X, ArrowRight, Loader2, Check, Trash2, Plus, Minus, MoveRight, Sparkles, Package } from "lucide-react";
+import { Heart, ShoppingCart, X, ArrowRight, Loader2, Check, Trash2, Plus, Minus, MoveRight, Package } from "lucide-react";
 import { useWishlist } from "@/components/WishlistContext";
 import { useCart } from "@/components/CartContext";
 import { useToast } from "@/components/Toast";

@@ -2,7 +2,7 @@
 
 import { useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { MapPin, Phone, Mail, Clock, Send, CheckCircle, AlertCircle, MessageCircle, Headphones, Truck, Sparkles } from "lucide-react";
+import { MapPin, Phone, Mail, Clock, Send, CheckCircle, AlertCircle, MessageCircle, Headphones, Truck } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 import Breadcrumbs from "@/components/Breadcrumbs";
@@ -190,7 +190,7 @@ export default function ContactPage() {
               <div className="bg-white rounded-2xl lg:rounded-3xl p-6 lg:p-8 shadow-sm border border-gray-100 hover:shadow-lg transition-shadow duration-300">
                 <div className="flex items-center gap-3 mb-6">
                   <div className="w-12 h-12 bg-gradient-to-br from-amber-500 to-amber-600 rounded-xl flex items-center justify-center shadow-lg shadow-gray-900/20">
-                    <Sparkles className="w-6 h-6 text-white" />
+                    <Send className="w-6 h-6 text-white" />
                   </div>
                   <div>
                     <h2 className="font-bold text-xl text-gray-900">Send Us a Message</h2>
@@ -526,7 +526,7 @@ export default function ContactPage() {
               className="space-y-6"
             >
               <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-amber-50 rounded-full">
-                <Sparkles className="w-4 h-4 text-amber-600" />
+                <MapPin className="w-4 h-4 text-amber-600" />
                 <span className="text-xs font-semibold text-amber-700 uppercase tracking-wider">Why Visit Us</span>
               </div>
 

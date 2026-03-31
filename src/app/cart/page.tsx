@@ -4,7 +4,7 @@ import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
-import { Trash2, Minus, Plus, ShoppingBag, ArrowRight, Truck, Shield, RefreshCw, Loader2, Heart, Sparkles, Check } from "lucide-react";
+import { Trash2, Minus, Plus, ShoppingBag, ArrowRight, Truck, Shield, RefreshCw, Loader2, Heart, Check } from "lucide-react";
 import { useCart } from "@/components/CartContext";
 import { useWishlist } from "@/components/WishlistContext";
 import { useToast } from "@/components/Toast";
@@ -356,7 +356,7 @@ export default function CartPage() {
               >
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-gray-900 to-gray-800 flex items-center justify-center">
-                    <Sparkles className="w-5 h-5 text-white" />
+                    <ShoppingBag className="w-5 h-5 text-white" />
                   </div>
                   <h2 className="font-serif text-xl font-bold text-gray-900">
                     Order Summary

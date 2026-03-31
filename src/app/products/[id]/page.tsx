@@ -5,7 +5,7 @@ import { useParams } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { Heart, ShoppingCart, Check, Loader2, Truck, Shield, RefreshCw, Star, Minus, Plus, XCircle, CheckCircle2, ZoomIn, ZoomOut, ArrowRight, Sparkles, Package, Clock, Award, ChevronRight, Share2, Eye, EyeOff } from "lucide-react";
+import { Heart, ShoppingCart, Check, Loader2, Truck, Shield, RefreshCw, Star, Minus, Plus, XCircle, CheckCircle2, ZoomIn, ZoomOut, ArrowRight, ThumbsUp, Package, Clock, Award, ChevronRight, Share2, Eye, EyeOff } from "lucide-react";
 import { products as staticProducts, type Product } from "@/lib/data";
 import { useCart } from "@/components/CartContext";
 import { useWishlist } from "@/components/WishlistContext";
@@ -476,7 +476,7 @@ export default function ProductDetailPage() {
             <div className="flex items-center justify-between mb-8">
               <div>
                 <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-amber-50 rounded-full mb-3">
-                  <Sparkles className="w-4 h-4 text-amber-600" />
+                  <ThumbsUp className="w-4 h-4 text-amber-600" />
                   <span className="text-xs font-bold text-amber-700 uppercase tracking-wider">For You</span>
                 </div>
                 <h2 className="text-2xl sm:text-3xl font-bold text-gray-900">You May Also Like</h2>

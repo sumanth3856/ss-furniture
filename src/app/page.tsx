@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { motion } from "framer-motion";
-import { ArrowRight, Sofa, UtensilsCrossed, Armchair, Bed, Lamp, Truck, ShieldCheck, RefreshCw, Headphones, Star, ChevronRight, Sparkles, Heart, ShoppingBag, Award, TrendingUp, Quote, MapPin, Mail, Clock, Phone } from "lucide-react";
+import { ArrowRight, Sofa, UtensilsCrossed, Armchair, Bed, Lamp, Truck, ShieldCheck, RefreshCw, Headphones, Star, ChevronRight, BadgeCheck, Heart, ShoppingBag, Award, TrendingUp, Quote, MapPin, Mail, Clock, Phone, Tag, Grid3X3, Timer } from "lucide-react";
 import ProductCard from "@/components/ProductCard";
 import Footer from "@/components/Footer";
 import { products } from "@/lib/data";
@@ -95,7 +95,7 @@ export default function HomePage() {
               transition={{ duration: 0.5 }}
             >
               <div className="inline-flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-1 sm:py-1.5 bg-white/10 backdrop-blur-md rounded-full border border-white/20 mb-3 sm:mb-4">
-                <Sparkles className="w-3 h-3 sm:w-4 sm:h-4 text-amber-400" />
+                <BadgeCheck className="w-3 h-3 sm:w-4 sm:h-4 text-amber-400" />
                 <span className="text-white/90 text-[10px] sm:text-xs font-medium uppercase tracking-wider">Featured</span>
               </div>
               
@@ -186,7 +186,7 @@ export default function HomePage() {
           <div className="flex items-center justify-between mb-6 md:mb-8">
             <div>
               <div className="inline-flex items-center gap-2 px-3 py-1 bg-amber-50 rounded-full mb-2">
-                <Sparkles className="w-3 h-3 text-amber-600" />
+                <Grid3X3 className="w-3 h-3 text-amber-600" />
                 <span className="text-xs font-semibold text-amber-700 uppercase tracking-wider">Collections</span>
               </div>
               <h2 className="text-xl md:text-2xl font-bold text-gray-900">Browse by Category</h2>
@@ -397,7 +397,7 @@ export default function HomePage() {
             <div className="relative z-10 px-6 md:px-10 lg:px-16 py-10 md:py-14 lg:py-16 flex flex-col lg:flex-row items-center justify-between gap-6 md:gap-8">
               <div className="text-center lg:text-left max-w-xl">
                 <div className="inline-flex items-center gap-2 px-3 py-1 bg-amber-500/20 rounded-full mb-3">
-                  <Sparkles className="w-4 h-4 text-amber-400" />
+                  <Timer className="w-4 h-4 text-amber-400" />
                   <span className="text-sm font-semibold text-amber-400">Limited Time</span>
                 </div>
                 <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-white mb-2">

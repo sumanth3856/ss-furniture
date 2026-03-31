@@ -3,7 +3,7 @@
 import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
-import { Award, Heart, Users, Leaf, ArrowRight, Check, Sparkles, Star, Target, Shield, Globe, MapPin, Phone, Mail, Clock } from "lucide-react";
+import { Award, Heart, Users, Leaf, ArrowRight, Check, Star, Target, Shield, Globe, MapPin, Phone, Mail, Clock } from "lucide-react";
 import Breadcrumbs from "@/components/Breadcrumbs";
 
 const values = [
@@ -127,7 +127,7 @@ export default function AboutPage() {
               transition={{ duration: 0.6, delay: 0.2 }}
             >
               <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-amber-50 rounded-full mb-4">
-                <Sparkles className="w-4 h-4 text-amber-600" />
+                <Heart className="w-4 h-4 text-amber-600" />
                 <span className="text-xs font-semibold text-amber-700 uppercase tracking-wider">Our Story</span>
               </div>
 
