@@ -153,23 +153,15 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: build
+          path: .next
 
-      - name: Build application
-        run: npm run build
+      - name: Start server and run Lighthouse
+        run: |
+          npm start &
+          npx wait-on http://localhost:3000 --timeout 60000
+          npx lighthouse-ci autorun --config=lighthouserc.json
         env:
           NEXT_PUBLIC_SITE_URL: ${{ secrets.NEXT_PUBLIC_SITE_URL }}
           NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
           NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
           NEXT_PUBLIC_ENABLE_ANALYTICS: "false"
-
-      - name: Run Lighthouse CI
-        uses: treosh/lighthouse-ci-action@v11
-        with:
-          urls: |
-            http://localhost:3000
-            http://localhost:3000/products
-            http://localhost:3000/about
-            http://localhost:3000/contact
-          budgetPath: ./lighthouse-budget.json
-          uploadArtifacts: true
-          temporaryPublicStorage: true
