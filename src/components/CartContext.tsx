@@ -16,7 +16,7 @@ interface CartItem {
   id: string;
   product_id: number;
   quantity: number;
-  products: Product;
+  products?: Product;
 }
 
 interface CartContextType {
@@ -118,7 +118,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
   );
 
   const subtotal = useMemo(
-    () => items.reduce((sum, item) => sum + item.products.price * item.quantity, 0),
+    () => items.reduce((sum, item) => sum + (item.products?.price || 0) * item.quantity, 0),
     [items]
   );
 

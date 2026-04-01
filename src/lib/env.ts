@@ -10,15 +10,6 @@ const requiredVars = [
   "NEXT_PUBLIC_SUPABASE_ANON_KEY",
 ];
 
-const optionalVars = [
-  "NEXT_PUBLIC_ENABLE_ANALYTICS",
-  "NEXT_PUBLIC_CONTACT_EMAIL",
-  "NEXT_PUBLIC_CONTACT_PHONE",
-  "NEXT_PUBLIC_FACEBOOK_URL",
-  "NEXT_PUBLIC_INSTAGRAM_URL",
-  "NEXT_PUBLIC_TWITTER_URL",
-];
-
 export function validateEnvironment(): EnvConfig {
   const config: EnvConfig = {
     isValid: true,

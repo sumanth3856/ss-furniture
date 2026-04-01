@@ -4,7 +4,7 @@ import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
-import { Trash2, Minus, Plus, ShoppingBag, ArrowRight, Truck, Shield, RefreshCw, Loader2, Heart, Check } from "lucide-react";
+import { Trash2, Minus, Plus, ShoppingBag, ArrowRight, Truck, Shield, RefreshCw, Loader2, Heart } from "lucide-react";
 import { useCart } from "@/components/CartContext";
 import { useWishlist } from "@/components/WishlistContext";
 import { useToast } from "@/components/Toast";
@@ -38,6 +38,7 @@ export default function CartPage() {
   };
 
   const handleSaveForLater = async (item: typeof items[0]) => {
+    if (!item.products) return;
     setSavingToWishlistId(item.id);
     try {
       await addToWishlist(item.products);
@@ -183,8 +184,9 @@ export default function CartPage() {
             {/* CART ITEMS */}
             <div className="lg:col-span-2 space-y-4">
               <AnimatePresence mode="popLayout">
-                {items.map((item, index) => {
+                {items.filter((item) => item.products).map((item, index) => {
                   const product = item.products;
+                  if (!product) return null;
                   const isRemoving = removingId === item.id;
                   const isSaving = savingToWishlistId === item.id;
                   const showConfirm = showDeleteConfirm === item.id;

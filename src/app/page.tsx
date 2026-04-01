@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { motion } from "framer-motion";
-import { ArrowRight, Sofa, UtensilsCrossed, Armchair, Bed, Lamp, Truck, ShieldCheck, RefreshCw, Headphones, Star, ChevronRight, BadgeCheck, Heart, ShoppingBag, Award, TrendingUp, Quote, MapPin, Mail, Clock, Phone, Tag, Grid3X3, Timer } from "lucide-react";
+import { ArrowRight, Sofa, UtensilsCrossed, Armchair, Bed, Lamp, Truck, ShieldCheck, RefreshCw, Headphones, Star, ChevronRight, BadgeCheck, Heart, ShoppingBag, Award, TrendingUp, Quote, MapPin, Mail, Clock, Phone, Grid3X3, Timer } from "lucide-react";
 import ProductCard from "@/components/ProductCard";
 import Footer from "@/components/Footer";
 import { products } from "@/lib/data";

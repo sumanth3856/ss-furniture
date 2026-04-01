@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Heart, ShoppingCart, Check, Loader2, Eye, XCircle, Bell, ArrowRight } from "lucide-react";
+import { Heart, ShoppingCart, Check, Loader2, XCircle, Bell, ArrowRight } from "lucide-react";
 import Image from "next/image";
 import type { Product } from "@/lib/data";
 import { useCart } from "./CartContext";

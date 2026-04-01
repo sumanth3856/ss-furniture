@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useCallback, useSyncExternalStore } from "react";
 
 interface UseIntersectionOptions {
   threshold?: number | number[];
@@ -17,9 +17,9 @@ export function useIntersectionObserver(
   const [element, setElement] = useState<Element | null>(null);
   const frozen = useRef(false);
 
-  const ref = (node: Element | null) => {
+  const ref = useCallback((node: Element | null) => {
     setElement(node);
-  };
+  }, []);
 
   useEffect(() => {
     if (!element) return;
@@ -52,24 +52,26 @@ export function useIntersectionObserver(
   return [ref, isVisible, entry];
 }
 
+function getSnapshotMediaQuery(query: string): boolean {
+  if (typeof window === "undefined") return false;
+  return window.matchMedia(query).matches;
+}
+
+function getServerSnapshotMediaQuery(): boolean {
+  return false;
+}
+
 export function useMediaQuery(query: string): boolean {
-  const [matches, setMatches] = useState(false);
-
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-
-    const mediaQuery = window.matchMedia(query);
-    setMatches(mediaQuery.matches);
-
-    const handler = (event: MediaQueryListEvent) => {
-      setMatches(event.matches);
-    };
-
-    mediaQuery.addEventListener("change", handler);
-    return () => mediaQuery.removeEventListener("change", handler);
-  }, [query]);
-
-  return matches;
+  return useSyncExternalStore(
+    (callback) => {
+      if (typeof window === "undefined") return () => {};
+      const mediaQuery = window.matchMedia(query);
+      mediaQuery.addEventListener("change", callback);
+      return () => mediaQuery.removeEventListener("change", callback);
+    },
+    () => getSnapshotMediaQuery(query),
+    getServerSnapshotMediaQuery
+  );
 }
 
 export function useDebounce<T>(value: T, delay: number): T {
@@ -90,13 +92,14 @@ export function useDebounce<T>(value: T, delay: number): T {
 
 export function useThrottle<T>(value: T, limit: number): T {
   const [throttledValue, setThrottledValue] = useState(value);
-  const lastRan = useRef(Date.now());
+  const lastRan = useRef<number>(0);
 
   useEffect(() => {
     const handler = setTimeout(() => {
-      if (Date.now() - lastRan.current >= limit) {
+      const now = Date.now();
+      if (now - lastRan.current >= limit) {
         setThrottledValue(value);
-        lastRan.current = Date.now();
+        lastRan.current = now;
       }
     }, limit - (Date.now() - lastRan.current));
 
@@ -108,26 +111,35 @@ export function useThrottle<T>(value: T, limit: number): T {
   return throttledValue;
 }
 
+function subscribeLocalStorage(): () => void {
+  if (typeof window === "undefined") return () => {};
+  window.addEventListener("storage", () => {});
+  return () => {};
+}
+
+function getSnapshotLocalStorage<T>(key: string, initialValue: T): T {
+  if (typeof window === "undefined") return initialValue;
+  try {
+    const item = window.localStorage.getItem(key);
+    return item ? JSON.parse(item) : initialValue;
+  } catch {
+    return initialValue;
+  }
+}
+
+function getServerSnapshotLocalStorage<T>(_key: string, initialValue: T): T {
+  return initialValue;
+}
+
 export function useLocalStorage<T>(
   key: string,
   initialValue: T
 ): [T, (value: T | ((val: T) => T)) => void, () => void] {
-  const [storedValue, setStoredValue] = useState<T>(initialValue);
+  const [storedValue, setStoredValue] = useState<T>(() => 
+    getSnapshotLocalStorage(key, initialValue)
+  );
 
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-
-    try {
-      const item = window.localStorage.getItem(key);
-      if (item) {
-        setStoredValue(JSON.parse(item));
-      }
-    } catch (error) {
-      console.warn(`Error reading localStorage key "${key}":`, error);
-    }
-  }, [key]);
-
-  const setValue = (value: T | ((val: T) => T)) => {
+  const setValue = useCallback((value: T | ((val: T) => T)) => {
     try {
       const valueToStore = value instanceof Function ? value(storedValue) : value;
       setStoredValue(valueToStore);
@@ -137,9 +149,9 @@ export function useLocalStorage<T>(
     } catch (error) {
       console.warn(`Error setting localStorage key "${key}":`, error);
     }
-  };
+  }, [key, storedValue]);
 
-  const removeValue = () => {
+  const removeValue = useCallback(() => {
     try {
       if (typeof window !== "undefined") {
         window.localStorage.removeItem(key);
@@ -148,7 +160,13 @@ export function useLocalStorage<T>(
     } catch (error) {
       console.warn(`Error removing localStorage key "${key}":`, error);
     }
-  };
+  }, [key, initialValue]);
+
+  useSyncExternalStore(
+    subscribeLocalStorage,
+    () => getSnapshotLocalStorage(key, initialValue),
+    () => getServerSnapshotLocalStorage(key, initialValue)
+  );
 
   return [storedValue, setValue, removeValue];
 }

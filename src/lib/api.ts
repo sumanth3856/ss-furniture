@@ -1,4 +1,5 @@
 import { getDeviceId } from "./deviceId";
+import type { Product } from "./data";
 
 const API_BASE = "/api";
 
@@ -39,13 +40,26 @@ async function fetchApi<T>(
 }
 
 export interface ProductsResponse {
-  data: any[];
+  data: Product[];
   pagination?: {
     page: number;
     limit: number;
     total: number;
     totalPages: number;
   };
+}
+
+interface CartItem {
+  id: string;
+  product_id: number;
+  quantity: number;
+  products?: Product;
+}
+
+interface WishlistItem {
+  id: string;
+  product_id: number;
+  products?: Product;
 }
 
 export const api = {
@@ -64,9 +78,9 @@ export const api = {
         return { data: [] };
       }
     },
-    getById: async (id: number): Promise<any | null> => {
+    getById: async (id: number): Promise<Product | null> => {
       try {
-        return await fetchApi<any>(`/products/${id}`);
+        return await fetchApi<Product>(`/products/${id}`);
       } catch {
         return null;
       }
@@ -74,9 +88,9 @@ export const api = {
   },
 
   cart: {
-    get: async (): Promise<{ items: any[] }> => {
+    get: async (): Promise<{ items: CartItem[] }> => {
       try {
-        return await fetchApi<{ items: any[] }>("/cart");
+        return await fetchApi<{ items: CartItem[] }>("/cart");
       } catch {
         return { items: [] };
       }
@@ -102,9 +116,9 @@ export const api = {
   },
 
   wishlist: {
-    get: async (): Promise<{ items: any[] }> => {
+    get: async (): Promise<{ items: WishlistItem[] }> => {
       try {
-        return await fetchApi<{ items: any[] }>("/wishlist");
+        return await fetchApi<{ items: WishlistItem[] }>("/wishlist");
       } catch {
         return { items: [] };
       }

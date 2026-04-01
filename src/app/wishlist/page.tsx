@@ -4,7 +4,7 @@ import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
-import { Heart, ShoppingCart, X, ArrowRight, Loader2, Check, Trash2, Plus, Minus, MoveRight, Package } from "lucide-react";
+import { Heart, ShoppingCart, X, ArrowRight, Loader2, Check, Plus, Minus, MoveRight, Package } from "lucide-react";
 import { useWishlist } from "@/components/WishlistContext";
 import { useCart } from "@/components/CartContext";
 import { useToast } from "@/components/Toast";
@@ -13,7 +13,7 @@ import Breadcrumbs from "@/components/Breadcrumbs";
 interface WishlistItemType {
   id: string;
   product_id: number;
-  products: {
+  products?: {
     id: number;
     name: string;
     description: string;
@@ -24,7 +24,7 @@ interface WishlistItemType {
 }
 
 export default function WishlistPage() {
-  const { items, removeItem, clearWishlist, isLoading } = useWishlist();
+  const { items, removeItem, isLoading } = useWishlist();
   const { addItem: addToCart, items: cartItems } = useCart();
   const { showToast } = useToast();
   
@@ -45,6 +45,7 @@ export default function WishlistPage() {
   };
 
   const handleAddToCart = async (item: WishlistItemType) => {
+    if (!item.products) return;
     const quantity = getQuantity(item.id);
     setAddingToCartId(item.id);
     setShowQuantityModal(null);
@@ -68,6 +69,7 @@ export default function WishlistPage() {
   };
 
   const handleQuickAddToCart = async (item: WishlistItemType) => {
+    if (!item.products) return;
     setAddingToCartId(item.id);
     try {
       await addToCart(item.products);
@@ -94,7 +96,7 @@ export default function WishlistPage() {
         next.delete(item.id);
         return next;
       });
-      showToast(`${item.products.name} removed from wishlist`, "info");
+      showToast(`${item.products?.name || 'Item'} removed from wishlist`, "info");
     } catch {
       showToast("Failed to remove", "error");
     } finally {
@@ -109,6 +111,7 @@ export default function WishlistPage() {
     let addedCount = 0;
     
     for (const item of items) {
+      if (!item.products) continue;
       try {
         await addToCart(item.products);
         await removeItem(item.product_id);
@@ -146,10 +149,10 @@ export default function WishlistPage() {
   };
 
   const isInCart = (productId: number) => cartItems.some((item) => item.product_id === productId);
-  const totalValue = items.reduce((sum, item) => sum + item.products.price, 0);
+  const totalValue = items.reduce((sum, item) => sum + (item.products?.price || 0), 0);
   const selectedTotal = items
     .filter(item => selectedItems.has(item.id))
-    .reduce((sum, item) => sum + item.products.price, 0);
+    .reduce((sum, item) => sum + (item.products?.price || 0), 0);
 
   if (isLoading) {
     return (
@@ -304,8 +307,8 @@ export default function WishlistPage() {
         <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6">
             <AnimatePresence mode="popLayout">
-              {items.map((item, index) => {
-                const product = item.products;
+              {items.filter((item) => item.products).map((item, index) => {
+                const product = item.products!;
                 const inCart = isInCart(product.id);
                 const isAdding = addingToCartId === item.id;
                 const isRemoving = removingId === item.id;

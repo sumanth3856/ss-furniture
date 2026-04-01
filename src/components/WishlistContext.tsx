@@ -15,7 +15,7 @@ import { api } from "@/lib/api";
 interface WishlistItem {
   id: string;
   product_id: number;
-  products: Product;
+  products?: Product;
 }
 
 interface WishlistContextType {
